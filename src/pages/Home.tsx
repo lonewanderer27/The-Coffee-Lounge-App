@@ -1,5 +1,7 @@
 import "./Account.css";
+import "swiper/css";
 
+import { Autoplay, Pagination } from "swiper/modules";
 import {
   IonButton,
   IonButtons,
@@ -12,12 +14,16 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { collection, limit, query, where } from "firebase/firestore";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { collection, query } from "firebase/firestore";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import { Action } from "../components/Action";
 import ProductCard from "../components/ProductCard";
 import { bagOutline } from "ionicons/icons";
+import black_coffee from "../../resources/slides/black_coffee.webp";
+import definitely_not_macchiato from "../../resources/slides/definitely_not_macchiato.webp";
+import hot_chocolate from "../../resources/slides/hot_chocolate.webp";
 import { useEffect } from "react";
 
 const Home: React.FC = () => {
@@ -68,6 +74,26 @@ const Home: React.FC = () => {
           </IonToolbar>
           {/* <h3 className="ion-padding">Find your best combination!</h3> */}
         </IonHeader>
+        <Swiper
+          autoplay={{
+            delay: 2500,
+          }}
+          navigation={true}
+          modules={[Autoplay, Pagination]}
+        >
+          <SwiperSlide className="ion-padding">
+            <img src={black_coffee} style={{ borderRadius: "10px" }} />
+          </SwiperSlide>
+          <SwiperSlide className="ion-padding">
+            <img
+              src={definitely_not_macchiato}
+              style={{ borderRadius: "10px" }}
+            />
+          </SwiperSlide>
+          <SwiperSlide className="ion-padding">
+            <img src={hot_chocolate} style={{ borderRadius: "10px" }} />
+          </SwiperSlide>
+        </Swiper>
         <IonGrid className="ion-padding-vertical">
           <IonRow>
             {data?.map((category) => (
