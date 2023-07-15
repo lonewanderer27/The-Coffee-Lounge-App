@@ -82,7 +82,7 @@ function App() {
                   <Order />
                 </Route>
                 <Route exact path="/">
-                  <Redirect to="/explore" />
+                  <Redirect to="/home" />
                 </Route>
                 <Route exact path="/register">
                   <Register />
@@ -136,9 +136,7 @@ export const AuthWrapper = ({
     return fallback;
   }
 
-  if (status === "loading" && data === undefined) {
-    return <IonLoading isOpen={true} message="Loading" />;
-  } else if (data.signedIn === true) {
+  if (status === "success" && data.signedIn === true) {
     return children as JSX.Element;
   }
 
