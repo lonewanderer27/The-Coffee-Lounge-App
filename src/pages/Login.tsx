@@ -90,11 +90,13 @@ const Login: React.FC = () => {
           <IonInput
             label="Email"
             type="email"
+            className="ion-text-right"
             {...register("email", { required: true })}
           />
           <IonInput
             label="Password"
             type="password"
+            className="ion-text-right"
             {...register("password", { required: true })}
           />
           <IonButton
