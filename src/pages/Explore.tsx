@@ -29,25 +29,7 @@ import { chevronUpCircle, colorPalette, globe, help } from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 
 import { EffectCards } from "swiper/modules";
-import breakfastMeal from "../assets/breakfast-meal.png";
-import brownIcedCoffee from "../assets/brown-iced-coffee.png";
-import ensaymada from "../assets/ensaymada.png";
-import tclPic1 from "../assets/outdoor-renders/TCL - PICTURE 1 (OUTSIDE).png";
-// import tlcBanner from "../assets/tlc_banner.png";
-import tclPic1Indoor1stFloor from "../assets/indoor-renders/TCL - PICTURE 1 (1ST FLOOR).png";
-import tclPic1Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 1 (2ND FLOOR).png";
-import tclPic2 from "../assets/outdoor-renders/TCL - PICTURE 2 (OUTSIDE).png";
-import tclPic2Indoor1stFloor from "../assets/indoor-renders/TCL - PICTURE 2 (1ST FLOOR).png";
-import tclPic2Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 2 (2ND FLOOR).png";
-import tclPic3 from "../assets/outdoor-renders/the-coffee-lounge-2nd-floor-facing-from-the-outside-railing-day.png";
-import tclPic3Indoor1stFloor from "../assets/indoor-renders/TCL - PICTURE 3 (1ST FLOOR).png";
-import tclPic3Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 3 (2ND FLOOR).png";
-import tclPic4Indoor1stFloor from "../assets/indoor-renders/TCL - PICTURE 4 (1ST FLOOR).png";
-import tclPic4Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 4 (2ND FLOOR).png";
-import tclPic5Indoor1stFloor from "../assets/indoor-renders/TCL - PICTURE 5 (1ST FLOOR).png";
-import tclPic5Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 5 (2ND FLOOR).png";
-import tclPic6Indoor2ndFloor from "../assets/indoor-renders/TCL - PICTURE 6 (2ND FLOOR).png";
-import tclPic7Indoor1stFloor from "../assets/indoor-renders/the-coffee-lounge-ground-floor-realistic.png";
+// import tlcBanner from "../assets/tlc_banner.webp";
 import { warningOutline } from "ionicons/icons";
 
 const Explore: React.FC = () => {
@@ -106,7 +88,10 @@ const Explore: React.FC = () => {
                 products, your experience in The Coffee Lounge will be nothing
                 short of extravagant and relaxing.
               </p>
-              <img src={tclPic2} style={{ borderRadius: "10px" }} />
+              <img
+                src="/outdoor/TCL - PICTURE 2 (OUTSIDE).webp"
+                style={{ borderRadius: "10px" }}
+              />
             </IonText>
           </div>
           <div style={{ marginBottom: "50px" }}>
@@ -122,7 +107,10 @@ const Explore: React.FC = () => {
                 breakfast nor bread.
               </p>
             </IonText>
-            <img src={tclPic3} style={{ borderRadius: "10px" }} />
+            <img
+              src="/outdoor/the-coffee-lounge-2nd-floor-facing-from-the-outside-railing-day.webp"
+              style={{ borderRadius: "10px" }}
+            />
             <IonText>
               <p>
                 However, with more customers coming back to The Coffee Lounge,
@@ -132,7 +120,10 @@ const Explore: React.FC = () => {
                 giving enough workspace to work on group projects.
               </p>
             </IonText>
-            <img src={tclPic1} style={{ borderRadius: "10px" }} />
+            <img
+              src="/outdoor/TCL - Picture 1 (OUTSIDE).webp"
+              style={{ borderRadius: "10px" }}
+            />
           </div>
         </div>
         <div style={{ marginBottom: "50px" }}>
@@ -146,7 +137,7 @@ const Explore: React.FC = () => {
           >
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic1Indoor1stFloor} />
+                <img src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>Ground Floor Lounge</IonCardTitle>
                 </IonCardHeader>
@@ -163,7 +154,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic2Indoor1stFloor} />
+                <img src="/indoor/TCL - PICTURE 2 (1ST FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>Entrance</IonCardTitle>
                 </IonCardHeader>
@@ -180,7 +171,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic3Indoor1stFloor} />
+                <img src="/indoor/TCL - PICTURE 3 (1ST FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>Ground Floor VIP Area</IonCardTitle>
                 </IonCardHeader>
@@ -197,7 +188,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic7Indoor1stFloor} />
+                <img src="/indoor/the-coffee-lounge-ground-floor-realistic.webp" />
                 <IonCardHeader>
                   <IonCardTitle>Ground Floor VIP Area</IonCardTitle>
                 </IonCardHeader>
@@ -214,7 +205,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic4Indoor1stFloor} />
+                <img src="/indoor/TCL - PICTURE 4 (1ST FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>Ground Floor Bar</IonCardTitle>
                 </IonCardHeader>
@@ -231,7 +222,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic5Indoor1stFloor} />
+                <img src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>Ground Floor Bar</IonCardTitle>
                 </IonCardHeader>
@@ -248,7 +239,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic1Indoor2ndFloor} />
+                <img src="/indoor/TCL - PICTURE 1 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor Balcony</IonCardTitle>
                 </IonCardHeader>
@@ -265,7 +256,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic2Indoor2ndFloor} />
+                <img src="/indoor/TCL - PICTURE 2 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor Lounge</IonCardTitle>
                 </IonCardHeader>
@@ -282,7 +273,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic3Indoor2ndFloor} />
+                <img src="indoor/TCL - PICTURE 3 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor Bar</IonCardTitle>
                 </IonCardHeader>
@@ -299,7 +290,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic4Indoor2ndFloor} />
+                <img src="/indoor/TCL - PICTURE 4 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor VIP Area</IonCardTitle>
                 </IonCardHeader>
@@ -316,7 +307,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic5Indoor2ndFloor} />
+                <img src="/indoor/TCL - PICTURE 5 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor B Function Room</IonCardTitle>
                 </IonCardHeader>
@@ -333,7 +324,7 @@ const Explore: React.FC = () => {
             </SwiperSlide>
             <SwiperSlide>
               <IonCard>
-                <img src={tclPic6Indoor2ndFloor} />
+                <img src="/indoor/TCL - PICTURE 6 (2ND FLOOR).webp" />
                 <IonCardHeader>
                   <IonCardTitle>2nd Floor Function Rooms</IonCardTitle>
                 </IonCardHeader>

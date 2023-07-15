@@ -21,10 +21,6 @@ import { useFirestore, useFirestoreCollectionData } from "reactfire";
 import { Action } from "../components/Action";
 import ProductCard from "../components/ProductCard";
 import { bagOutline } from "ionicons/icons";
-import black_coffee from "../assets/slides/black_coffee.webp";
-import definitely_not_macchiato from "../assets/slides/definitely_not_macchiato.webp";
-import hot_chocolate from "../assets/slides/hot_chocolate.webp";
-import { useEffect } from "react";
 
 const Home: React.FC = () => {
   const firestore = useFirestore();
@@ -82,16 +78,22 @@ const Home: React.FC = () => {
           modules={[Autoplay, Pagination]}
         >
           <SwiperSlide className="ion-padding">
-            <img src={black_coffee} style={{ borderRadius: "10px" }} />
-          </SwiperSlide>
-          <SwiperSlide className="ion-padding">
             <img
-              src={definitely_not_macchiato}
+              src="/slides/black_coffee.webp"
               style={{ borderRadius: "10px" }}
             />
           </SwiperSlide>
           <SwiperSlide className="ion-padding">
-            <img src={hot_chocolate} style={{ borderRadius: "10px" }} />
+            <img
+              src="/slides/definitely_not_macchiato.webp"
+              style={{ borderRadius: "10px" }}
+            />
+          </SwiperSlide>
+          <SwiperSlide className="ion-padding">
+            <img
+              src="/slides/hot_chocolate.webp"
+              style={{ borderRadius: "10px" }}
+            />
           </SwiperSlide>
         </Swiper>
         <IonGrid className="ion-padding-vertical">
