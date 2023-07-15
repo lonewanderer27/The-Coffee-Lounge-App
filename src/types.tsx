@@ -13,6 +13,7 @@ export type Category = {
   id: string;
   name: string;
   altName?: string;
+  description: string;
 };
 
 export type CoffeeType = {

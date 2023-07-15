@@ -8,6 +8,7 @@ import {
   IonIcon,
   IonPage,
   IonRow,
+  IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -27,6 +28,7 @@ export default function CategoryPage() {
   const category: Category = {
     id: queryParams.get("id") || "",
     name: queryParams.get("name") || "",
+    description: queryParams.get("description") || "",
   };
 
   console.log("Category", category);
@@ -64,6 +66,10 @@ export default function CategoryPage() {
             </IonButtons>
           </IonToolbar>
         </IonHeader>
+        <div className="ion-padding">
+          <IonText>{category.description}</IonText>
+        </div>
+
         <IonGrid className="ion-padding-vertical">
           <IonRow>
             {productsData
