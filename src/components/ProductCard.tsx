@@ -13,7 +13,7 @@ import { bagAddOutline } from "ionicons/icons";
 export default function ProductCard(props: Product) {
   return (
     <IonCol size="6">
-      <IonCard className="ion-padding">
+      <IonCard className="ion-padding" routerLink={`/product?id=${props.id}`}>
         <div style={{ backgroundColor: "gray", borderRadius: "5px" }}>
           <img
             src={props.image}

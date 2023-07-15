@@ -46,6 +46,7 @@ import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
 import Login from "./pages/Login";
 import Order from "./pages/Order";
+import ProductPage from "./pages/Product";
 import React from "react";
 import Register from "./pages/Register";
 import { getAuth } from "firebase/auth"; // Firebase v9+
@@ -91,6 +92,9 @@ function App() {
                 </Route>
                 <Route path="/category">
                   <CategoryPage />
+                </Route>
+                <Route path="/product">
+                  <ProductPage />
                 </Route>
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
