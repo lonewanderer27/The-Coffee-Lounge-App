@@ -40,6 +40,7 @@ import {
 } from "ionicons/icons";
 
 import Account from "./pages/Account";
+import CategoryPage from "./pages/Category";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -88,6 +89,9 @@ function App() {
                 <Route exact path="/login">
                   <Login />
                 </Route>
+                <Route path="/category">
+                  <CategoryPage />
+                </Route>
               </IonRouterOutlet>
               <IonTabBar slot="bottom">
                 <IonTabButton tab="home" href="/home">
@@ -129,7 +133,7 @@ export const AuthWrapper = ({
   }
 
   if (status === "loading") {
-    return <IonLoading isOpen={status === "loading"} message="Loading" />;
+    return <IonLoading isOpen={true} message="Loading" />;
   } else if (data.signedIn === true) {
     return children as JSX.Element;
   }

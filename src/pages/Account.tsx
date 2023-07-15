@@ -12,11 +12,12 @@ import {
 
 import { getAuth } from "firebase/auth";
 import { useHistory } from "react-router";
+import { useUser } from "reactfire";
 
 const Account: React.FC = () => {
   const history = useHistory();
   const auth = getAuth();
-  const { currentUser } = getAuth();
+  const { status, data } = useUser();
 
   const logout = () => auth.signOut().then(() => history.push("/login"));
 
@@ -34,8 +35,8 @@ const Account: React.FC = () => {
           </IonToolbar>
         </IonHeader>
         <div className="ion-padding">
-          {currentUser?.email}
-          <IonButton expand="block" onClick={logout}>
+          {data?.email}
+          <IonButton expand="block" onClick={logout} className="ion-margin-top">
             Logout
           </IonButton>
         </div>

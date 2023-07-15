@@ -4,6 +4,7 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
+  IonCardTitle,
   IonCol,
   IonContent,
   IonHeader,
@@ -12,11 +13,14 @@ import {
   IonRow,
   IonSelect,
   IonSelectOption,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonLoading,
 } from "@ionic/react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
+
+import { Action } from "../components/Action";
 
 enum GenderEnum {
   Female = "Female",
@@ -50,45 +54,25 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Home</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonButtons slot="start">
               <IonBackButton defaultHref="account"></IonBackButton>
             </IonButtons>
-            <IonTitle>Register</IonTitle>
           </IonToolbar>
         </IonHeader>
+
         <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-          <IonInput
-            label="Email"
-            labelPlacement="floating"
-            fill="outline"
-            type="text"
-            className="ion-margin-top"
-            {...register("email", { required: true })}
-          />
-          <IonInput
-            fill="outline"
-            label="Password"
-            labelPlacement="floating"
-            type="password"
-            className="ion-margin-top"
-            {...register("password", { required: true })}
-          />
-          <IonRow>
+          <IonCardTitle>Signup</IonCardTitle>
+          <h5>Let's get to know each other</h5>
+          <IonRow className="ion-margin-top">
             <IonCol className="ion-no-padding">
               <IonInput
                 fill="outline"
                 label="First Name"
                 labelPlacement="floating"
                 type="text"
-                className="ion-margin-top"
                 {...register("firstName", { required: true })}
               />
             </IonCol>
@@ -98,7 +82,6 @@ const Register: React.FC = () => {
                 label="Last Name"
                 labelPlacement="floating"
                 type="text"
-                className="ion-margin-top"
                 {...register("lastName", { required: true })}
               />
             </IonCol>
@@ -108,7 +91,6 @@ const Register: React.FC = () => {
             fill="outline"
             label="Gender"
             labelPlacement="floating"
-            className="ion-margin-top"
             {...register("gender", { required: true })}
           >
             <IonSelectOption value="Male">Male</IonSelectOption>
@@ -122,7 +104,6 @@ const Register: React.FC = () => {
                 fill="outline"
                 labelPlacement="floating"
                 label="Pronouns"
-                className="ion-margin-top"
                 type="text"
                 {...register("pronouns", { required: true })}
               ></IonInput>
@@ -132,12 +113,26 @@ const Register: React.FC = () => {
                 fill="outline"
                 label="Nickname"
                 labelPlacement="floating"
-                className="ion-margin-top"
                 type="text"
                 {...register("nickname", { required: true })}
               ></IonInput>
             </IonCol>
           </IonRow>
+
+          <IonInput
+            label="Email"
+            labelPlacement="floating"
+            fill="outline"
+            type="text"
+            {...register("email", { required: true })}
+          />
+          <IonInput
+            fill="outline"
+            label="Password"
+            labelPlacement="floating"
+            type="password"
+            {...register("password", { required: true })}
+          />
 
           <IonButton
             expand="block"
@@ -145,9 +140,10 @@ const Register: React.FC = () => {
             disabled={!isValid}
             className="ion-margin-top"
           >
-            Register
+            Create Account
           </IonButton>
         </form>
+        <Action message="Already have an account?" link="/login" text="Login" />
       </IonContent>
     </IonPage>
   );

@@ -1,5 +1,7 @@
 import {
   IonContent,
+  IonFab,
+  IonFabButton,
   IonHeader,
   IonIcon,
   IonPage,
@@ -7,6 +9,10 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import {
+  chevronDownCircleOutline,
+  chevronUpCircleOutline,
+} from "ionicons/icons";
 import { useEffect, useState } from "react";
 
 import { warningOutline } from "ionicons/icons";
@@ -57,6 +63,11 @@ const Explore: React.FC = () => {
             tabIndex={1}
             src="http://localhost:5173/"
           ></iframe>
+          <IonFab slot="fixed" vertical="bottom" horizontal="end">
+            <IonFabButton>
+              <IonIcon src={chevronDownCircleOutline}></IonIcon>
+            </IonFabButton>
+          </IonFab>
         </IonContent>
       )}
       {!isOnline && (

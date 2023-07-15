@@ -9,10 +9,14 @@ import {
   IonPage,
   IonTitle,
   IonToolbar,
+  useIonLoading,
+  useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
+import { Action } from "../components/Action";
+import { FirebaseError } from "firebase/app";
 import { logInOutline } from "ionicons/icons";
 import { useHistory } from "react-router";
 
@@ -31,15 +35,33 @@ const Login: React.FC = () => {
   } = useForm<IFormInput>();
 
   const history = useHistory();
+  const [presentToast] = useIonToast();
+  const [presentLoading, dismiss] = useIonLoading();
+
+  const toast = (position: "top" | "middle" | "bottom", message: string) => {
+    presentToast({
+      message,
+      duration: 1500,
+      position: position,
+    });
+  };
 
   const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    signInWithEmailAndPassword(auth, data.email, data.password).then(
-      (userCredential) => {
+    presentLoading("Logging in...");
+    signInWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        dismiss();
         const user = userCredential.user;
         console.log(user);
         history.push("/account");
-      }
-    );
+      })
+      .catch((error: FirebaseError) => {
+        dismiss();
+        toast("top", error.message);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
   };
 
   return (
@@ -55,7 +77,16 @@ const Login: React.FC = () => {
             <IonTitle size="large">Login</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
+        <form
+          className="ion-padding"
+          onSubmit={handleSubmit(onSubmit)}
+          style={{
+            height: window.innerHeight - 150,
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
           <IonInput
             label="Email"
             type="email"
@@ -66,13 +97,20 @@ const Login: React.FC = () => {
             type="password"
             {...register("password", { required: true })}
           />
-          <IonButton expand="block" disabled={!isValid} type="submit">
+          <IonButton
+            expand="block"
+            disabled={!isValid}
+            type="submit"
+            className="ion-margin-top"
+          >
             Sign in
             <IonIcon src={logInOutline} />
           </IonButton>
-          <IonButton routerLink="/register" expand="block">
-            Don't have an account?
-          </IonButton>
+          <Action
+            message="Don't have an account?"
+            link="/register"
+            text="Signup"
+          />
         </form>
       </IonContent>
     </IonPage>
