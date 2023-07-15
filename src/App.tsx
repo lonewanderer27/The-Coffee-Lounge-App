@@ -25,9 +25,16 @@ import {
   setupIonicReact,
 } from "@ionic/react";
 import { Redirect, Route } from "react-router-dom";
-import { ellipse, triangle } from "ionicons/icons";
+import {
+  bagOutline,
+  ellipse,
+  homeOutline,
+  personCircleOutline,
+  triangle,
+} from "ionicons/icons";
 
-import Home from "./pages/Home";
+import Account from "./pages/Account";
+import Explore from "./pages/Explore";
 import { IonReactRouter } from "@ionic/react-router";
 import Order from "./pages/Order";
 
@@ -38,24 +45,31 @@ const App: React.FC = () => (
     <IonReactRouter>
       <IonTabs>
         <IonRouterOutlet>
-          <Route exact path="/home">
-            <Home />
+          <Route exact path="/explore">
+            <Explore />
           </Route>
           <Route exact path="/order">
             <Order />
           </Route>
+          <Route exact path="/account">
+            <Account />
+          </Route>
           <Route exact path="/">
-            <Redirect to="/home" />
+            <Redirect to="/explore" />
           </Route>
         </IonRouterOutlet>
         <IonTabBar slot="bottom">
-          <IonTabButton tab="home" href="/home">
-            <IonIcon aria-hidden="true" icon={triangle} />
-            <IonLabel>Home</IonLabel>
+          <IonTabButton tab="explore" href="/explore">
+            <IonIcon aria-hidden="true" icon={homeOutline} />
+            <IonLabel>Explore</IonLabel>
           </IonTabButton>
           <IonTabButton tab="order" href="/order">
-            <IonIcon aria-hidden="true" icon={ellipse} />
+            <IonIcon aria-hidden="true" icon={bagOutline} />
             <IonLabel>Order</IonLabel>
+          </IonTabButton>
+          <IonTabButton tab="account" href="/account">
+            <IonIcon aria-hidden="true" icon={personCircleOutline} />
+            <IonLabel>Account</IonLabel>
           </IonTabButton>
         </IonTabBar>
       </IonTabs>
