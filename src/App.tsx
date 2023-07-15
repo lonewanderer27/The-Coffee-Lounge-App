@@ -136,7 +136,7 @@ export const AuthWrapper = ({
     return fallback;
   }
 
-  if (status === "loading") {
+  if (status === "loading" && data === undefined) {
     return <IonLoading isOpen={true} message="Loading" />;
   } else if (data.signedIn === true) {
     return children as JSX.Element;

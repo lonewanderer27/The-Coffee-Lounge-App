@@ -21,9 +21,9 @@ import { useFirestore, useFirestoreCollectionData } from "reactfire";
 import { Action } from "../components/Action";
 import ProductCard from "../components/ProductCard";
 import { bagOutline } from "ionicons/icons";
-import black_coffee from "../../resources/slides/black_coffee.webp";
-import definitely_not_macchiato from "../../resources/slides/definitely_not_macchiato.webp";
-import hot_chocolate from "../../resources/slides/hot_chocolate.webp";
+import black_coffee from "../assets/slides/black_coffee.webp";
+import definitely_not_macchiato from "../assets/slides/definitely_not_macchiato.webp";
+import hot_chocolate from "../assets/slides/hot_chocolate.webp";
 import { useEffect } from "react";
 
 const Home: React.FC = () => {
@@ -41,17 +41,17 @@ const Home: React.FC = () => {
   const { status: productsStatus, data: productsData } =
     useFirestoreCollectionData(productsQuery, { idField: "id" });
 
-  useEffect(() => {
-    if (status === "success") {
-      console.log("Categories");
-      console.log(data);
-    }
+  // useEffect(() => {
+  //   if (status === "success") {
+  //     console.log("Categories");
+  //     console.log(data);
+  //   }
 
-    if (productsStatus === "success") {
-      console.log("Products");
-      console.log(productsData);
-    }
-  }, [data, productsData]);
+  //   if (productsStatus === "success") {
+  //     console.log("Products");
+  //     console.log(productsData);
+  //   }
+  // }, [data, productsData]);
 
   return (
     <IonPage>
@@ -97,12 +97,13 @@ const Home: React.FC = () => {
         <IonGrid className="ion-padding-vertical">
           <IonRow>
             {data?.map((category) => (
-              <IonRow>
+              <IonRow key={category.id + "ionrow"}>
                 <div style={{ display: "flex", alignContent: "center" }}>
                   <h2 className="ion-padding-horizontal">{category.altName}</h2>
                   <Action
+                    key={category.id + "ionaction"}
                     text="See All"
-                    link={`/category?name=${category.name}&id=${category.id}`}
+                    link={`/category?name=${category.name}&id=${category.id}&description=${category.description}`}
                     align="right"
                   />
                 </div>
