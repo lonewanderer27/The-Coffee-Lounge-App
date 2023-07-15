@@ -6,6 +6,7 @@ import { Autoplay, Pagination, Thumbs } from "swiper/modules";
 import {
   IonAlert,
   IonButton,
+  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
@@ -25,7 +26,13 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { chevronUpCircle, colorPalette, globe, help } from "ionicons/icons";
+import {
+  bagOutline,
+  chevronUpCircle,
+  colorPalette,
+  globe,
+  help,
+} from "ionicons/icons";
 import { useEffect, useRef, useState } from "react";
 
 import { EffectCards } from "swiper/modules";
@@ -64,20 +71,30 @@ const Explore: React.FC = () => {
 
   return (
     <IonPage>
-      {!isOnline && (
-        <IonHeader>
-          <IonToolbar>
-            <IonTitle>Explore</IonTitle>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Explore</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent fullscreen scrollEvents={true} ref={contentRef}>
+        <IonHeader collapse="condense">
+          <IonToolbar className="ion-padding">
+            <IonTitle size="large">Explore</IonTitle>
+            <IonButtons slot="end">
+              <IonIcon
+                src={bagOutline}
+                size="large"
+                className="ion-margin-right"
+              ></IonIcon>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
-      )}
-
-      <IonContent fullscreen scrollEvents={true} ref={contentRef}>
         <div className="ion-padding">
           <div style={{ marginBottom: "50px" }}>
-            <IonText>
-              <h1>Welcome</h1>
-            </IonText>
+            <img
+              src="/outdoor/TCL - PICTURE 2 (OUTSIDE).webp"
+              style={{ borderRadius: "10px" }}
+            />
             <IonText>
               <p>
                 The Coffee Lounge is a public, five-star coffee shop, located in
@@ -88,10 +105,6 @@ const Explore: React.FC = () => {
                 products, your experience in The Coffee Lounge will be nothing
                 short of extravagant and relaxing.
               </p>
-              <img
-                src="/outdoor/TCL - PICTURE 2 (OUTSIDE).webp"
-                style={{ borderRadius: "10px" }}
-              />
             </IonText>
           </div>
           <div style={{ marginBottom: "50px" }}>
