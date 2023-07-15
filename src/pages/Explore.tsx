@@ -139,7 +139,7 @@ const Explore: React.FC = () => {
             />
           </div>
         </div>
-        <div style={{ marginBottom: "50px" }}>
+        <div>
           <Swiper
             autoplay={{
               delay: 2500,
