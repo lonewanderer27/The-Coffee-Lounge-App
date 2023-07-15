@@ -1,16 +1,25 @@
 import "./Account.css";
 
 import {
+  IonButton,
   IonContent,
   IonHeader,
+  IonInput,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 
-import ExploreContainer from "../components/ExploreContainer";
+import { getAuth } from "firebase/auth";
+import { useHistory } from "react-router";
 
 const Account: React.FC = () => {
+  const history = useHistory();
+  const auth = getAuth();
+  const { currentUser } = getAuth();
+
+  const logout = () => auth.signOut().then(() => history.push("/login"));
+
   return (
     <IonPage>
       <IonHeader>
@@ -24,7 +33,12 @@ const Account: React.FC = () => {
             <IonTitle size="large">Account</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Account page" />
+        <div className="ion-padding">
+          {currentUser?.email}
+          <IonButton expand="block" onClick={logout}>
+            Logout
+          </IonButton>
+        </div>
       </IonContent>
     </IonPage>
   );

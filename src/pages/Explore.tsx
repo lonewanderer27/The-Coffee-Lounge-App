@@ -1,31 +1,77 @@
-import "./Explore.css";
-
 import {
   IonContent,
   IonHeader,
+  IonIcon,
   IonPage,
+  IonSelect,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { useEffect, useState } from "react";
 
-import ExploreContainer from "../components/ExploreContainer";
+import { warningOutline } from "ionicons/icons";
 
 const Explore: React.FC = () => {
+  // Online state
+  const [isOnline, setIsOnline] = useState(navigator.onLine);
+
+  useEffect(() => {
+    // Update network status
+    const handleStatusChange = () => {
+      setIsOnline(navigator.onLine);
+    };
+
+    // Listen to the online status
+    window.addEventListener("online", handleStatusChange);
+
+    // Listen to the offline status
+    window.addEventListener("offline", handleStatusChange);
+
+    // Specify how to clean up after this effect for performance improvment
+    return () => {
+      window.removeEventListener("online", handleStatusChange);
+      window.removeEventListener("offline", handleStatusChange);
+    };
+  }, [isOnline]);
+
   return (
     <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Explore</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
+      {!isOnline && (
+        <IonHeader>
           <IonToolbar>
-            <IonTitle size="large">Explore</IonTitle>
+            <IonTitle>Explore</IonTitle>
           </IonToolbar>
         </IonHeader>
-        <ExploreContainer name="Explore page" />
-      </IonContent>
+      )}
+      {isOnline && (
+        <IonContent fullscreen>
+          <iframe
+            width={window.innerWidth - 1}
+            height={window.innerHeight}
+            style={{
+              backgroundColor: "#CCCCCC",
+              border: "none",
+              outline: "none",
+              touchAction: "none",
+            }}
+            tabIndex={1}
+            src="http://localhost:5173/"
+          ></iframe>
+        </IonContent>
+      )}
+      {!isOnline && (
+        <IonContent>
+          <IonHeader collapse="condense">
+            <IonToolbar>
+              <IonTitle size="large">Explore</IonTitle>
+            </IonToolbar>
+          </IonHeader>
+          <div className="ion-padding">
+            <IonIcon src={warningOutline} size="large" />
+            <h2>Please connect to the internet and try again</h2>
+          </div>
+        </IonContent>
+      )}
     </IonPage>
   );
 };
