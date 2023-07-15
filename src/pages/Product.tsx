@@ -24,14 +24,10 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { bagOutline, heart, heartOutline } from "ionicons/icons";
-import { collection, doc, query, where } from "firebase/firestore";
-import {
-  useFirestore,
-  useFirestoreDocData,
-  useFirestoreDocDataOnce,
-} from "reactfire";
+import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
 
+import { doc } from "firebase/firestore";
+import { heartOutline } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 
@@ -141,15 +137,16 @@ export default function ProductPage() {
                     <IonText>Large</IonText>
                   </IonSelectOption>
                 </IonSelect>
-                <IonInput
-                  label="Quantity"
-                  fill="outline"
-                  className="ion-text-right"
-                  {...register("quantity", { required: true })}
-                ></IonInput>
               </IonRow>
             )}
-            <IonRow></IonRow>
+            <IonRow>
+              <IonInput
+                label="Quantity"
+                fill="outline"
+                className="ion-text-right"
+                {...register("quantity", { required: true })}
+              ></IonInput>
+            </IonRow>
           </form>
         </IonContent>
         <IonFooter>
