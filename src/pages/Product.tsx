@@ -1,6 +1,7 @@
 import { Category, Product } from "../types";
 import {
   IonBackButton,
+  IonBadge,
   IonButton,
   IonButtons,
   IonCol,
@@ -24,10 +25,17 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import {
+  addOutline,
+  heartOutline,
+  informationCircle,
+  informationSharp,
+  pulseOutline,
+  removeOutline,
+} from "ionicons/icons";
 import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
 
 import { doc } from "firebase/firestore";
-import { heartOutline } from "ionicons/icons";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 
@@ -50,8 +58,14 @@ export default function ProductPage() {
   const productId = queryParams.get("id") || "-1";
 
   const ref = doc(firestore, "products", productId);
-
   const { status, data } = useFirestoreDocDataOnce(ref);
+
+  const coffeeTypeRef = doc(
+    firestore,
+    "coffee_types",
+    data?.coffee_type_id ?? "AEO5P7edEO7cLVizxiOZ"
+  );
+  const { data: coffeeTypeData } = useFirestoreDocDataOnce(coffeeTypeRef);
 
   const [presentToast] = useIonToast();
   const [presentLoading, dismiss] = useIonLoading();
@@ -59,6 +73,8 @@ export default function ProductPage() {
   const {
     register,
     handleSubmit,
+    setValue,
+    watch,
     formState: { isValid },
   } = useForm<IFormInput>({
     defaultValues: {
@@ -77,9 +93,9 @@ export default function ProductPage() {
     }
   }, []);
 
-  if (status === "loading" && data === undefined) {
-    return <IonLoading isOpen={true} />;
-  } else if (productId != "-1" && data != undefined) {
+  const qty = watch("quantity");
+
+  if (productId != "-1" && data != undefined) {
     return (
       <IonPage>
         <IonHeader>
@@ -104,22 +120,23 @@ export default function ProductPage() {
               </IonButtons>
             </IonToolbar>
           </IonHeader>
-          <form className="ion-padding">
-            <IonRow>
-              <IonCol>
-                <img
-                  src={data.image}
-                  alt={data.name}
-                  style={{ marginTop: -50, marginBottom: -50 }}
-                />
-              </IonCol>
-              {data.description && (
-                <IonCol>
-                  <h4>Description</h4>
-                  <IonText>{data.description}</IonText>
-                </IonCol>
-              )}
+          <div className="ion-padding">
+            <IonRow className="ion-justify-content-center ">
+              <img src={data.image} alt={data.name} width="50%" />
             </IonRow>
+            <IonRow className="ion-margin-bottom">
+              <IonText>{data.description}</IonText>
+            </IonRow>
+            {coffeeTypeData && (
+              <div
+                className="ion-justify-content-center flex"
+                style={{ width: "100%" }}
+              >
+                <IonBadge>{coffeeTypeData.name}</IonBadge>
+              </div>
+            )}
+          </div>
+          <form className="ion-padding">
             {data.coffee_type && (
               <IonRow>
                 <IonSelect
@@ -139,23 +156,42 @@ export default function ProductPage() {
                 </IonSelect>
               </IonRow>
             )}
-            <IonRow>
-              <IonInput
-                label="Quantity"
-                fill="outline"
-                className="ion-text-right"
-                {...register("quantity", { required: true })}
-              ></IonInput>
+            <IonRow className="ion-align-items-center">
+              <IonCol className="ion-no-padding ion-padding-end">
+                <IonInput
+                  label="Quantity"
+                  fill="outline"
+                  className="ion-text-right"
+                  {...register("quantity", { required: true })}
+                ></IonInput>
+              </IonCol>
+              <IonCol size="auto" className="ion ion-no-padding">
+                <IonButton
+                  size="small"
+                  onClick={() => setValue("quantity", qty + 1)}
+                >
+                  <IonIcon src={addOutline} />
+                </IonButton>
+                <IonButton
+                  size="small"
+                  onClick={() => {
+                    if (qty > 1) setValue("quantity", qty - 1);
+                  }}
+                  disabled={qty <= 1}
+                >
+                  <IonIcon src={removeOutline} />
+                </IonButton>
+              </IonCol>
             </IonRow>
           </form>
         </IonContent>
         <IonFooter>
           <IonToolbar className="ion-padding-md">
-            <IonRow>
-              {/* <IonText>
-                <h2>Php {data.price}</h2>
-              </IonText> */}
-              <IonCol size="7" className="ion-justify-content-center">
+            <IonRow className="ion-align-items-center">
+              <IonCol
+                size="7"
+                className="ion-justify-content-center ion-align-items-center"
+              >
                 <div
                   style={{
                     display: "flex",
@@ -163,8 +199,6 @@ export default function ProductPage() {
                     alignContent: "center",
                     flexDirection: "column",
                     width: "100%",
-                    marginTop: "auto",
-                    marginBottom: "auto",
                     textAlign: "center",
                   }}
                 >
@@ -185,4 +219,6 @@ export default function ProductPage() {
       </IonPage>
     );
   }
+
+  return <></>;
 }
