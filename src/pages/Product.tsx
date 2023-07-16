@@ -218,14 +218,14 @@ export default function ProductPage() {
                       addToCart({
                         product_id: productId,
                         quantity: qty,
-                        index: count - 1,
+                        index: count,
                       });
                     } else {
                       addToCart({
                         product_id: productId,
                         quantity: qty,
                         size: size,
-                        index: count - 1,
+                        index: count,
                       });
                     }
                   }}
