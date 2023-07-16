@@ -9,6 +9,7 @@ import {
 
 import { Product } from "../types";
 import { bagAddOutline } from "ionicons/icons";
+import { phpString } from "../phpString";
 
 export default function ProductCard(props: Product) {
   return (
@@ -26,7 +27,7 @@ export default function ProductCard(props: Product) {
         </IonCardTitle>
         <IonCardSubtitle>{props.description}</IonCardSubtitle>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
-          <IonText>Php {props.price}</IonText>
+          <IonText>{phpString.format(props.price)}</IonText>
           <IonIcon src={bagAddOutline} size="large"></IonIcon>
         </div>
       </IonCard>

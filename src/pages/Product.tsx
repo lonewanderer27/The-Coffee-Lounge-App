@@ -36,6 +36,7 @@ import {
 import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
 
 import { doc } from "firebase/firestore";
+import { phpString } from "../phpString";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
 
@@ -204,7 +205,9 @@ export default function ProductPage() {
                 >
                   <IonText>Price</IonText>
                   <IonText>
-                    <h3 className="ion-no-margin">Php {data.price}</h3>
+                    <h3 className="ion-no-margin">
+                      {phpString.format(data.price)}
+                    </h3>
                   </IonText>
                 </div>
               </IonCol>
