@@ -43,6 +43,11 @@ export default function VirtualVisit() {
 
   const [helpOpen, setHelpOpen] = useState(false);
 
+  const url =
+    process.env.NODE_ENV === "production"
+      ? "https://tcl-3dview-only.vercel.app"
+      : "http://localhost:5173";
+
   return (
     <IonPage>
       <IonContent>
@@ -58,8 +63,7 @@ export default function VirtualVisit() {
                 touchAction: "none",
               }}
               tabIndex={1}
-              // src="https://tcl-3dview-only.vercel.app"
-              src="http://localhost:5173"
+              src={url}
             ></iframe>
             <IonFab slot="fixed" horizontal="end" vertical="bottom">
               <IonFabButton>
