@@ -15,7 +15,7 @@ import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 
 export default function ProductCard(props: Product) {
-  const { addToCart } = useCart();
+  const { addToCart, count } = useCart();
   const router = useIonRouter();
 
   const handleAddToCartClick = (
@@ -27,11 +27,13 @@ export default function ProductCard(props: Product) {
         product_id: props.id,
         quantity: 1,
         size: Size.Medium,
+        index: count - 1,
       });
     } else {
       addToCart({
         product_id: props.id,
         quantity: 1,
+        index: count - 1,
       });
     }
   };
