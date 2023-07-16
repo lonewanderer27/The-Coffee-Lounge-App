@@ -75,7 +75,7 @@ export default function CategoryPage() {
           <IonText>{category.description}</IonText>
         </div>
 
-        <IonGrid className="ion-padding-vertical">
+        <IonGrid>
           <IonRow>
             {productsData
               ?.filter((product) => product.category == category.id)

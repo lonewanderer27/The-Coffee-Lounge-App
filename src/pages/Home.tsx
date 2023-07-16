@@ -100,24 +100,26 @@ const Home: React.FC = () => {
                     align="right"
                   />
                 </div>
-                <IonRow>
-                  {productsData
-                    ?.filter((product) => product.category == category.id)
-                    .slice(0, 2)
-                    .map((product) => (
-                      <ProductCard
-                        key={product.id}
-                        image={product.image}
-                        id={product.id}
-                        category={product.category}
-                        name={product.name}
-                        price={product.price}
-                        sales={product.sales}
-                        description={product.description}
-                        coffee_type={product.coffee_type}
-                      />
-                    ))}
-                </IonRow>
+                <IonGrid>
+                  <IonRow>
+                    {productsData
+                      ?.filter((product) => product.category == category.id)
+                      .slice(0, 2)
+                      .map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          image={product.image}
+                          id={product.id}
+                          category={product.category}
+                          name={product.name}
+                          price={product.price}
+                          sales={product.sales}
+                          description={product.description}
+                          coffee_type={product.coffee_type}
+                        />
+                      ))}
+                  </IonRow>
+                </IonGrid>
               </IonRow>
             ))}
           </IonRow>
