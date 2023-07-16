@@ -35,7 +35,7 @@ interface SegmentCustomEvent extends CustomEvent {
 }
 
 const Order: React.FC = () => {
-  const { cart, totalPrice, count } = useCart();
+  const { cart, setCart, totalPrice, count } = useCart();
   const [segment, setSegment] = useState<SegmentValue | undefined>("Cart");
 
   const handleSegmentChange = (e: SegmentCustomEvent) => {
@@ -92,6 +92,17 @@ const Order: React.FC = () => {
                   index={index}
                 />
               ))}
+              {count !== 0 && (
+                <IonItem>
+                  <IonLabel
+                    className="ion-text-center"
+                    color="danger"
+                    onClick={() => setCart([])}
+                  >
+                    Remove All Items
+                  </IonLabel>
+                </IonItem>
+              )}
             </IonList>
             {count === 0 && (
               <div id="notice">
