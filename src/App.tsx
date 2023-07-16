@@ -49,6 +49,7 @@ import Order from "./pages/Order";
 import ProductPage from "./pages/Product";
 import React from "react";
 import Register from "./pages/Register";
+import VirtualVisit from "./pages/VirtualVisit";
 import { getAuth } from "firebase/auth"; // Firebase v9+
 import { getFirestore } from "firebase/firestore"; // Firebase v9+
 
@@ -74,6 +75,9 @@ function App() {
                 </AuthWrapper>
                 <Route exact path="/home">
                   <Home />
+                </Route>
+                <Route exact path="/virtualVisit">
+                  <VirtualVisit />
                 </Route>
                 <Route exact path="/explore">
                   <Explore />
