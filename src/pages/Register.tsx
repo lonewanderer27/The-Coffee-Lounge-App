@@ -91,6 +91,7 @@ const Register: React.FC = () => {
             fill="outline"
             label="Gender"
             labelPlacement="floating"
+            className=" ion-margin-top"
             {...register("gender", { required: true })}
           >
             <IonSelectOption value="Male">Male</IonSelectOption>
@@ -98,7 +99,7 @@ const Register: React.FC = () => {
             <IonSelectOption value="Non-Binary">Non-Binary</IonSelectOption>
           </IonSelect>
 
-          <IonRow>
+          <IonRow className=" ion-margin-top">
             <IonCol className="ion-no-padding">
               <IonInput
                 fill="outline"
@@ -125,6 +126,7 @@ const Register: React.FC = () => {
             fill="outline"
             type="text"
             {...register("email", { required: true })}
+            className=" ion-margin-top"
           />
           <IonInput
             fill="outline"
@@ -132,6 +134,7 @@ const Register: React.FC = () => {
             labelPlacement="floating"
             type="password"
             {...register("password", { required: true })}
+            className=" ion-margin-top"
           />
 
           <IonButton
@@ -142,8 +145,13 @@ const Register: React.FC = () => {
           >
             Create Account
           </IonButton>
+          <Action
+            message="Already have an account?"
+            link="/login"
+            text="Login"
+            align="center"
+          />
         </form>
-        <Action message="Already have an account?" link="/login" text="Login" />
       </IonContent>
     </IonPage>
   );

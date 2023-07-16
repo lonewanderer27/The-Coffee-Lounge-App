@@ -156,7 +156,7 @@ export default function ProductPage() {
                 </IonSelect>
               </IonRow>
             )}
-            <IonRow className="ion-align-items-center">
+            <IonRow className="ion-align-items-center ion-margin-top">
               <IonCol className="ion-no-padding ion-padding-end">
                 <IonInput
                   label="Quantity"
