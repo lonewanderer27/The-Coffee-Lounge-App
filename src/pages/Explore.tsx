@@ -58,13 +58,6 @@ const Explore: React.FC = () => {
         <IonHeader collapse="condense">
           <IonToolbar className="ion-padding">
             <IonTitle size="large">Explore</IonTitle>
-            <IonButtons slot="end">
-              <IonIcon
-                src={bagOutline}
-                size="large"
-                className="ion-margin-right"
-              ></IonIcon>
-            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <div className="ion-padding">

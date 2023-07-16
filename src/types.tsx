@@ -1,3 +1,5 @@
+import { Size } from "./pages/Product";
+
 export type Product = {
   id: string;
   category: string;
@@ -39,4 +41,11 @@ export type User = {
   last_name: string;
   nickname: string;
   gender: string;
+};
+
+export type CartItem = {
+  index: number;
+  product_id: string;
+  quantity: number;
+  size?: Size;
 };

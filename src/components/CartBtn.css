@@ -1,0 +1,9 @@
+#cartIcon {
+  position: relative;
+}
+
+#cartCount {
+  position: absolute;
+  bottom: 0;
+  right: -3px;
+}

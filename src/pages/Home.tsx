@@ -19,6 +19,7 @@ import { collection, query } from "firebase/firestore";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import { Action } from "../components/Action";
+import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { bagOutline } from "ionicons/icons";
 
@@ -37,18 +38,6 @@ const Home: React.FC = () => {
   const { status: productsStatus, data: productsData } =
     useFirestoreCollectionData(productsQuery, { idField: "id" });
 
-  // useEffect(() => {
-  //   if (status === "success") {
-  //     console.log("Categories");
-  //     console.log(data);
-  //   }
-
-  //   if (productsStatus === "success") {
-  //     console.log("Products");
-  //     console.log(productsData);
-  //   }
-  // }, [data, productsData]);
-
   return (
     <IonPage>
       <IonHeader>
@@ -61,11 +50,7 @@ const Home: React.FC = () => {
           <IonToolbar className="ion-padding">
             <IonTitle size="large">Home</IonTitle>
             <IonButtons slot="end">
-              <IonIcon
-                src={bagOutline}
-                size="large"
-                className="ion-margin-right"
-              ></IonIcon>
+              <CartBtn />
             </IonButtons>
           </IonToolbar>
           {/* <h3 className="ion-padding">Find your best combination!</h3> */}

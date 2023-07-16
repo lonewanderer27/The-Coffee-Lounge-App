@@ -1,4 +1,3 @@
-import { Category, Product } from "../types";
 import {
   IonBackButton,
   IonBadge,
@@ -25,25 +24,21 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import {
-  addOutline,
-  heartOutline,
-  informationCircle,
-  informationSharp,
-  pulseOutline,
-  removeOutline,
-} from "ionicons/icons";
+import { addOutline, heartOutline, removeOutline } from "ionicons/icons";
 import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
 
 import { doc } from "firebase/firestore";
 import { phpString } from "../phpString";
+import { useCart } from "../hooks/cart";
 import { useEffect } from "react";
 import { useLocation } from "react-router";
+import { useRecoilState } from "recoil";
 
-enum Size {
+export enum Size {
   Small = "small",
   Medium = "medium",
   Large = "large",
+  None = "none",
 }
 
 interface IFormInput {
@@ -95,6 +90,10 @@ export default function ProductPage() {
   }, []);
 
   const qty = watch("quantity");
+  const size = watch("size");
+  const { cart, addToCart } = useCart();
+
+  console.log("size", size);
 
   if (productId != "-1" && data != undefined) {
     return (
@@ -145,13 +144,13 @@ export default function ProductPage() {
                   fill="outline"
                   {...register("size", { required: true })}
                 >
-                  <IonSelectOption value="small">
+                  <IonSelectOption value={Size.Small}>
                     <IonText>Small</IonText>
                   </IonSelectOption>
-                  <IonSelectOption value="medium">
+                  <IonSelectOption value={Size.Medium}>
                     <IonText>Medium</IonText>
                   </IonSelectOption>
-                  <IonSelectOption value="large">
+                  <IonSelectOption value={Size.Large}>
                     <IonText>Large</IonText>
                   </IonSelectOption>
                 </IonSelect>
@@ -212,7 +211,20 @@ export default function ProductPage() {
                 </div>
               </IonCol>
               <IonCol>
-                <IonButton className="ion-margin-top" disabled={!isValid}>
+                <IonButton
+                  disabled={!isValid}
+                  onClick={() => {
+                    if (size === Size.None) {
+                      addToCart({ product_id: productId, quantity: qty });
+                    } else {
+                      addToCart({
+                        product_id: productId,
+                        quantity: qty,
+                        size: size,
+                      });
+                    }
+                  }}
+                >
                   Add To Cart
                 </IonButton>
               </IonCol>

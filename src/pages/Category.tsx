@@ -15,6 +15,7 @@ import {
 import { collection, query, where } from "firebase/firestore";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
+import CartBtn from "../components/CartBtn";
 import { Category } from "../types";
 import ProductCard from "../components/ProductCard";
 import { bagOutline } from "ionicons/icons";
@@ -57,11 +58,7 @@ export default function CategoryPage() {
           <IonToolbar className="ion-padding">
             <IonTitle size="large">{category.name}</IonTitle>
             <IonButtons slot="end">
-              <IonIcon
-                src={bagOutline}
-                size="large"
-                className="ion-margin-right"
-              ></IonIcon>
+              <CartBtn />
               <IonBackButton></IonBackButton>
             </IonButtons>
           </IonToolbar>
