@@ -91,7 +91,7 @@ export default function ProductPage() {
 
   const qty = watch("quantity");
   const size = watch("size");
-  const { cart, addToCart } = useCart();
+  const { addToCart, count } = useCart();
 
   console.log("size", size);
 
@@ -215,12 +215,17 @@ export default function ProductPage() {
                   disabled={!isValid}
                   onClick={() => {
                     if (size === Size.None) {
-                      addToCart({ product_id: productId, quantity: qty });
+                      addToCart({
+                        product_id: productId,
+                        quantity: qty,
+                        index: count - 1,
+                      });
                     } else {
                       addToCart({
                         product_id: productId,
                         quantity: qty,
                         size: size,
+                        index: count - 1,
                       });
                     }
                   }}
