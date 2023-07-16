@@ -1,7 +1,9 @@
 import "./Order.css";
 
 import {
+  IonBackButton,
   IonButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonFooter,
@@ -27,12 +29,18 @@ const Order: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Order</IonTitle>
+          <IonButtons>
+            <IonBackButton></IonBackButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Order</IonTitle>
+            <IonButtons>
+              <IonBackButton></IonBackButton>
+            </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonList>
