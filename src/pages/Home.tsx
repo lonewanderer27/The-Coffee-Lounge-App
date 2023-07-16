@@ -13,6 +13,7 @@ import {
   IonRow,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { collection, query } from "firebase/firestore";
@@ -43,6 +44,11 @@ const Home: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Home</IonTitle>
+          {!isPlatform("ios") && (
+            <IonButtons slot="end">
+              <CartBtn />
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

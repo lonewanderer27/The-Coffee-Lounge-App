@@ -17,6 +17,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
+import CartBtn from "../components/CartBtn";
 import ExploreContainer from "../components/ExploreContainer";
 import OrderItem from "../components/OrderItem";
 import { phpString } from "../phpString";
@@ -29,7 +30,7 @@ const Order: React.FC = () => {
       <IonHeader>
         <IonToolbar>
           <IonTitle>Order</IonTitle>
-          <IonButtons>
+          <IonButtons slot="start">
             <IonBackButton></IonBackButton>
           </IonButtons>
         </IonToolbar>
@@ -38,7 +39,7 @@ const Order: React.FC = () => {
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Order</IonTitle>
-            <IonButtons>
+            <IonButtons slot="start">
               <IonBackButton></IonBackButton>
             </IonButtons>
           </IonToolbar>

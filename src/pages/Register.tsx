@@ -16,6 +16,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  isPlatform,
   useIonLoading,
 } from "@ionic/react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
@@ -54,17 +55,26 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader>
+        <IonToolbar>
+          <IonTitle>Signup</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton defaultHref="account"></IonBackButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonButtons slot="start">
+            <IonTitle>
+              <h1>Signup</h1>
+            </IonTitle>
+            {/* <IonButtons slot="start">
               <IonBackButton defaultHref="account"></IonBackButton>
-            </IonButtons>
+            </IonButtons> */}
           </IonToolbar>
         </IonHeader>
-
         <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-          <IonCardTitle>Signup</IonCardTitle>
           <h5>Let's get to know each other</h5>
           <IonRow className="ion-margin-top">
             <IonCol className="ion-no-padding">

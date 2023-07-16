@@ -11,6 +11,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from "@ionic/react";
 import { collection, query, where } from "firebase/firestore";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
@@ -51,15 +52,22 @@ export default function CategoryPage() {
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>
           </IonButtons>
+          {!isPlatform("ios") && (
+            <IonButtons slot="end">
+              <CartBtn />
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar className="ion-padding">
             <IonTitle size="large">{category.name}</IonTitle>
+            <IonButtons slot="start">
+              <IonBackButton></IonBackButton>
+            </IonButtons>
             <IonButtons slot="end">
               <CartBtn />
-              <IonBackButton></IonBackButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
