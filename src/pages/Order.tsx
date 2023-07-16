@@ -21,7 +21,7 @@ import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 
 const Order: React.FC = () => {
-  const { cart, totalPrice } = useCart();
+  const { cart, totalPrice, count } = useCart();
   return (
     <IonPage>
       <IonHeader>
@@ -44,6 +44,13 @@ const Order: React.FC = () => {
             />
           ))}
         </IonList>
+        {count === 0 && (
+          <div id="notice">
+            <IonText>
+              <h4 className="ion-no-margin">No items in cart</h4>
+            </IonText>
+          </div>
+        )}
       </IonContent>
       <IonFooter>
         <IonToolbar>
@@ -71,7 +78,7 @@ const Order: React.FC = () => {
               </div>
             </IonCol>
             <IonCol>
-              <IonButton>Checkout</IonButton>
+              <IonButton disabled={count === 0}>Checkout</IonButton>
             </IonCol>
           </IonRow>
         </IonToolbar>
