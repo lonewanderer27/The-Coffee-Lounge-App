@@ -52,7 +52,6 @@ export default function ProductCard(props: Product) {
         <IonCardTitle style={{ fontSize: "1rem" }} className="ion-margin-top">
           {props.name}
         </IonCardTitle>
-        <IonCardSubtitle>{props.description}</IonCardSubtitle>
         <div style={{ display: "flex", justifyContent: "space-between" }}>
           <IonText>{phpString.format(props.price)}</IonText>
           <IonIcon
