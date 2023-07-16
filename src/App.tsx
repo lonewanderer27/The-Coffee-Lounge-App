@@ -40,7 +40,9 @@ import {
 } from "ionicons/icons";
 
 import Account from "./pages/Account";
+import AccountEdit from "./pages/AccountEdit";
 import CategoryPage from "./pages/Category";
+import Checkout from "./pages/Checkout";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -71,6 +73,12 @@ function App() {
                 <AuthWrapper fallback={<Login />}>
                   <Route exact path="/account">
                     <Account />
+                  </Route>
+                  <Route exact path="/account/edit">
+                    <AccountEdit />
+                  </Route>
+                  <Route exact path="/checkout">
+                    <Checkout />
                   </Route>
                 </AuthWrapper>
                 <Route exact path="/home">
