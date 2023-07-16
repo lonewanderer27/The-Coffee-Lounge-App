@@ -18,10 +18,14 @@ import {
   IonToolbar,
   isPlatform,
   useIonLoading,
+  useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
+import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import { Action } from "../components/Action";
+import { useHistory } from "react-router";
 
 enum GenderEnum {
   Female = "Female",
@@ -40,18 +44,55 @@ interface IFormInput {
 }
 
 const Register: React.FC = () => {
+  const auth = getAuth();
+  const history = useHistory();
+  const db = getFirestore();
+
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm<IFormInput>();
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    alert("Submitted");
-    console.log(data);
+  const [presentToast] = useIonToast();
+  const [presentLoading, dismiss] = useIonLoading();
+
+  const toast = (position: "top" | "middle" | "bottom", message: string) => {
+    presentToast({
+      message,
+      duration: 1500,
+      position: position,
+    });
   };
 
-  const [present, dismiss] = useIonLoading();
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    presentLoading("Creating your account...");
+    createUserWithEmailAndPassword(auth, data.email, data.password)
+      .then((userCredential) => {
+        dismiss(); // dismiss the original loading
+        const user = userCredential.user;
+        console.log(user);
+
+        // create a user in users documents
+        (async () => {
+          await setDoc(doc(db, "users", user.uid), {
+            first_name: data.firstName,
+            last_name: data.lastName,
+            gender: data.gender,
+            nickname: data.nickname,
+            pronouns: data.pronouns,
+          });
+          history.push("/account");
+        })();
+      })
+      .catch((error) => {
+        dismiss();
+        toast("top", error.message);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        console.log(errorCode, errorMessage);
+      });
+  };
 
   return (
     <IonPage>
@@ -69,13 +110,10 @@ const Register: React.FC = () => {
             <IonTitle>
               <h1>Signup</h1>
             </IonTitle>
-            {/* <IonButtons slot="start">
-              <IonBackButton defaultHref="account"></IonBackButton>
-            </IonButtons> */}
           </IonToolbar>
         </IonHeader>
         <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-          <h5>Let's get to know each other</h5>
+          <h5 className="ion-margin-vertical">Let's get to know each other</h5>
           <IonRow className="ion-margin-top">
             <IonCol className="ion-no-padding">
               <IonInput

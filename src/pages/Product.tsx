@@ -168,18 +168,18 @@ export default function ProductPage() {
               <IonCol size="auto" className="ion ion-no-padding">
                 <IonButton
                   size="small"
-                  onClick={() => setValue("quantity", qty + 1)}
-                >
-                  <IonIcon src={addOutline} />
-                </IonButton>
-                <IonButton
-                  size="small"
                   onClick={() => {
                     if (qty > 1) setValue("quantity", qty - 1);
                   }}
                   disabled={qty <= 1}
                 >
                   <IonIcon src={removeOutline} />
+                </IonButton>
+                <IonButton
+                  size="small"
+                  onClick={() => setValue("quantity", qty + 1)}
+                >
+                  <IonIcon src={addOutline} />
                 </IonButton>
               </IonCol>
             </IonRow>

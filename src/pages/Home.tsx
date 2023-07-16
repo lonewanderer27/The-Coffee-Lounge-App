@@ -5,6 +5,7 @@ import { Autoplay, Pagination } from "swiper/modules";
 import {
   IonButton,
   IonButtons,
+  IonCol,
   IonContent,
   IonGrid,
   IonHeader,
@@ -91,15 +92,20 @@ const Home: React.FC = () => {
           <IonRow>
             {data?.map((category) => (
               <IonRow key={category.id + "ionrow"}>
-                <div style={{ display: "flex", alignContent: "center" }}>
-                  <h2 className="ion-padding-horizontal">{category.altName}</h2>
-                  <Action
-                    key={category.id + "ionaction"}
-                    text="See All"
-                    link={`/category?name=${category.name}&id=${category.id}&description=${category.description}`}
-                    align="right"
-                  />
-                </div>
+                <IonRow>
+                  <IonCol size="auto">
+                    <h3 className="ion-padding-horizontal">
+                      {category.altName}
+                    </h3>
+                  </IonCol>
+                  <IonCol>
+                    <Action
+                      key={category.id + "ionaction"}
+                      text="See All"
+                      link={`/category?name=${category.name}&id=${category.id}&description=${category.description}`}
+                    />
+                  </IonCol>
+                </IonRow>
                 <IonGrid>
                   <IonRow>
                     {productsData

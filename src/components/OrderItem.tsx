@@ -31,14 +31,14 @@ export default function OrderItem(props: CartItem) {
     return (
       <IonItemSliding>
         <IonItemOptions side="end">
-          <IonItemOption onClick={() => addItem(props.index)}>
-            <IonIcon src={add} size="large"></IonIcon>
-          </IonItemOption>
           <IonItemOption
             onClick={() => removeItem(props.index)}
             disabled={props.quantity === 1}
           >
             <IonIcon src={removeOutline} size="large"></IonIcon>
+          </IonItemOption>
+          <IonItemOption onClick={() => addItem(props.index)}>
+            <IonIcon src={add} size="large"></IonIcon>
           </IonItemOption>
         </IonItemOptions>
 
