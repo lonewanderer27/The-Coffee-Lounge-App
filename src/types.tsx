@@ -44,7 +44,7 @@ export type User = {
 };
 
 export type CartItem = {
-  index: number;
+  index?: number;
   product_id: string;
   quantity: number;
   size?: Size;

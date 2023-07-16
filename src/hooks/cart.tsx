@@ -5,8 +5,19 @@ import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import { CartItem } from "../types";
 import { cartAtom } from "../atoms/cart";
+import { useIonToast } from "@ionic/react";
 
 export function useCart() {
+  const [presentToast] = useIonToast();
+
+  const toast = (position: "top" | "middle" | "bottom", message: string) => {
+    presentToast({
+      message,
+      duration: 1500,
+      position: position,
+    });
+  };
+
   const firestore = useFirestore();
   const [cart, setCart] = useRecoilState(cartAtom);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -16,6 +27,7 @@ export function useCart() {
   const { data } = useFirestoreCollectionData(productsQuery, { idField: "id" });
 
   const addToCart = (CartItem: CartItem) => {
+    toast("bottom", `Added to cart!`);
     const updatedCart = [...cart, CartItem];
     setCart(updatedCart);
     return updatedCart;

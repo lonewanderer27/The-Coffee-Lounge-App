@@ -107,6 +107,8 @@ const Home: React.FC = () => {
                         name={product.name}
                         price={product.price}
                         sales={product.sales}
+                        description={product.description}
+                        coffee_type={product.coffee_type}
                       />
                     ))}
                 </IonRow>
