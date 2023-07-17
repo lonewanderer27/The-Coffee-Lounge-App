@@ -65,7 +65,9 @@ import { bagHandleOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth"; // Firebase v9+
 import { getFirestore } from "firebase/firestore"; // Firebase v9+
 
-setupIonicReact();
+setupIonicReact({
+  mode: "ios",
+});
 
 function App() {
   const app = useFirebaseApp();
