@@ -3,29 +3,30 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 
-export default function Order() {
+export default function MyAddresses() {
   return (
     <IonPage>
       <IonHeader translucent={true}>
         <IonToolbar>
-          <IonTitle>Orders</IonTitle>
+          <IonTitle>My Addresses</IonTitle>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/orders"></IonBackButton>
+            <IonBackButton></IonBackButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Order</IonTitle>
-            <IonButtons slot="start">
-              <IonBackButton></IonBackButton>
-            </IonButtons>
+            <IonTitle size="large">My Addresses</IonTitle>
           </IonToolbar>
         </IonHeader>
       </IonContent>

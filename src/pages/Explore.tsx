@@ -49,7 +49,7 @@ const Explore: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Explore</IonTitle>
         </IonToolbar>

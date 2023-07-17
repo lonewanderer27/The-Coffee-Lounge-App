@@ -13,6 +13,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonListHeader,
   IonPage,
   IonRow,
   IonText,
@@ -20,7 +21,12 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
-import { pencil, pencilOutline, pencilSharp } from "ionicons/icons";
+import {
+  chevronForwardOutline,
+  pencil,
+  pencilOutline,
+  pencilSharp,
+} from "ionicons/icons";
 import { useFirestore, useFirestoreDocDataOnce, useUser } from "reactfire";
 
 import Avatar from "react-avatar";
@@ -33,7 +39,6 @@ const Account: React.FC = () => {
   const firestore = useFirestore();
   const history = useHistory();
   const auth = getAuth();
-  const { status, data } = useUser();
 
   const ref = doc(firestore, "users", auth.currentUser!.uid);
   const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
@@ -49,10 +54,10 @@ const Account: React.FC = () => {
 
   const logout = () => auth.signOut().then(() => history.push("/login"));
 
-  if (status === "success" && userStatus === "success" && userData) {
+  if (userStatus === "success" && userData) {
     return (
       <IonPage>
-        <IonHeader>
+        <IonHeader translucent={true}>
           <IonToolbar>
             <IonTitle>Account</IonTitle>
             {!isPlatform("ios") && (
@@ -64,16 +69,10 @@ const Account: React.FC = () => {
             )}
           </IonToolbar>
         </IonHeader>
-        <IonContent fullscreen>
+        <IonContent fullscreen className="ion-padding-bottom">
           <IonHeader collapse="condense">
             <IonToolbar>
               <IonTitle size="large">Account</IonTitle>
-              <IonButtons slot="end">
-                <IonButton routerLink="/account/edit">
-                  <IonIcon src={pencilSharp} />
-                  <IonText className="ion-margin-start">Edit Profile</IonText>
-                </IonButton>
-              </IonButtons>
             </IonToolbar>
           </IonHeader>
           <IonGrid className="ion-padding">
@@ -97,22 +96,46 @@ const Account: React.FC = () => {
             </IonRow>
           </IonGrid>
           <IonList>
-            <IonItem>
-              <IonLabel>Pronouns</IonLabel>
-              <IonLabel>{userData.pronouns}</IonLabel>
+            <IonListHeader>
+              <IonLabel>My Account</IonLabel>
+            </IonListHeader>
+            <IonItem routerLink="/account/accountandsecurity">
+              <IonLabel>Profile & Security</IonLabel>
             </IonItem>
-            <IonItem>
-              <IonLabel>Gender</IonLabel>
-              <IonLabel>{userData.gender}</IonLabel>
+            <IonItem routerLink="/account/myaddresses">
+              <IonLabel>My Addresses</IonLabel>
             </IonItem>
-            <IonItem>
-              <IonLabel>Email</IonLabel>
-              <IonLabel>{data?.email}</IonLabel>
+            <IonItem routerLink="/account/bankaccountscards">
+              <IonLabel>Bank Accounts / Cards</IonLabel>
             </IonItem>
           </IonList>
-        </IonContent>
-        <IonFooter>
-          <IonToolbar className="ion-padding">
+          <IonList>
+            <IonListHeader>
+              <IonLabel>Settings</IonLabel>
+            </IonListHeader>
+            <IonItem>
+              <IonLabel>Chat Settings</IonLabel>
+              <IonIcon src={chevronForwardOutline}></IonIcon>
+            </IonItem>
+            <IonItem>
+              <IonLabel>Notification Settings</IonLabel>
+              <IonIcon src={chevronForwardOutline}></IonIcon>
+            </IonItem>
+          </IonList>
+          <IonList>
+            <IonListHeader>
+              <IonLabel>Support</IonLabel>
+            </IonListHeader>
+            <IonItem>
+              <IonLabel>About</IonLabel>
+              <IonIcon src={chevronForwardOutline}></IonIcon>
+            </IonItem>
+            <IonItem>
+              <IonLabel>Delete my Account</IonLabel>
+              <IonIcon src={chevronForwardOutline}></IonIcon>
+            </IonItem>
+          </IonList>
+          <IonFooter className="ion-padding">
             <IonButton
               expand="block"
               onClick={logout}
@@ -120,13 +143,11 @@ const Account: React.FC = () => {
             >
               Logout
             </IonButton>
-          </IonToolbar>
-        </IonFooter>
+          </IonFooter>
+        </IonContent>
       </IonPage>
     );
   }
-
-  return <></>;
 };
 
 export default Account;

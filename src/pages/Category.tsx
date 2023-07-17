@@ -6,6 +6,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonLoading,
   IonPage,
   IonRow,
   IonText,
@@ -17,9 +18,8 @@ import { collection, query, where } from "firebase/firestore";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import CartBtn from "../components/CartBtn";
-import { Category } from "../types";
+import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
-import { bagOutline } from "ionicons/icons";
 import { useLocation } from "react-router";
 
 export default function CategoryPage() {
@@ -27,7 +27,7 @@ export default function CategoryPage() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
-  const category: Category = {
+  const category: CategoryType = {
     id: queryParams.get("id") || "",
     name: queryParams.get("name") || "",
     description: queryParams.get("description") || "",
@@ -44,9 +44,13 @@ export default function CategoryPage() {
   const { status: productsStatus, data: productsData } =
     useFirestoreCollectionData(productsQuery, { idField: "id" });
 
+  if (productsStatus === "loading") {
+    return <></>;
+  }
+
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>{category.name}</IonTitle>
           <IonButtons slot="start">
@@ -74,8 +78,7 @@ export default function CategoryPage() {
         <div className="ion-padding">
           <IonText>{category.description}</IonText>
         </div>
-
-        <IonGrid>
+        <IonGrid className="ion-padding">
           <IonRow>
             {productsData
               ?.filter((product) => product.category == category.id)

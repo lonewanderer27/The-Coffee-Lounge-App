@@ -3,7 +3,7 @@ import { collection, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
-import { CartItem } from "../types";
+import { CartItemType } from "../types";
 import { cartAtom } from "../atoms/cart";
 import { useIonToast } from "@ionic/react";
 
@@ -26,7 +26,7 @@ export function useCart() {
   const productsQuery = query(productsCollection);
   const { data } = useFirestoreCollectionData(productsQuery, { idField: "id" });
 
-  const addToCart = (CartItem: CartItem) => {
+  const addToCart = (CartItem: CartItemType) => {
     toast("bottom", `Added to cart!`);
     const updatedCart = [...cart, CartItem];
     setCart(updatedCart);

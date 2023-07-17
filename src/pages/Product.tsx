@@ -9,12 +9,8 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
-  IonLabel,
-  IonLoading,
   IonPage,
   IonRow,
-  IonSegment,
-  IonSegmentButton,
   IonSelect,
   IonSelectOption,
   IonText,
@@ -25,14 +21,12 @@ import {
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addOutline, heartOutline, removeOutline } from "ionicons/icons";
-import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
+import { useFirestore, useFirestoreDocData } from "reactfire";
 
 import { doc } from "firebase/firestore";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
-import { useEffect } from "react";
-import { useLocation } from "react-router";
-import { useRecoilState } from "recoil";
+import { useParams } from "react-router";
 
 export enum Size {
   Small = "small",
@@ -48,20 +42,12 @@ interface IFormInput {
 
 export default function ProductPage() {
   const firestore = useFirestore();
-  const location = useLocation();
-  const queryParams = new URLSearchParams(location.search);
-
-  const productId = queryParams.get("id") || "-1";
+  const { product_id: productId } = useParams<{
+    product_id: string;
+  }>();
 
   const ref = doc(firestore, "products", productId);
-  const { status, data } = useFirestoreDocDataOnce(ref);
-
-  const coffeeTypeRef = doc(
-    firestore,
-    "coffee_types",
-    data?.coffee_type_id ?? "AEO5P7edEO7cLVizxiOZ"
-  );
-  const { data: coffeeTypeData } = useFirestoreDocDataOnce(coffeeTypeRef);
+  const { status, data } = useFirestoreDocData(ref);
 
   const [presentToast] = useIonToast();
   const [presentLoading, dismiss] = useIonLoading();
@@ -82,12 +68,8 @@ export default function ProductPage() {
     presentLoading("Adding to cart...");
   };
 
-  useEffect(() => {
-    if (status === "success") {
-      console.log("Product");
-      console.log(data);
-    }
-  }, []);
+  console.log("Product");
+  console.log(data);
 
   const qty = watch("quantity");
   const size = watch("size");
@@ -98,7 +80,7 @@ export default function ProductPage() {
   if (productId != "-1" && data != undefined) {
     return (
       <IonPage>
-        <IonHeader>
+        <IonHeader translucent={true}>
           <IonToolbar>
             <IonTitle>{data.name}</IonTitle>
             <IonButtons slot="start">
@@ -127,12 +109,12 @@ export default function ProductPage() {
             <IonRow className="ion-margin-bottom">
               <IonText>{data.description}</IonText>
             </IonRow>
-            {coffeeTypeData && (
+            {data.coffee_type && (
               <div
                 className="ion-justify-content-center flex"
                 style={{ width: "100%" }}
               >
-                <IonBadge>{coffeeTypeData.name}</IonBadge>
+                <IonBadge>{data.coffee_type}</IonBadge>
               </div>
             )}
           </div>

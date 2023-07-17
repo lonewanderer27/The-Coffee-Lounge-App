@@ -3,31 +3,35 @@ import {
   IonButtons,
   IonContent,
   IonHeader,
+  IonItem,
+  IonLabel,
+  IonList,
+  IonListHeader,
   IonPage,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 
-export default function Order() {
+import MyCards from "../MyCards";
+
+export default function Card() {
   return (
     <IonPage>
       <IonHeader translucent={true}>
         <IonToolbar>
-          <IonTitle>Orders</IonTitle>
+          <IonTitle>Card</IonTitle>
           <IonButtons slot="start">
-            <IonBackButton defaultHref="/orders"></IonBackButton>
+            <IonBackButton></IonBackButton>
           </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
           <IonToolbar>
-            <IonTitle size="large">Order</IonTitle>
-            <IonButtons slot="start">
-              <IonBackButton></IonBackButton>
-            </IonButtons>
+            <IonTitle size="large">Card</IonTitle>
           </IonToolbar>
         </IonHeader>
+        <div className="ion-padding"></div>
       </IonContent>
     </IonPage>
   );

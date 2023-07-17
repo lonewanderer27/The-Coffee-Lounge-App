@@ -14,13 +14,13 @@ import {
 import { add, removeOutline, trashOutline } from "ionicons/icons";
 import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
 
-import { CartItem } from "../types";
+import { CartItemType } from "../types";
 import { doc } from "firebase/firestore";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 import { useEffect } from "react";
 
-export default function OrderItem(props: CartItem) {
+export default function OrderItem(props: CartItemType) {
   const firestore = useFirestore();
   const ref = doc(firestore, "products", props.product_id);
   const { status, data } = useFirestoreDocDataOnce(ref);

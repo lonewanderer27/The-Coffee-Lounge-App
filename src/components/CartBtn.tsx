@@ -9,7 +9,7 @@ export default function CartBtn() {
   const { count } = useCart();
 
   return (
-    <IonButton routerLink="/order">
+    <IonButton routerLink="/cart">
       <IonIcon
         id="cartIcon"
         src={bagOutline}

@@ -66,7 +66,7 @@ const Login: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Login</IonTitle>
         </IonToolbar>

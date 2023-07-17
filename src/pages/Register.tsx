@@ -21,7 +21,11 @@ import {
   useIonToast,
 } from "@ionic/react";
 import { SubmitHandler, useController, useForm } from "react-hook-form";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import {
+  createUserWithEmailAndPassword,
+  getAuth,
+  updateProfile,
+} from "firebase/auth";
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import { Action } from "../components/Action";
@@ -73,6 +77,13 @@ const Register: React.FC = () => {
         const user = userCredential.user;
         console.log(user);
 
+        // update firebase user profile
+        (async () => {
+          await updateProfile(auth.currentUser!, {
+            displayName: data.firstName + " " + data.lastName,
+          });
+        })();
+
         // create a user in users documents
         (async () => {
           await setDoc(doc(db, "users", user.uid), {
@@ -96,7 +107,7 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
-      <IonHeader>
+      <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Signup</IonTitle>
           <IonButtons slot="start">
