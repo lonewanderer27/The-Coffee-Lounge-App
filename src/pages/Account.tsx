@@ -1,6 +1,7 @@
 import "./Account.css";
 
 import {
+  IonAlert,
   IonButton,
   IonButtons,
   IonCol,
@@ -135,12 +136,23 @@ const Account: React.FC = () => {
               <IonIcon src={chevronForwardOutline}></IonIcon>
             </IonItem>
           </IonList>
+          <IonAlert
+            trigger="logout"
+            header="Logout"
+            message="Are you sure you want to log out?"
+            buttons={[
+              {
+                text: "Cancel",
+                role: "cancel",
+              },
+              {
+                text: "Logout",
+                handler: logout,
+              },
+            ]}
+          ></IonAlert>
           <IonFooter className="ion-padding">
-            <IonButton
-              expand="block"
-              onClick={logout}
-              className="ion-margin-top"
-            >
+            <IonButton expand="block" id="logout" className="ion-margin-top">
               Logout
             </IonButton>
           </IonFooter>
