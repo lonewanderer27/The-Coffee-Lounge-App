@@ -26,6 +26,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonLoading,
   useIonRouter,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -43,6 +44,7 @@ export default function ProfileAndSecurity() {
   const history = useHistory();
   const auth = getAuth();
   const { status, data } = useUser();
+  const [present, dismiss] = useIonLoading();
 
   const ref = doc(firestore, "users", auth.currentUser!.uid);
   const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
@@ -55,14 +57,17 @@ export default function ProfileAndSecurity() {
   const [forgotPasswordErrorMsg, setforgotPasswordErrorMsg] = useState("");
 
   const handleForgotPassword = () => {
+    present();
     sendPasswordResetEmail(auth, data?.email!)
       .then(() => {
+        dismiss();
         setforgotPasswordSuccessMsg(
           "Password reset link has been sent to your email."
         );
         setforgotPasswordSuccess(true);
       })
       .catch((error: FirebaseError) => {
+        dismiss();
         setforgotPasswordErrorMsg(error.message);
         setforgotPasswordError(true);
         console.log(error);
@@ -87,6 +92,7 @@ export default function ProfileAndSecurity() {
   const onSubmit: SubmitHandler<{ currentPassword: string }> = (data: {
     currentPassword: string;
   }) => {
+    present();
     const credential = EmailAuthProvider.credential(
       auth.currentUser!.email!,
       watch("currentPassword")
@@ -94,11 +100,13 @@ export default function ProfileAndSecurity() {
 
     reauthenticateWithCredential(auth.currentUser!, credential)
       .then((credential: UserCredential) => {
+        dismiss();
         setConfirmPassOpen(false);
         setConfirmPassMsg("");
         router.push("/account/changepass");
       })
       .catch((error: FirebaseError) => {
+        dismiss();
         setConfirmPassError(true);
         setConfirmPassMsg(error.message);
       });
