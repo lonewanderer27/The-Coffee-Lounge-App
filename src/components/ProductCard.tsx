@@ -50,7 +50,7 @@ export default function ProductCard(props: ProductType) {
           <img
             src={props.image}
             alt={props.name}
-            style={{ height: "6rem", width: "100%" }}
+            style={{ height: "auto", width: "100%" }}
           />
         </div>
         <IonCardTitle style={{ fontSize: "1rem" }} className="ion-margin-top">
