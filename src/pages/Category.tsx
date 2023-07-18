@@ -14,16 +14,19 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
-import { collection, query, where } from "firebase/firestore";
-import { useFirestore, useFirestoreCollectionData } from "reactfire";
+import { collection, getFirestore, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
+import { ProductConvert } from "../converters/products";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
 
+// import { useFirestore, useFirestoreCollectionData } from "reactfire";
+
 export default function CategoryPage() {
-  const firestore = useFirestore();
+  const db = getFirestore();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
@@ -35,16 +38,19 @@ export default function CategoryPage() {
 
   console.log("Category", category);
 
-  const productsCollection = collection(firestore, "products");
+  const productsCollection = collection(db, "products");
   const productsQuery = query(
     productsCollection,
     where("category", "==", category.id)
   );
 
-  const { status: productsStatus, data: productsData } =
-    useFirestoreCollectionData(productsQuery, { idField: "id" });
+  // const { status: productsStatus, data: productsData } =
+  //   useFirestoreCollectionData(productsQuery, { idField: "id" });
+  const [productsData, productsLoading] = useCollectionData(
+    collection(db, "products").withConverter(ProductConvert)
+  );
 
-  if (productsStatus === "loading") {
+  if (productsLoading) {
     return <></>;
   }
 

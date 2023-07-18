@@ -51,8 +51,6 @@ const Login: React.FC = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         dismiss();
-        const user = userCredential.user;
-        console.log(user);
         history.push("/account");
       })
       .catch((error: FirebaseError) => {

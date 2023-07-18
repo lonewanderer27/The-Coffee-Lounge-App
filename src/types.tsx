@@ -50,6 +50,7 @@ export type UserType = {
   last_name: string;
   nickname: string;
   gender: string;
+  favorites?: string[];
 };
 
 export type CartItemType = {

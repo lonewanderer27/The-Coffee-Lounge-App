@@ -30,26 +30,33 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useFirestore, useFirestoreDocDataOnce, useUser } from "reactfire";
+import { doc, getFirestore } from "firebase/firestore";
 
 import Avatar from "react-avatar";
 import { FirebaseError } from "firebase/app";
+import { UserConvert } from "../../converters/user";
 import { chevronForwardOutline } from "ionicons/icons";
-import { doc } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDocument } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router";
 import { useState } from "react";
 
+// import { useFirestore, useFirestoreDocDataOnce, useUser } from "reactfire";
+
 export default function ProfileAndSecurity() {
-  const firestore = useFirestore();
+  const db = getFirestore();
   const history = useHistory();
   const auth = getAuth();
-  const { status, data } = useUser();
+  const [data, status] = useAuthState(auth);
   const [present, dismiss] = useIonLoading();
 
-  const ref = doc(firestore, "users", auth.currentUser!.uid);
-  const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
-    idField: "id",
-  });
+  // const ref = doc(db, "users", auth.currentUser!.uid);
+  // const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
+  //   idField: "id",
+  // });
+  const [userData, userStatus] = useDocument(
+    doc(db, "users", auth.currentUser!.uid).withConverter(UserConvert)
+  );
 
   const [forgotPasswordSuccess, setforgotPasswordSuccess] = useState(false);
   const [forgotPasswordSuccessMsg, setforgotPasswordSuccessMsg] = useState("");
@@ -112,7 +119,7 @@ export default function ProfileAndSecurity() {
       });
   };
 
-  if (userStatus === "success")
+  if (userData)
     return (
       <IonPage>
         <IonHeader translucent={true}>
@@ -132,9 +139,9 @@ export default function ProfileAndSecurity() {
           <IonGrid className="ion-padding">
             <IonRow>
               <IonCol size="auto">
-                {userData.profile_img && <img src={userData.profile_img} />}
-                {!userData.profile_img && (
-                  <Avatar name={userData.first_name} round />
+                {data?.photoURL && <img src={data?.photoURL} />}
+                {!data?.photoURL && (
+                  <Avatar name={userData.get("first_name")} round />
                 )}
               </IonCol>
             </IonRow>
@@ -145,25 +152,23 @@ export default function ProfileAndSecurity() {
             </IonListHeader>
             <IonItem>
               <IonLabel>First Name</IonLabel>
-              <IonLabel>{userData.first_name}</IonLabel>
+              <IonLabel>{userData.get("first_name")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Last Name</IonLabel>
-              <IonLabel>{userData.last_name}</IonLabel>
+              <IonLabel>{userData.get("last_name")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Nickname</IonLabel>
-              <IonLabel>{userData.nickname}</IonLabel>
+              <IonLabel>{userData.get("nickname")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Pronouns</IonLabel>
-              <IonLabel>{userData.pronouns}</IonLabel>
-              {/* <IonLabel>He / Him</IonLabel> */}
+              <IonLabel>{userData.get("pronouns")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Gender</IonLabel>
-              <IonLabel>{userData.gender}</IonLabel>
-              {/* <IonLabel>Male</IonLabel> */}
+              <IonLabel>{userData.get("gender")}</IonLabel>
             </IonItem>
           </IonList>
           <IonList>

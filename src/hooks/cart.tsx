@@ -1,10 +1,11 @@
 import { SetterOrUpdater, useRecoilState } from "recoil";
-import { collection, query } from "firebase/firestore";
+import { collection, getFirestore, query } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { useFirestore, useFirestoreCollectionData } from "reactfire";
 
 import { CartItemType } from "../types";
+import { ProductConvert } from "../converters/products";
 import { cartAtom } from "../atoms/cart";
+import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useIonToast } from "@ionic/react";
 
 export function useCart() {
@@ -18,13 +19,12 @@ export function useCart() {
     });
   };
 
-  const firestore = useFirestore();
+  const db = getFirestore();
   const [cart, setCart] = useRecoilState(cartAtom);
   const [totalPrice, setTotalPrice] = useState(0);
-
-  const productsCollection = collection(firestore, "products");
-  const productsQuery = query(productsCollection);
-  const { data } = useFirestoreCollectionData(productsQuery, { idField: "id" });
+  const [data] = useCollectionOnce(
+    collection(db, "products").withConverter(ProductConvert)
+  );
 
   const addToCart = (CartItem: CartItemType) => {
     toast("bottom", `Added to cart!`);
@@ -56,9 +56,9 @@ export function useCart() {
 
   useEffect(() => {
     const totalPrice = cart.reduce((acc, item) => {
-      const product = data?.find((p) => p.id === item.product_id);
+      const product = data?.docs?.find((p) => p.id === item.product_id);
       if (product) {
-        return acc + product.price * item.quantity;
+        return acc + product.get("price") * item.quantity;
       }
       return acc;
     }, 0);

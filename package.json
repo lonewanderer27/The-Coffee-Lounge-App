@@ -31,11 +31,12 @@
     "react-avatar": "^5.0.3",
     "react-credit-cards": "^0.8.3",
     "react-dom": "^18.2.0",
+    "react-firebase-hooks": "^5.1.1",
+    "react-heart": "^1.0.6",
     "react-hook-form": "^7.45.1",
     "react-qr-code": "^2.0.11",
     "react-router": "^5.3.4",
     "react-router-dom": "^5.3.4",
-    "reactfire": "^4.2.3",
     "recoil": "^0.7.7",
     "swiper": "^10.0.4",
     "vite-plugin-pwa": "^0.16.4"

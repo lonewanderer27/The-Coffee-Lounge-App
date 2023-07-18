@@ -22,32 +22,27 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
-import {
-  chevronForwardOutline,
-  pencil,
-  pencilOutline,
-  pencilSharp,
-} from "ionicons/icons";
-import { useFirestore, useFirestoreDocDataOnce, useUser } from "reactfire";
+import { chevronForwardOutline, pencilSharp } from "ionicons/icons";
+import { doc, getFirestore } from "firebase/firestore";
 
 import Avatar from "react-avatar";
-import { doc } from "firebase/firestore";
+import { UserConvert } from "../converters/user";
 import { getAuth } from "firebase/auth";
+import { useDocument } from "react-firebase-hooks/firestore";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
 const Account: React.FC = () => {
-  const firestore = useFirestore();
+  const db = getFirestore();
   const history = useHistory();
+  const { currentUser } = getAuth();
   const auth = getAuth();
 
-  const ref = doc(firestore, "users", auth.currentUser!.uid);
-  const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
-    idField: "id",
-  });
+  const ref = doc(db, "users", currentUser!.uid).withConverter(UserConvert);
+  const [userData, userLoading, userError] = useDocument(ref);
 
   useEffect(() => {
-    if (userStatus === "success" && userData) {
+    if (!userLoading && userData) {
       console.log("userData");
       console.log(userData);
     }
@@ -55,7 +50,7 @@ const Account: React.FC = () => {
 
   const logout = () => auth.signOut().then(() => history.push("/login"));
 
-  if (userStatus === "success" && userData) {
+  if (!userLoading && userData) {
     return (
       <IonPage>
         <IonHeader translucent={true}>
@@ -79,19 +74,19 @@ const Account: React.FC = () => {
           <IonGrid className="ion-padding">
             <IonRow>
               <IonCol size="auto">
-                {userData.profile_img && <img src={userData.profile_img} />}
-                {!userData.profile_img && (
-                  <Avatar name={userData.first_name} round />
+                {currentUser?.photoURL && <img src={currentUser.photoURL} />}
+                {!currentUser?.photoURL && (
+                  <Avatar name={userData.get("first_name")} round />
                 )}
               </IonCol>
               <IonCol className="ion-padding-start">
                 <IonText>
                   <h2>
-                    {userData.first_name} {userData.last_name}
+                    {userData.get("first_name")} {userData.get("last_name")}
                   </h2>
                 </IonText>
                 <IonText>
-                  <h6>Nickname: {userData.nickname}</h6>
+                  <h6>Nickname: {userData.get("nickname")}</h6>
                 </IonText>
               </IonCol>
             </IonRow>

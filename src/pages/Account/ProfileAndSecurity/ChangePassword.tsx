@@ -13,12 +13,12 @@ import {
   IonToolbar,
   useIonRouter,
 } from "@ionic/react";
+import { getAuth, updatePassword } from "firebase/auth";
 
 import { FirebaseError } from "firebase/app";
-import { updatePassword } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useHistory } from "react-router";
 import { useState } from "react";
-import { useUser } from "reactfire";
 
 interface IFormInput {
   newPassword: string;
@@ -26,7 +26,7 @@ interface IFormInput {
 }
 
 export default function ChangePassword() {
-  const { data: userData } = useUser();
+  const [userData] = useAuthState(getAuth());
 
   const history = useHistory();
   const router = useIonRouter();

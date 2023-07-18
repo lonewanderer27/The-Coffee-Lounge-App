@@ -12,6 +12,7 @@ import {
   writeBatch,
 } from "firebase/firestore";
 import {
+  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -40,10 +41,10 @@ import ExploreContainer from "../components/ExploreContainer";
 import OrderItem from "../components/OrderItem";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
 import { useHistory } from "react-router-dom";
 import { useState } from "react";
-import { useUser } from "reactfire";
 
 interface SegmentCustomEvent extends CustomEvent {
   target: HTMLIonSegmentElement;
@@ -52,13 +53,18 @@ interface SegmentCustomEvent extends CustomEvent {
 
 const Cart: React.FC = () => {
   const db = getFirestore();
-  const { data } = useUser();
+  const [data, loading, error] = useAuthState(getAuth());
   const history = useHistory();
 
   const { cart, setCart, totalPrice, count } = useCart();
   const [presentLoading, dismiss] = useIonLoading();
 
   function handleCheckout() {
+    if (!data) {
+      history.push("/login");
+      return;
+    }
+
     (async () => {
       // create the order document for the user
       presentLoading("Checking out...");

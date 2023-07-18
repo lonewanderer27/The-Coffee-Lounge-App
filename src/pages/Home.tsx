@@ -2,6 +2,7 @@ import "./Account.css";
 import "swiper/css";
 
 import { Autoplay, Pagination } from "swiper/modules";
+import { CategoryConvert, ProductConvert } from "../converters/products";
 import {
   IonButton,
   IonButtons,
@@ -24,28 +25,22 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { collection, query } from "firebase/firestore";
-import { useFirestore, useFirestoreCollectionData } from "reactfire";
+import { collection, getFirestore } from "firebase/firestore";
 
-import { Action } from "../components/Action";
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { chevronForwardOutline } from "ionicons/icons";
+import { useCollectionOnce } from "react-firebase-hooks/firestore";
 
 const Home: React.FC = () => {
-  const firestore = useFirestore();
-  const categoriesCollection = collection(firestore, "categories");
-  const categoriesQuery = query(categoriesCollection);
+  const db = getFirestore();
+  const [data, loading, error] = useCollectionOnce(
+    collection(db, "categories").withConverter(CategoryConvert)
+  );
 
-  const { data } = useFirestoreCollectionData(categoriesQuery, {
-    idField: "id",
-  });
-
-  const productsCollection = collection(firestore, "products");
-  const productsQuery = query(productsCollection);
-
-  const { status: productsStatus, data: productsData } =
-    useFirestoreCollectionData(productsQuery, { idField: "id" });
+  const [productsData, productsLoading, productsError] = useCollectionOnce(
+    collection(db, "products").withConverter(ProductConvert)
+  );
 
   const router = useIonRouter();
 
@@ -93,7 +88,7 @@ const Home: React.FC = () => {
         </Swiper>
         <IonGrid className="ion-padding-vertical">
           <IonRow>
-            {data?.map((category) => (
+            {data?.docs?.map((category) => (
               <IonRow
                 key={category.id + "ionrow"}
                 className="ion-margin-bottom"
@@ -102,12 +97,14 @@ const Home: React.FC = () => {
                   <IonItem
                     onClick={() =>
                       router.push(
-                        `/category?name=${category.name}&id=${category.id}&description=${category.description}`
+                        `/category?name=${category.get("name")}&id=${
+                          category.id
+                        }&description=${category.get("description")}`
                       )
                     }
                   >
                     <IonLabel>
-                      <IonText>{category.altName}</IonText>
+                      <IonText>{category.get("altName")}</IonText>
                     </IonLabel>
                     <IonIcon
                       src={chevronForwardOutline}
@@ -119,20 +116,22 @@ const Home: React.FC = () => {
                 <IonCol size="12">
                   <IonGrid>
                     <IonRow>
-                      {productsData
-                        ?.filter((product) => product.category == category.id)
+                      {productsData?.docs
+                        ?.filter(
+                          (product) => product.get("category") == category.id
+                        )
                         .slice(0, 2)
                         .map((product) => (
                           <ProductCard
                             key={product.id}
-                            image={product.image}
+                            image={product.get("image")}
                             id={product.id}
-                            category={product.category}
-                            name={product.name}
-                            price={product.price}
-                            sales={product.sales}
-                            description={product.description}
-                            coffee_type={product.coffee_type}
+                            category={product.get("category")}
+                            name={product.get("name")}
+                            price={product.get("price")}
+                            sales={product.get("sales")}
+                            description={product.get("description")}
+                            coffee_type={product.get("coffee_type")}
                           />
                         ))}
                     </IonRow>

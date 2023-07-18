@@ -12,22 +12,22 @@ import {
   IonText,
 } from "@ionic/react";
 import { add, removeOutline, trashOutline } from "ionicons/icons";
-import { useFirestore, useFirestoreDocDataOnce } from "reactfire";
+import { doc, getFirestore } from "firebase/firestore";
 
 import { CartItemType } from "../types";
-import { doc } from "firebase/firestore";
+import { ProductConvert } from "../converters/products";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
-import { useEffect } from "react";
+import { useDocumentOnce } from "react-firebase-hooks/firestore";
 
 export default function OrderItem(props: CartItemType) {
-  const firestore = useFirestore();
-  const ref = doc(firestore, "products", props.product_id);
-  const { status, data } = useFirestoreDocDataOnce(ref);
-
+  const db = getFirestore();
+  const [data, status] = useDocumentOnce(
+    doc(db, "products", props.product_id).withConverter(ProductConvert)
+  );
   const { removeFromCart, addItem, removeItem } = useCart();
 
-  if (status === "success" && data) {
+  if (data) {
     return (
       <IonItemSliding>
         <IonItemOptions side="end">
@@ -56,14 +56,14 @@ export default function OrderItem(props: CartItemType) {
             <IonRow className="ion-align-items-center">
               <IonCol size="auto">
                 <img
-                  src={data.image}
-                  alt={data.name}
+                  src={data.get("image")}
+                  alt={data.get("name")}
                   width="50px"
                   height="auto"
                 />
               </IonCol>
               <IonCol>
-                <IonText>{data.name}</IonText>
+                <IonText>{data.get("name")}</IonText>
                 {props.size && (
                   <>
                     <br />
@@ -76,7 +76,7 @@ export default function OrderItem(props: CartItemType) {
               </IonCol>
               <IonCol size="3" className="ion-text-end">
                 <IonBadge>
-                  {phpString.format(data.price * props.quantity)}
+                  {phpString.format(data.get("price") * props.quantity)}
                 </IonBadge>
               </IonCol>
             </IonRow>

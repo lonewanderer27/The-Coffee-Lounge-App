@@ -16,12 +16,6 @@ import "./theme/variables.css";
 import "./theme/index.css";
 
 import {
-  AuthProvider,
-  FirestoreProvider,
-  useFirebaseApp,
-  useSigninCheck,
-} from "reactfire";
-import {
   IonApp,
   IonIcon,
   IonLabel,
@@ -62,113 +56,106 @@ import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
 import Register from "./pages/Register";
 import VirtualVisit from "./pages/VirtualVisit";
 import { bagHandleOutline } from "ionicons/icons";
+import { getApp } from "firebase/app";
 import { getAuth } from "firebase/auth"; // Firebase v9+
 import { getFirestore } from "firebase/firestore"; // Firebase v9+
+import { useAuthState } from "react-firebase-hooks/auth";
 
 setupIonicReact({
   mode: "ios",
 });
 
 function App() {
-  const app = useFirebaseApp();
-
-  const auth = getAuth(app);
-  const firestore = getFirestore(app);
-
   return (
-    <AuthProvider sdk={auth}>
-      <FirestoreProvider sdk={firestore}>
-        <IonApp>
-          <IonReactRouter>
-            <IonTabs>
-              <IonRouterOutlet>
-                <AuthWrapper fallback={<Login />}>
-                  <Route exact path="/account">
-                    <Account />
-                  </Route>
-                  <Route exact path="/account/edit">
-                    <AccountEdit />
-                  </Route>
-                  <Route exact path="/account/accountandsecurity">
-                    <ProfileAndSecurity />
-                  </Route>
-                  <Route exact path="/account/myaddresses">
-                    <MyAddresses />
-                  </Route>
-                  <Route exact path="/account/bankaccountscards">
-                    <MyCards />
-                  </Route>
-                  <Route exact path="/account/cards/:card_id">
-                    <Card />
-                  </Route>
-                  <Route exact path="/account/changepass">
-                    <ChangePassword />
-                  </Route>
-                  <Route exact path="/checkout/:order_id">
-                    <Checkout />
-                  </Route>
-                  <Route exact path="/orders">
-                    <Orders />
-                  </Route>
-                  <Route exact path="/orders/:order_id">
-                    <Order />
-                  </Route>
-                </AuthWrapper>
-                <Route exact path="/home">
-                  <Home />
-                </Route>
-                <Route exact path="/virtualVisit">
-                  <VirtualVisit />
-                </Route>
-                <Route exact path="/explore">
-                  <Explore />
-                </Route>
-                <Route exact path="/cart">
-                  <Cart />
-                </Route>
-                <Route exact path="/">
-                  <Redirect to="/home" />
-                </Route>
-                <Route exact path="/register">
-                  <Register />
-                </Route>
-                <Route exact path="/login">
-                  <Login />
-                </Route>
-                <Route path="/category">
-                  <CategoryPage />
-                </Route>
-                <Route exact path="/product/:product_id">
-                  <ProductPage />
-                </Route>
-              </IonRouterOutlet>
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="home" href="/home">
-                  <IonIcon aria-hidden="true" icon={homeOutline} />
-                  <IonLabel>Home</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="explore" href="/explore">
-                  <IonIcon aria-hidden="true" icon={starOutline} />
-                  <IonLabel>Explore</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="cart" href="/cart">
-                  <IonIcon aria-hidden="true" icon={bagOutline} />
-                  <IonLabel>Cart</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="order" href="/orders">
-                  <IonIcon aria-hidden="true" icon={bagHandleOutline} />
-                  <IonLabel>Orders</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="account" href="/account">
-                  <IonIcon aria-hidden="true" icon={personCircleOutline} />
-                  <IonLabel>Account</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </IonReactRouter>
-        </IonApp>
-      </FirestoreProvider>
-    </AuthProvider>
+    <IonApp>
+      <IonReactRouter>
+        <IonTabs>
+          <IonRouterOutlet>
+            <AuthWrapper fallback={<Login />}>
+              <Route exact path="/account">
+                <Account />
+              </Route>
+              <Route exact path="/account/edit">
+                <AccountEdit />
+              </Route>
+              <Route exact path="/account/accountandsecurity">
+                <ProfileAndSecurity />
+              </Route>
+              <Route exact path="/account/myaddresses">
+                <MyAddresses />
+              </Route>
+              <Route exact path="/account/bankaccountscards">
+                <MyCards />
+              </Route>
+              <Route exact path="/account/cards/:card_id">
+                <Card />
+              </Route>
+              <Route exact path="/account/changepass">
+                <ChangePassword />
+              </Route>
+              <Route exact path="/checkout/:order_id">
+                <Checkout />
+              </Route>
+              <Route exact path="/orders">
+                <Orders />
+              </Route>
+              <Route exact path="/orders/:order_id">
+                <Order />
+              </Route>
+            </AuthWrapper>
+            <Route exact path="/home">
+              <Home />
+            </Route>
+            <Route exact path="/virtualVisit">
+              <VirtualVisit />
+            </Route>
+            <Route exact path="/explore">
+              <Explore />
+            </Route>
+            <Route exact path="/cart">
+              <Cart />
+            </Route>
+            <Route exact path="/">
+              <Redirect to="/home" />
+            </Route>
+            <Route exact path="/register">
+              <Register />
+            </Route>
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route path="/category">
+              <CategoryPage />
+            </Route>
+            <Route exact path="/product/:product_id">
+              <ProductPage />
+            </Route>
+          </IonRouterOutlet>
+          <IonTabBar slot="bottom">
+            <IonTabButton tab="home" href="/home">
+              <IonIcon aria-hidden="true" icon={homeOutline} />
+              <IonLabel>Home</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="explore" href="/explore">
+              <IonIcon aria-hidden="true" icon={starOutline} />
+              <IonLabel>Explore</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="cart" href="/cart">
+              <IonIcon aria-hidden="true" icon={bagOutline} />
+              <IonLabel>Cart</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="order" href="/orders">
+              <IonIcon aria-hidden="true" icon={bagHandleOutline} />
+              <IonLabel>Orders</IonLabel>
+            </IonTabButton>
+            <IonTabButton tab="account" href="/account">
+              <IonIcon aria-hidden="true" icon={personCircleOutline} />
+              <IonLabel>Account</IonLabel>
+            </IonTabButton>
+          </IonTabBar>
+        </IonTabs>
+      </IonReactRouter>
+    </IonApp>
   );
 }
 
@@ -176,17 +163,15 @@ export const AuthWrapper = ({
   children,
   fallback,
 }: React.PropsWithChildren<{ fallback?: React.ReactElement }>): JSX.Element => {
-  const { status, data } = useSigninCheck();
+  const auth = getAuth();
+  const [user, loading, error] = useAuthState(auth);
+  console.log(user)
 
-  if (status === "success" && data.signedIn === true) {
+  if (user) {
     return children as JSX.Element;
   }
 
-  if (status === "success" && data.signedIn === false) {
-    return fallback as React.ReactElement;
-  }
-
-  return <></>;
+  return fallback as React.ReactElement;
 };
 
 export default App;

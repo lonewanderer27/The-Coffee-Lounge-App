@@ -16,16 +16,19 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  useIonLoading,
-  useIonToast,
 } from "@ionic/react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { addOutline, heartOutline, removeOutline } from "ionicons/icons";
-import { useFirestore, useFirestoreDocData } from "reactfire";
+import { addOutline, heart, heartOutline, removeOutline } from "ionicons/icons";
+import { doc, getFirestore } from "firebase/firestore";
 
-import { doc } from "firebase/firestore";
+import Heart from "react-heart";
+import { ProductConvert } from "../converters/products";
+import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
+import { useDocument } from "react-firebase-hooks/firestore";
+import useFavorite from "../hooks/favorite";
+import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 
 export enum Size {
@@ -41,20 +44,22 @@ interface IFormInput {
 }
 
 export default function ProductPage() {
-  const firestore = useFirestore();
-  const { product_id: productId } = useParams<{
+  const db = getFirestore();
+  const { product_id } = useParams<{
     product_id: string;
   }>();
+  const [currentUser] = useAuthState(getAuth());
+  console.log("product_id", product_id);
 
-  const ref = doc(firestore, "products", productId);
-  const { status, data } = useFirestoreDocData(ref);
-
-  const [presentToast] = useIonToast();
-  const [presentLoading, dismiss] = useIonLoading();
+  const [data] = useDocument(
+    // "Loading" is a pseudo product id that exists in the database
+    // so that on first render, where product_id is not yet determined
+    // it will query the "Loading" product instead ;)
+    doc(db, "products", product_id ?? "Loading").withConverter(ProductConvert)
+  );
 
   const {
     register,
-    handleSubmit,
     setValue,
     watch,
     formState: { isValid },
@@ -64,25 +69,23 @@ export default function ProductPage() {
     },
   });
 
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {
-    presentLoading("Adding to cart...");
-  };
+  const qty = watch("quantity");
+  const size = watch("size");
 
   console.log("Product");
   console.log(data);
-
-  const qty = watch("quantity");
-  const size = watch("size");
-  const { addToCart, count } = useCart();
-
   console.log("size", size);
 
-  if (productId != "-1" && data != undefined) {
+  const { addToCart, count } = useCart();
+
+  const { isFavorite, toggleFavorite } = useFavorite(product_id);
+
+  if (data != undefined) {
     return (
       <IonPage>
         <IonHeader translucent={true}>
           <IonToolbar>
-            <IonTitle>{data.name}</IonTitle>
+            <IonTitle>{data.get("name")}</IonTitle>
             <IonButtons slot="start">
               <IonBackButton></IonBackButton>
             </IonButtons>
@@ -91,35 +94,38 @@ export default function ProductPage() {
         <IonContent fullscreen>
           <IonHeader collapse="condense">
             <IonToolbar className="ion-padding">
-              <IonTitle>{data.name}</IonTitle>
+              <IonTitle>{data.get("name")}</IonTitle>
               <IonButtons slot="end">
-                <IonIcon
-                  src={heartOutline}
-                  size="large"
-                  className="ion-margin-right"
-                ></IonIcon>
+                {currentUser && (
+                  <Heart
+                    style={{ width: "2rem" }}
+                    isActive={isFavorite}
+                    onClick={() => toggleFavorite()}
+                    animationTrigger="click"
+                    animationScale={1.2}
+                    inactiveColor="white"
+                    activeColor="red"
+                  />
+                )}
                 <IonBackButton></IonBackButton>
               </IonButtons>
             </IonToolbar>
           </IonHeader>
           <div className="ion-padding">
             <IonRow className="ion-justify-content-center ">
-              <img src={data.image} alt={data.name} width="50%" />
+              <img src={data.get("image")} alt={data.get("name")} width="50%" />
             </IonRow>
             <IonRow className="ion-margin-bottom">
-              <IonText>{data.description}</IonText>
+              <IonText>{data.get("description")}</IonText>
             </IonRow>
-            {data.coffee_type && (
-              <div
-                className="ion-justify-content-center flex"
-                style={{ width: "100%" }}
-              >
-                <IonBadge>{data.coffee_type}</IonBadge>
+            {data.get("coffee_type") && (
+              <div className="ion-justify-content-center flex w-full">
+                <IonBadge>{data.get("coffee_type")}</IonBadge>
               </div>
             )}
           </div>
           <form className="ion-padding">
-            {data.coffee_type && (
+            {data.get("coffee_type") && (
               <IonRow>
                 <IonSelect
                   label="Size"
@@ -174,20 +180,11 @@ export default function ProductPage() {
                 size="7"
                 className="ion-justify-content-center ion-align-items-center"
               >
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignContent: "center",
-                    flexDirection: "column",
-                    width: "100%",
-                    textAlign: "center",
-                  }}
-                >
+                <div className="flex justify-center align-center flex-col w-full text-center">
                   <IonText>Price</IonText>
                   <IonText>
                     <h3 className="ion-no-margin">
-                      {phpString.format(data.price)}
+                      {phpString.format(data.get("price"))}
                     </h3>
                   </IonText>
                 </div>
@@ -198,13 +195,13 @@ export default function ProductPage() {
                   onClick={() => {
                     if (size === Size.None) {
                       addToCart({
-                        product_id: productId,
+                        product_id: product_id,
                         quantity: qty,
                         index: count,
                       });
                     } else {
                       addToCart({
-                        product_id: productId,
+                        product_id: product_id,
                         quantity: qty,
                         size: size,
                         index: count,
