@@ -14,13 +14,13 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
-import { collection, getFirestore, query, where } from "firebase/firestore";
+import { collection, getFirestore, or, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
 import { ProductConvert } from "../converters/products";
-import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useCollection } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
 
 // import { useFirestore, useFirestoreCollectionData } from "reactfire";
@@ -38,21 +38,14 @@ export default function CategoryPage() {
 
   console.log("Category", category);
 
-  const productsCollection = collection(db, "products");
-  const productsQuery = query(
-    productsCollection,
-    where("category", "==", category.id)
+  const [productsData, productsLoading] = useCollection(
+    query(
+      collection(db, "products").withConverter(ProductConvert),
+      where("category", "==", category.id)
+    )
   );
 
-  // const { status: productsStatus, data: productsData } =
-  //   useFirestoreCollectionData(productsQuery, { idField: "id" });
-  const [productsData, productsLoading] = useCollectionData(
-    collection(db, "products").withConverter(ProductConvert)
-  );
-
-  if (productsLoading) {
-    return <></>;
-  }
+  console.log("productsData", productsData?.docs);
 
   return (
     <IonPage>
@@ -86,17 +79,17 @@ export default function CategoryPage() {
         </div>
         <IonGrid className="ion-padding">
           <IonRow>
-            {productsData
-              ?.filter((product) => product.category == category.id)
+            {productsData?.docs
+              .filter((product) => product.data().name != "Loading")
               .map((product) => (
                 <ProductCard
-                  key={product.id}
-                  image={product.image}
+                  key={product.get("id")}
+                  image={product.get("image")}
                   id={product.id}
-                  category={product.category}
-                  name={product.name}
-                  price={product.price}
-                  sales={product.sales}
+                  category={product.get("category")}
+                  name={product.get("name")}
+                  price={product.get("price")}
+                  sales={product.get("sales")}
                 />
               ))}
           </IonRow>

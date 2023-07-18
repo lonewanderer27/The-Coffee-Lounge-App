@@ -25,7 +25,13 @@ import {
   useIonRouter,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { collection, getFirestore } from "firebase/firestore";
+import {
+  collection,
+  getFirestore,
+  limit,
+  query,
+  where,
+} from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
@@ -39,7 +45,10 @@ const Home: React.FC = () => {
   );
 
   const [productsData, productsLoading, productsError] = useCollectionOnce(
-    collection(db, "products").withConverter(ProductConvert)
+    query(
+      collection(db, "products").withConverter(ProductConvert),
+      where("name", "!=", "Loading")
+    )
   );
 
   const router = useIonRouter();
