@@ -23,8 +23,6 @@ import { ProductConvert } from "../converters/products";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
 
-// import { useFirestore, useFirestoreCollectionData } from "reactfire";
-
 export default function CategoryPage() {
   const db = getFirestore();
   const location = useLocation();

@@ -41,8 +41,6 @@ import { useDocument } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router";
 import { useState } from "react";
 
-// import { useFirestore, useFirestoreDocDataOnce, useUser } from "reactfire";
-
 export default function ProfileAndSecurity() {
   const db = getFirestore();
   const history = useHistory();

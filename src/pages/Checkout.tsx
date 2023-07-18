@@ -20,16 +20,14 @@ import { useHistory, useLocation, useParams } from "react-router";
 
 import { PaymentOptionType } from "../types";
 import QRCode from "react-qr-code";
-import { useFirestoreDocData } from "reactfire";
+import { useDocument } from "react-firebase-hooks/firestore";
 
 export default function Checkout() {
   const [showQR, setShowQR] = useState(false);
-  const [showSuccess, setShowSuccess] = useState(false);
   const { order_id } = useParams<{ order_id: string }>();
   const history = useHistory();
 
-  const ref = doc(getFirestore(), "orders", order_id);
-  const { status, data } = useFirestoreDocData(ref);
+  const [data, status] = useDocument(doc(getFirestore(), "orders", order_id));
 
   const {
     register,
@@ -45,7 +43,7 @@ export default function Checkout() {
   };
 
   useEffect(() => {
-    if (data?.payment_status === "paid") {
+    if (data?.get("payment_status") === "paid") {
       setShowQR(false);
       history.replace("/orders/" + order_id);
     }
