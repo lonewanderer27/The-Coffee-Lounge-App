@@ -46,7 +46,13 @@ export default function ProductCard(props: ProductType) {
         className="ion-padding w-full m-0"
         onClick={() => router.push(`/product/${props.id}`)}
       >
-        <div style={{ backgroundColor: "gray", borderRadius: "5px" }}>
+        <div
+          style={{
+            backgroundColor: "gray",
+            borderRadius: "5px",
+            padding: "5px",
+          }}
+        >
           <img
             src={props.image}
             alt={props.name}
