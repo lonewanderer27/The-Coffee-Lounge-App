@@ -1,5 +1,4 @@
 import App from "./App";
-import { FirebaseAppProvider } from "reactfire";
 import React from "react";
 import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
@@ -18,10 +17,8 @@ const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <React.StrictMode>
-    <FirebaseAppProvider firebaseConfig={firebaseConfig}>
-      <RecoilRoot>
-        <App />
-      </RecoilRoot>
-    </FirebaseAppProvider>
+    <RecoilRoot>
+      <App />
+    </RecoilRoot>
   </React.StrictMode>
 );
