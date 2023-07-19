@@ -9,6 +9,7 @@ import {
   IonRow,
   IonTitle,
   IonToolbar,
+  isPlatform,
 } from "@ionic/react";
 import {
   collection,
@@ -19,6 +20,7 @@ import {
 } from "firebase/firestore";
 import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 
+import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { UserConvert } from "../converters/user";
 import useFavorite from "../hooks/favorite";
@@ -38,9 +40,14 @@ export default function MyFavorites() {
       <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>My Favorites</IonTitle>
-          <IonButtons>
+          <IonButtons slot="start">
             <IonBackButton></IonBackButton>
           </IonButtons>
+          {!isPlatform("ios") && (
+            <IonButtons slot="end">
+              <CartBtn />
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>

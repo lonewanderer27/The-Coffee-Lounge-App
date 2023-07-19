@@ -62,6 +62,11 @@ const Home: React.FC = () => {
       <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>Home</IonTitle>
+          {!isPlatform("ios") && (
+            <IonButtons slot="end">
+              <CartBtn />
+            </IonButtons>
+          )}
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
