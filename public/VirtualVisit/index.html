@@ -20,13 +20,15 @@
       ></canvas>
       <div id="optionsDiv">
         <select id="levelsAndCameras" class="viewerComponent custom-select"></select>
-        <div>
-          <label id="aerialViewLabel" class="viewerComponent">Aerial View</label>
-          <input id="aerialView" type="radio" name="visitType" style="visibility: hidden;" />
-        </div>
-        <div>
-          <label id="virtualVisitLabel" class="viewerComponent">Virtual Visit</label>
-          <input id="virtualVisit" type="radio" name="visitType" style="visibility: hidden;" />
+        <div id="viewSelector">
+          <label id="aerialViewLabel" class="viewerComponent">
+            <input id="aerialView" type="radio" name="visitType"/>
+            Aerial View
+          </label>
+          <label id="virtualVisitLabel" class="viewerComponent">
+            <input id="virtualVisit" type="radio" name="visitType" />
+            Virtual Visit
+          </label>
         </div>
       </div>
       <div id="viewerProgressDiv">
