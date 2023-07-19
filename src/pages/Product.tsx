@@ -18,6 +18,7 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonLoading,
 } from "@ionic/react";
 import { addOutline, heart, heartOutline, removeOutline } from "ionicons/icons";
 import { doc, getFirestore } from "firebase/firestore";
@@ -26,12 +27,15 @@ import Heart from "react-heart";
 import { ProductConvert } from "../converters/products";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
+import { productIdAtom } from "../atoms/products";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
 import { useDocument } from "react-firebase-hooks/firestore";
+import { useEffect } from "react";
 import useFavorite from "../hooks/favorite";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
+import { useRecoilValue } from "recoil";
 
 export enum Size {
   Small = "small",
@@ -52,12 +56,13 @@ export default function ProductPage() {
   }>();
   const [currentUser] = useAuthState(getAuth());
   console.log("product_id", product_id);
+  const productId = useRecoilValue(productIdAtom);
 
-  const [data] = useDocument(
+  const [data, dataLoading] = useDocument(
     // "Loading" is a pseudo product id that exists in the database
     // so that on first render, where product_id is not yet determined
     // it will query the "Loading" product instead ;)
-    doc(db, "products", product_id ?? "Loading").withConverter(ProductConvert)
+    doc(db, "products", product_id ?? productId).withConverter(ProductConvert)
   );
 
   const {
@@ -195,7 +200,7 @@ export default function ProductPage() {
               </IonCol>
               <IonCol>
                 <IonButton
-                  disabled={!isValid}
+                  disabled={!isValid || data.id === "Loading"}
                   onClick={() => {
                     if (size === Size.None) {
                       addToCart({
@@ -222,6 +227,4 @@ export default function ProductPage() {
       </IonPage>
     );
   }
-
-  return <></>;
 }

@@ -9,16 +9,19 @@ import {
   IonText,
   useIonRouter,
 } from "@ionic/react";
+import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { ProductType } from "../types";
 import { Size } from "../pages/Product";
 import { bagAddOutline } from "ionicons/icons";
 import { phpString } from "../phpString";
+import { productIdAtom } from "../atoms/products";
 import { useCart } from "../hooks/cart";
 
 export default function ProductCard(props: ProductType) {
   const { addToCart, count } = useCart();
   const router = useIonRouter();
+  const setProductId = useSetRecoilState(productIdAtom);
 
   const handleAddToCartClick = (
     event: React.MouseEvent<HTMLIonIconElement, MouseEvent>
@@ -44,7 +47,10 @@ export default function ProductCard(props: ProductType) {
     <IonCol size="6" className=" flex flex-column w-full">
       <IonCard
         className="ion-padding w-full m-0"
-        onClick={() => router.push(`/product/${props.id}`)}
+        onClick={() => {
+          setProductId(props.id);
+          router.push(`/product/${props.id}`);
+        }}
       >
         <div
           style={{

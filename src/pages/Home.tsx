@@ -44,7 +44,6 @@ import useFavorite from "../hooks/favorite";
 
 const Home: React.FC = () => {
   const db = getFirestore();
-  const [user] = useAuthState(getAuth());
   const [data, loading, error] = useCollectionOnce(
     collection(db, "categories").withConverter(CategoryConvert)
   );
@@ -57,8 +56,6 @@ const Home: React.FC = () => {
   );
 
   const { favorites } = useFavorite();
-
-  const router = useIonRouter();
 
   return (
     <IonPage>
@@ -107,17 +104,17 @@ const Home: React.FC = () => {
             <IonRow key={category.id + "ionrow"} className="ion-margin-bottom">
               <IonButton
                 fill="clear"
-                className="w-full text-inherit"
+                className="w-full text-inherit ion-no-margin"
                 color="default"
                 size="large"
                 routerLink={`/category?name=${category.get("name")}&id=${
                   category.id
                 }&description=${category.get("description")}`}
               >
-                <IonText className="mr-auto font-semibold">
+                <IonText className="mr-auto font-semibold" slot="start">
                   {category.get("altName")}
                 </IonText>
-                <IonIcon src={chevronForwardOutline}></IonIcon>
+                <IonIcon src={chevronForwardOutline} slot="end"></IonIcon>
               </IonButton>
               <IonCol size="12">
                 <IonGrid>
@@ -145,43 +142,46 @@ const Home: React.FC = () => {
               </IonCol>
             </IonRow>
           ))}
-          <IonRow className="ion-margin-bottom">
-            <IonButton
-              fill="clear"
-              className="w-full text-inherit"
-              color="default"
-              size="large"
-              routerLink="/my-favorites"
-            >
-              <IonText className="mr-auto font-semibold">
-                Your Favorites
-              </IonText>
-              <IonIcon src={chevronForwardOutline} />
-            </IonButton>
-            <IonCol size="12">
-              <IonGrid>
-                <IonRow>
-                  {productsData?.docs
-                    ?.filter((product) =>
-                      favorites?.includes(product.id) ? true : false
-                    )
-                    .map((product) => (
-                      <ProductCard
-                        key={product.id}
-                        image={product.get("image")}
-                        id={product.id}
-                        category={product.get("category")}
-                        name={product.get("name")}
-                        price={product.get("price")}
-                        sales={product.get("sales")}
-                        description={product.get("description")}
-                        coffee_type={product.get("coffee_type")}
-                      />
-                    ))}
-                </IonRow>
-              </IonGrid>
-            </IonCol>
-          </IonRow>
+          {favorites.length > 0 && (
+            <IonRow className="ion-margin-bottom">
+              <IonButton
+                fill="clear"
+                className="w-full text-inherit ion-no-margin"
+                color="default"
+                size="large"
+                routerLink="/my-favorites"
+              >
+                <IonText className="mr-auto font-semibold" slot="start">
+                  Your Favorites
+                </IonText>
+                <IonIcon src={chevronForwardOutline} slot="end" />
+              </IonButton>
+              <IonCol size="12">
+                <IonGrid>
+                  <IonRow>
+                    {productsData?.docs
+                      ?.filter((product) =>
+                        favorites?.includes(product.id) ? true : false
+                      )
+                      .slice(0, 2)
+                      .map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          image={product.get("image")}
+                          id={product.id}
+                          category={product.get("category")}
+                          name={product.get("name")}
+                          price={product.get("price")}
+                          sales={product.get("sales")}
+                          description={product.get("description")}
+                          coffee_type={product.get("coffee_type")}
+                        />
+                      ))}
+                  </IonRow>
+                </IonGrid>
+              </IonCol>
+            </IonRow>
+          )}
         </IonGrid>
       </IonContent>
     </IonPage>

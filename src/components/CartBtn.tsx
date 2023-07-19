@@ -9,14 +9,14 @@ export default function CartBtn() {
   const { count } = useCart();
 
   return (
-    <IonButton routerLink="/cart">
+    <IonButton routerLink="/cart" className="pr-2">
       <IonIcon
         id="cartIcon"
         src={bagOutline}
         size="large"
         className="ion-margin-right"
       ></IonIcon>
-      <IonBadge id="cartCount" color="danger" mode="ios">
+      <IonBadge id="cartCount" color="danger">
         {count}
       </IonBadge>
     </IonButton>

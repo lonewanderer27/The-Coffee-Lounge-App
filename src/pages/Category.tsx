@@ -43,8 +43,6 @@ export default function CategoryPage() {
     )
   );
 
-  console.log("productsData", productsData?.docs);
-
   return (
     <IonPage>
       <IonHeader translucent={true}>
@@ -64,9 +62,6 @@ export default function CategoryPage() {
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{category.name}</IonTitle>
-            <IonButtons slot="start">
-              <IonBackButton></IonBackButton>
-            </IonButtons>
             <IonButtons slot="end">
               <CartBtn />
             </IonButtons>
@@ -75,23 +70,25 @@ export default function CategoryPage() {
         <div className="ion-padding">
           <IonText>{category.description}</IonText>
         </div>
-        <IonGrid className="ion-padding">
-          <IonRow>
-            {productsData?.docs
-              .filter((product) => product.data().name != "Loading")
-              .map((product) => (
-                <ProductCard
-                  key={product.get("id")}
-                  image={product.get("image")}
-                  id={product.id}
-                  category={product.get("category")}
-                  name={product.get("name")}
-                  price={product.get("price")}
-                  sales={product.get("sales")}
-                />
-              ))}
-          </IonRow>
-        </IonGrid>
+        {productsData !== undefined && (
+          <IonGrid className="ion-padding">
+            <IonRow>
+              {productsData?.docs
+                .filter((product) => product.data().name != "Loading")
+                .map((product, index) => (
+                  <ProductCard
+                    key={product.get("id") ?? `product${index}`}
+                    image={product.get("image")}
+                    id={product.id}
+                    category={product.get("category")}
+                    name={product.get("name")}
+                    price={product.get("price")}
+                    sales={product.get("sales")}
+                  />
+                ))}
+            </IonRow>
+          </IonGrid>
+        )}
       </IonContent>
     </IonPage>
   );

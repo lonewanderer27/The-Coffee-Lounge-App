@@ -1,4 +1,6 @@
 import {
+  IonBackButton,
+  IonButtons,
   IonCol,
   IonContent,
   IonGrid,
@@ -36,6 +38,9 @@ export default function MyFavorites() {
       <IonHeader translucent={true}>
         <IonToolbar>
           <IonTitle>My Favorites</IonTitle>
+          <IonButtons>
+            <IonBackButton></IonBackButton>
+          </IonButtons>
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
