@@ -85,7 +85,7 @@ export default function ProductPage() {
 
   const { addToCart, count } = useCart();
 
-  const { isFavorite, toggleFavorite } = useFavorite(product_id);
+  const { isFavorite, toggleFavorite } = useFavorite(product_id ?? productId);
 
   if (data != undefined) {
     return (
