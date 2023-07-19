@@ -50,7 +50,7 @@ const Account: React.FC = () => {
 
   const logout = () => auth.signOut().then(() => history.push("/login"));
 
-  if (!userLoading && userData) {
+  if (!userLoading) {
     return (
       <IonPage>
         <IonHeader translucent={true}>
@@ -76,17 +76,17 @@ const Account: React.FC = () => {
               <IonCol size="auto">
                 {currentUser?.photoURL && <img src={currentUser.photoURL} />}
                 {!currentUser?.photoURL && (
-                  <Avatar name={userData.get("first_name")} round />
+                  <Avatar name={userData!.get("first_name")} round />
                 )}
               </IonCol>
               <IonCol className="ion-padding-start">
                 <IonText>
                   <h2>
-                    {userData.get("first_name")} {userData.get("last_name")}
+                    {userData!.get("first_name")} {userData!.get("last_name")}
                   </h2>
                 </IonText>
                 <IonText>
-                  <h6>Nickname: {userData.get("nickname")}</h6>
+                  <h6>Nickname: {userData!.get("nickname")}</h6>
                 </IonText>
               </IonCol>
             </IonRow>

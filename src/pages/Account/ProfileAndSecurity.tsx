@@ -52,7 +52,7 @@ export default function ProfileAndSecurity() {
   // const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
   //   idField: "id",
   // });
-  const [userData, userStatus] = useDocument(
+  const [userData, userLoading] = useDocument(
     doc(db, "users", auth.currentUser!.uid).withConverter(UserConvert)
   );
 
@@ -117,7 +117,7 @@ export default function ProfileAndSecurity() {
       });
   };
 
-  if (userData)
+  if (!userLoading)
     return (
       <IonPage>
         <IonHeader translucent={true}>
@@ -139,7 +139,7 @@ export default function ProfileAndSecurity() {
               <IonCol size="auto">
                 {data?.photoURL && <img src={data?.photoURL} />}
                 {!data?.photoURL && (
-                  <Avatar name={userData.get("first_name")} round />
+                  <Avatar name={userData!.get("first_name")} round />
                 )}
               </IonCol>
             </IonRow>
@@ -150,23 +150,23 @@ export default function ProfileAndSecurity() {
             </IonListHeader>
             <IonItem>
               <IonLabel>First Name</IonLabel>
-              <IonLabel>{userData.get("first_name")}</IonLabel>
+              <IonLabel>{userData!.get("first_name")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Last Name</IonLabel>
-              <IonLabel>{userData.get("last_name")}</IonLabel>
+              <IonLabel>{userData!.get("last_name")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Nickname</IonLabel>
-              <IonLabel>{userData.get("nickname")}</IonLabel>
+              <IonLabel>{userData!.get("nickname")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Pronouns</IonLabel>
-              <IonLabel>{userData.get("pronouns")}</IonLabel>
+              <IonLabel>{userData!.get("pronouns")}</IonLabel>
             </IonItem>
             <IonItem>
               <IonLabel>Gender</IonLabel>
-              <IonLabel>{userData.get("gender")}</IonLabel>
+              <IonLabel>{userData!.get("gender")}</IonLabel>
             </IonItem>
           </IonList>
           <IonList>
@@ -198,13 +198,13 @@ export default function ProfileAndSecurity() {
           <IonAlert
             trigger="last-signed-in"
             header="Last Signed In"
-            message={data?.metadata.lastSignInTime}
+            message={data!.metadata.lastSignInTime}
             buttons={["OK"]}
           ></IonAlert>
           <IonAlert
             trigger="last-signed-up"
             header="Signed Up"
-            message={data?.metadata.creationTime}
+            message={data!.metadata.creationTime}
             buttons={["OK"]}
           />
           <IonAlert
