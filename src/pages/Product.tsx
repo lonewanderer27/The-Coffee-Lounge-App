@@ -136,36 +136,39 @@ export default function ProductPage() {
           </div>
           <form className="ion-padding">
             {data.get("coffee_type") && (
-              <IonSegment
-                onIonChange={(event) => {
-                  setValue("size", event.detail.value as Size);
-                }}
-                value={watch("size")}
-              >
-                <IonSegmentButton value={Size.Tall}>
-                  {/* <SmallCup active /> */}
-                  <Cup size={Size.Tall} active />
-                  {/* <IonLabel className="ion-margin-bottom">Tall</IonLabel> */}
-                </IonSegmentButton>
-                <IonSegmentButton value={Size.Grande}>
-                  <Cup size={Size.Grande} />
-                  {/* <MediumCup /> */}
-                  {/* <IonLabel className="ion-margin-bottom">Grande</IonLabel> */}
-                </IonSegmentButton>
-                <IonSegmentButton value={Size.Venti}>
-                  <Cup size={Size.Venti} />
-                  {/* <LargeCup /> */}
-                  {/* <IonLabel className="ion-margin-bottom">Venti</IonLabel> */}
-                </IonSegmentButton>
-              </IonSegment>
+              <div className="ion-padding">
+                <IonText className="text-xl">Sizes</IonText>
+                <IonSegment
+                  onIonChange={(event) => {
+                    setValue("size", event.detail.value as Size);
+                  }}
+                  value={watch("size")}
+                  className=" ion-margin-top"
+                >
+                  <IonSegmentButton value={Size.Tall}>
+                    {/* <SmallCup active /> */}
+                    <Cup size={Size.Tall} active />
+                    {/* <IonLabel className="ion-margin-bottom">Tall</IonLabel> */}
+                  </IonSegmentButton>
+                  <IonSegmentButton value={Size.Grande}>
+                    <Cup size={Size.Grande} />
+                    {/* <MediumCup /> */}
+                    {/* <IonLabel className="ion-margin-bottom">Grande</IonLabel> */}
+                  </IonSegmentButton>
+                  <IonSegmentButton value={Size.Venti}>
+                    <Cup size={Size.Venti} />
+                    {/* <LargeCup /> */}
+                    {/* <IonLabel className="ion-margin-bottom">Venti</IonLabel> */}
+                  </IonSegmentButton>
+                </IonSegment>
+              </div>
             )}
             <IonList>
               <IonItem className="ion-align-items-center ion-margin-top">
                 <IonCol className="ion-no-padding ion-padding-end">
                   <IonInput
                     label="Quantity"
-                    fill="outline"
-                    className="ion-text-right"
+                    className="ion-text-right text-xl"
                     {...register("quantity", { required: true })}
                   ></IonInput>
                 </IonCol>
