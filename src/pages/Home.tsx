@@ -147,7 +147,7 @@ const Home: React.FC = () => {
               >
                 <IonButton
                   fill="clear"
-                  className="w-full text-white"
+                  className="w-full text-inherit"
                   color="default"
                   size="large"
                 >
