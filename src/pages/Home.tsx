@@ -147,11 +147,11 @@ const Home: React.FC = () => {
               >
                 <IonButton
                   fill="clear"
-                  className="w-full"
+                  className="w-full text-white"
                   color="default"
                   size="large"
                 >
-                  <IonText className="mr-auto">
+                  <IonText className="mr-auto font-semibold">
                     {category.get("altName")}
                   </IonText>
                   <IonIcon src={chevronForwardOutline}></IonIcon>
