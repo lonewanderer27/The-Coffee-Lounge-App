@@ -45,7 +45,7 @@ export default function VirtualVisit() {
 
   const url =
     process.env.NODE_ENV === "production"
-      ? "https://tcl-3dview-only.vercel.app"
+      ? "https://tcl-3dview.pages.dev"
       : "http://localhost:5173";
 
   return (
