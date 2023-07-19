@@ -32,14 +32,13 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import useFavorite, { useFavorites } from "../hooks/favorite";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
-import { chevronForwardOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
+import useFavorite from "../hooks/favorite";
 
 const Home: React.FC = () => {
   const db = getFirestore();
