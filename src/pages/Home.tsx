@@ -6,6 +6,7 @@ import { CategoryConvert, ProductConvert } from "../converters/products";
 import {
   IonButton,
   IonButtons,
+  IonCard,
   IonCol,
   IonContent,
   IonGrid,
@@ -35,6 +36,7 @@ import {
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
+import { chevronForwardOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
@@ -80,7 +82,6 @@ const Home: React.FC = () => {
           }}
           navigation={true}
           modules={[Autoplay, Pagination]}
-          className="ion-padding"
         >
           <SwiperSlide className="ion-padding">
             <img
@@ -102,20 +103,68 @@ const Home: React.FC = () => {
           </SwiperSlide>
         </Swiper>
         <IonGrid className="ion-padding-vertical">
-          <IonRow>
-            <IonRow className="ion-margin-bottom">
-              <IonList>
-                <IonListHeader>
-                  <IonLabel>Your Favorites</IonLabel>
-                </IonListHeader>
-              </IonList>
+          <IonRow className="ion-margin-bottom">
+            <IonList>
+              <IonListHeader>
+                <IonLabel>Your Favorites</IonLabel>
+              </IonListHeader>
+            </IonList>
+            <IonCol size="12">
+              <IonGrid>
+                <IonRow>
+                  {productsData?.docs
+                    ?.filter((product) =>
+                      favorites?.includes(product.id) ? true : false
+                    )
+                    .map((product) => (
+                      <ProductCard
+                        key={product.id}
+                        image={product.get("image")}
+                        id={product.id}
+                        category={product.get("category")}
+                        name={product.get("name")}
+                        price={product.get("price")}
+                        sales={product.get("sales")}
+                        description={product.get("description")}
+                        coffee_type={product.get("coffee_type")}
+                      />
+                    ))}
+                </IonRow>
+              </IonGrid>
+            </IonCol>
+          </IonRow>
+          {data?.docs?.map((category) => (
+            <IonRow key={category.id + "ionrow"} className="ion-margin-bottom">
+              <IonButtons
+                className="ion-padding-start w-full"
+                onClick={() =>
+                  router.push(
+                    `/category?name=${category.get("name")}&id=${
+                      category.id
+                    }&description=${category.get("description")}`
+                  )
+                }
+              >
+                <IonButton
+                  fill="clear"
+                  className="w-full"
+                  color="default"
+                  size="large"
+                >
+                  <IonText className="mr-auto">
+                    {category.get("altName")}
+                  </IonText>
+                  <IonIcon src={chevronForwardOutline}></IonIcon>
+                </IonButton>
+              </IonButtons>
               <IonCol size="12">
                 <IonGrid>
                   <IonRow>
                     {productsData?.docs
-                      ?.filter((product) =>
-                        favorites?.includes(product.id) ? true : false
+                      ?.filter(
+                        (product) => product.get("category") == category.id
                       )
+                      .slice(0, 2)
                       .map((product) => (
                         <ProductCard
                           key={product.id}
@@ -133,58 +182,7 @@ const Home: React.FC = () => {
                 </IonGrid>
               </IonCol>
             </IonRow>
-            {data?.docs?.map((category) => (
-              <IonRow
-                key={category.id + "ionrow"}
-                className="ion-margin-bottom"
-              >
-                <IonList>
-                  <IonListHeader
-                    onClick={() =>
-                      router.push(
-                        `/category?name=${category.get("name")}&id=${
-                          category.id
-                        }&description=${category.get("description")}`
-                      )
-                    }
-                  >
-                    <IonLabel>
-                      <IonText>{category.get("altName")}</IonText>
-                    </IonLabel>
-                    {/* <IonIcon
-                      src={chevronForwardOutline}
-                      size="large"
-                      className="left-0"
-                    /> */}
-                  </IonListHeader>
-                </IonList>
-                <IonCol size="12">
-                  <IonGrid>
-                    <IonRow>
-                      {productsData?.docs
-                        ?.filter(
-                          (product) => product.get("category") == category.id
-                        )
-                        .slice(0, 2)
-                        .map((product) => (
-                          <ProductCard
-                            key={product.id}
-                            image={product.get("image")}
-                            id={product.id}
-                            category={product.get("category")}
-                            name={product.get("name")}
-                            price={product.get("price")}
-                            sales={product.get("sales")}
-                            description={product.get("description")}
-                            coffee_type={product.get("coffee_type")}
-                          />
-                        ))}
-                    </IonRow>
-                  </IonGrid>
-                </IonCol>
-              </IonRow>
-            ))}
-          </IonRow>
+          ))}
         </IonGrid>
       </IonContent>
     </IonPage>
