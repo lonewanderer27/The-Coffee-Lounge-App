@@ -31,7 +31,7 @@ export default function ProductCard(props: ProductType) {
       addToCart({
         product_id: props.id,
         quantity: 1,
-        size: Size.Medium,
+        size: Size.Grande,
         index: count,
       });
     } else {

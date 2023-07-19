@@ -13,7 +13,6 @@ import { useDocument } from "react-firebase-hooks/firestore";
 export default function useFavorite(product_id?: string) {
   const db = getFirestore();
   const { currentUser } = getAuth();
-  console.log("currentUser", currentUser);
 
   // "Loading" is a pseudo product id that exists in the database
   // so that on first render, where product_id is not yet determined

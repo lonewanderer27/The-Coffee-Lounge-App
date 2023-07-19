@@ -1,3 +1,4 @@
+import { Cup, LargeCup, MediumCup, SmallCup } from "../components/CupSizes";
 import {
   IonBackButton,
   IonBadge,
@@ -10,9 +11,12 @@ import {
   IonIcon,
   IonInput,
   IonItem,
+  IonLabel,
   IonList,
   IonPage,
   IonRow,
+  IonSegment,
+  IonSegmentButton,
   IonSelect,
   IonSelectOption,
   IonText,
@@ -31,16 +35,15 @@ import { productIdAtom } from "../atoms/products";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { useEffect } from "react";
 import useFavorite from "../hooks/favorite";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
 export enum Size {
-  Small = "small",
-  Medium = "medium",
-  Large = "large",
+  Tall = "tall",
+  Grande = "grande",
+  Venti = "venti",
   None = "none",
 }
 
@@ -132,26 +135,31 @@ export default function ProductPage() {
             )}
           </div>
           <form className="ion-padding">
+            {data.get("coffee_type") && (
+              <IonSegment
+                onIonChange={(event) => {
+                  setValue("size", event.detail.value as Size);
+                }}
+                value={watch("size")}
+              >
+                <IonSegmentButton value={Size.Tall}>
+                  {/* <SmallCup active /> */}
+                  <Cup size={Size.Tall} active />
+                  {/* <IonLabel className="ion-margin-bottom">Tall</IonLabel> */}
+                </IonSegmentButton>
+                <IonSegmentButton value={Size.Grande}>
+                  <Cup size={Size.Grande} />
+                  {/* <MediumCup /> */}
+                  {/* <IonLabel className="ion-margin-bottom">Grande</IonLabel> */}
+                </IonSegmentButton>
+                <IonSegmentButton value={Size.Venti}>
+                  <Cup size={Size.Venti} />
+                  {/* <LargeCup /> */}
+                  {/* <IonLabel className="ion-margin-bottom">Venti</IonLabel> */}
+                </IonSegmentButton>
+              </IonSegment>
+            )}
             <IonList>
-              {data.get("coffee_type") && (
-                <IonItem>
-                  <IonSelect
-                    label="Size"
-                    fill="outline"
-                    {...register("size", { required: true })}
-                  >
-                    <IonSelectOption value={Size.Small}>
-                      <IonText>Small</IonText>
-                    </IonSelectOption>
-                    <IonSelectOption value={Size.Medium}>
-                      <IonText>Medium</IonText>
-                    </IonSelectOption>
-                    <IonSelectOption value={Size.Large}>
-                      <IonText>Large</IonText>
-                    </IonSelectOption>
-                  </IonSelect>
-                </IonItem>
-              )}
               <IonItem className="ion-align-items-center ion-margin-top">
                 <IonCol className="ion-no-padding ion-padding-end">
                   <IonInput

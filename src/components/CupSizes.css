@@ -1,0 +1,18 @@
+/* .cupSizes {
+    width: 125px;
+    height: auto;
+    fill: green;
+    color: green;
+}
+
+@media (prefers-color-scheme: dark) {
+    .cupSizes {
+        fill: #fff;
+    }
+}
+
+@media (prefers-color-scheme: light) {
+    .cupSizes {
+        fill: #000;
+    }
+} */
