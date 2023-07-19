@@ -9,6 +9,8 @@ import {
   IonHeader,
   IonIcon,
   IonInput,
+  IonItem,
+  IonList,
   IonPage,
   IonRow,
   IonSelect,
@@ -93,9 +95,9 @@ export default function ProductPage() {
         </IonHeader>
         <IonContent fullscreen>
           <IonHeader collapse="condense">
-            <IonToolbar className="ion-padding">
+            <IonToolbar>
               <IonTitle>{data.get("name")}</IonTitle>
-              <IonButtons slot="end">
+              <IonButtons slot="end" className="pr-10">
                 {currentUser && (
                   <Heart
                     style={{ width: "2rem" }}
@@ -115,8 +117,8 @@ export default function ProductPage() {
             <IonRow className="ion-justify-content-center ">
               <img src={data.get("image")} alt={data.get("name")} width="50%" />
             </IonRow>
-            <IonRow className="ion-margin-bottom">
-              <IonText>{data.get("description")}</IonText>
+            <IonRow className="ion-margin-bottom text-center">
+              <IonText className="w-full">{data.get("description")}</IonText>
             </IonRow>
             {data.get("coffee_type") && (
               <div className="ion-justify-content-center flex w-full">
@@ -125,52 +127,54 @@ export default function ProductPage() {
             )}
           </div>
           <form className="ion-padding">
-            {data.get("coffee_type") && (
-              <IonRow>
-                <IonSelect
-                  label="Size"
-                  fill="outline"
-                  {...register("size", { required: true })}
-                >
-                  <IonSelectOption value={Size.Small}>
-                    <IonText>Small</IonText>
-                  </IonSelectOption>
-                  <IonSelectOption value={Size.Medium}>
-                    <IonText>Medium</IonText>
-                  </IonSelectOption>
-                  <IonSelectOption value={Size.Large}>
-                    <IonText>Large</IonText>
-                  </IonSelectOption>
-                </IonSelect>
-              </IonRow>
-            )}
-            <IonRow className="ion-align-items-center ion-margin-top">
-              <IonCol className="ion-no-padding ion-padding-end">
-                <IonInput
-                  label="Quantity"
-                  fill="outline"
-                  className="ion-text-right"
-                  {...register("quantity", { required: true })}
-                ></IonInput>
-              </IonCol>
-              <IonCol size="auto" className="ion ion-no-padding">
-                <IonButton
-                  size="small"
-                  onClick={() => {
-                    if (qty > 1) setValue("quantity", qty - 1);
-                  }}
-                  disabled={qty <= 1}
-                >
-                  <IonIcon src={removeOutline} />
-                </IonButton>
-                <IonButton
-                  size="small"
-                  onClick={() => setValue("quantity", qty + 1)}
-                >
-                  <IonIcon src={addOutline} />
-                </IonButton>
-              </IonCol>
-            </IonRow>
+            <IonList>
+              {data.get("coffee_type") && (
+                <IonItem>
+                  <IonSelect
+                    label="Size"
+                    fill="outline"
+                    {...register("size", { required: true })}
+                  >
+                    <IonSelectOption value={Size.Small}>
+                      <IonText>Small</IonText>
+                    </IonSelectOption>
+                    <IonSelectOption value={Size.Medium}>
+                      <IonText>Medium</IonText>
+                    </IonSelectOption>
+                    <IonSelectOption value={Size.Large}>
+                      <IonText>Large</IonText>
+                    </IonSelectOption>
+                  </IonSelect>
+                </IonItem>
+              )}
+              <IonItem className="ion-align-items-center ion-margin-top">
+                <IonCol className="ion-no-padding ion-padding-end">
+                  <IonInput
+                    label="Quantity"
+                    fill="outline"
+                    className="ion-text-right"
+                    {...register("quantity", { required: true })}
+                  ></IonInput>
+                </IonCol>
+                <IonCol size="auto" className="ion ion-no-padding">
+                  <IonButton
+                    size="small"
+                    onClick={() => {
+                      if (qty > 1) setValue("quantity", qty - 1);
+                    }}
+                    disabled={qty <= 1}
+                  >
+                    <IonIcon src={removeOutline} />
+                  </IonButton>
+                  <IonButton
+                    size="small"
+                    onClick={() => setValue("quantity", qty + 1)}
+                  >
+                    <IonIcon src={addOutline} />
+                  </IonButton>
+                </IonCol>
+              </IonItem>
+            </IonList>
           </form>
         </IonContent>
         <IonFooter>

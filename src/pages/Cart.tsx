@@ -36,20 +36,12 @@ import {
 } from "@ionic/react";
 import { OrderProductType, OrderType } from "../types";
 
-import CartBtn from "../components/CartBtn";
-import ExploreContainer from "../components/ExploreContainer";
 import OrderItem from "../components/OrderItem";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
 import { useHistory } from "react-router-dom";
-import { useState } from "react";
-
-interface SegmentCustomEvent extends CustomEvent {
-  target: HTMLIonSegmentElement;
-  detail: SegmentChangeEventDetail;
-}
 
 const Cart: React.FC = () => {
   const db = getFirestore();

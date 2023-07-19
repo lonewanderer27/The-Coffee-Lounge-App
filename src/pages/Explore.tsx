@@ -56,7 +56,7 @@ const Explore: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen scrollEvents={true} ref={contentRef}>
         <IonHeader collapse="condense">
-          <IonToolbar className="ion-padding">
+          <IonToolbar>
             <IonTitle size="large">Explore</IonTitle>
           </IonToolbar>
         </IonHeader>

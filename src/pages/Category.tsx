@@ -62,7 +62,7 @@ export default function CategoryPage() {
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
-          <IonToolbar className="ion-padding">
+          <IonToolbar>
             <IonTitle size="large">{category.name}</IonTitle>
             <IonButtons slot="start">
               <IonBackButton></IonBackButton>

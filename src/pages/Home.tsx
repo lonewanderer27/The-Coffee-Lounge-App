@@ -36,10 +36,13 @@ import {
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { chevronForwardOutline } from "ionicons/icons";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 
 const Home: React.FC = () => {
   const db = getFirestore();
+  const [user] = useAuthState(getAuth());
   const [data, loading, error] = useCollectionOnce(
     collection(db, "categories").withConverter(CategoryConvert)
   );
@@ -62,7 +65,7 @@ const Home: React.FC = () => {
       </IonHeader>
       <IonContent fullscreen>
         <IonHeader collapse="condense">
-          <IonToolbar className="ion-padding">
+          <IonToolbar>
             <IonTitle size="large">Home</IonTitle>
             <IonButtons slot="end">
               <CartBtn />
@@ -75,6 +78,7 @@ const Home: React.FC = () => {
           }}
           navigation={true}
           modules={[Autoplay, Pagination]}
+          className="ion-padding"
         >
           <SwiperSlide className="ion-padding">
             <img
@@ -97,13 +101,25 @@ const Home: React.FC = () => {
         </Swiper>
         <IonGrid className="ion-padding-vertical">
           <IonRow>
+            <IonRow className="ion-margin-bottom">
+              <IonList>
+                <IonListHeader>
+                  <IonLabel>Your Favorites</IonLabel>
+                </IonListHeader>
+              </IonList>
+              <IonCol size="12">
+                <IonGrid>
+                  <IonRow></IonRow>
+                </IonGrid>
+              </IonCol>
+            </IonRow>
             {data?.docs?.map((category) => (
               <IonRow
                 key={category.id + "ionrow"}
                 className="ion-margin-bottom"
               >
                 <IonList>
-                  <IonItem
+                  <IonListHeader
                     onClick={() =>
                       router.push(
                         `/category?name=${category.get("name")}&id=${
@@ -115,12 +131,12 @@ const Home: React.FC = () => {
                     <IonLabel>
                       <IonText>{category.get("altName")}</IonText>
                     </IonLabel>
-                    <IonIcon
+                    {/* <IonIcon
                       src={chevronForwardOutline}
                       size="large"
                       className="left-0"
-                    />
-                  </IonItem>
+                    /> */}
+                  </IonListHeader>
                 </IonList>
                 <IonCol size="12">
                   <IonGrid>
