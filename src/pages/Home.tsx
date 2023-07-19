@@ -32,6 +32,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
+import useFavorite, { useFavorites } from "../hooks/favorite";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
@@ -53,6 +54,8 @@ const Home: React.FC = () => {
       where("name", "!=", "Loading")
     )
   );
+
+  const { favorites } = useFavorite();
 
   const router = useIonRouter();
 
@@ -109,7 +112,25 @@ const Home: React.FC = () => {
               </IonList>
               <IonCol size="12">
                 <IonGrid>
-                  <IonRow></IonRow>
+                  <IonRow>
+                    {productsData?.docs
+                      ?.filter((product) =>
+                        favorites?.includes(product.id) ? true : false
+                      )
+                      .map((product) => (
+                        <ProductCard
+                          key={product.id}
+                          image={product.get("image")}
+                          id={product.id}
+                          category={product.get("category")}
+                          name={product.get("name")}
+                          price={product.get("price")}
+                          sales={product.get("sales")}
+                          description={product.get("description")}
+                          coffee_type={product.get("coffee_type")}
+                        />
+                      ))}
+                  </IonRow>
                 </IonGrid>
               </IonCol>
             </IonRow>

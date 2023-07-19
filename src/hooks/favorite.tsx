@@ -10,7 +10,7 @@ import { UserConvert } from "../converters/user";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 
-export default function useFavorite(product_id: string) {
+export default function useFavorite(product_id?: string) {
   const db = getFirestore();
   const { currentUser } = getAuth();
   console.log("currentUser", currentUser);
@@ -42,6 +42,7 @@ export default function useFavorite(product_id: string) {
   };
 
   return {
+    favorites: data?.get("favorites") ?? [],
     isFavorite: isFavorite(),
     toggleFavorite,
   };
