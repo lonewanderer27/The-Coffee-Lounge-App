@@ -16,9 +16,11 @@ import {
   help,
   warningOutline,
 } from "ionicons/icons";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 export default function VirtualVisit() {
+  const [iframeRef, setIframeRef] = useState<HTMLIFrameElement | null>(null);
+
   // Online state
   const [isOnline, setIsOnline] = useState(navigator.onLine);
 
@@ -43,10 +45,14 @@ export default function VirtualVisit() {
 
   const [helpOpen, setHelpOpen] = useState(false);
 
-  const url =
-    process.env.NODE_ENV === "production"
-      ? "https://tcl-3dview.pages.dev"
-      : "http://localhost:5173";
+  useEffect(() => {
+    if (!iframeRef) return;
+    window.addEventListener("message", (event) => {
+      if (event) {
+        console.log(event.data);
+      }
+    });
+  }, [iframeRef]);
 
   return (
     <IonPage>
@@ -54,6 +60,7 @@ export default function VirtualVisit() {
         {isOnline && (
           <>
             <iframe
+              ref={setIframeRef}
               width={window.innerWidth - 1}
               height={window.innerHeight - 50}
               style={{
@@ -63,7 +70,7 @@ export default function VirtualVisit() {
                 touchAction: "none",
               }}
               tabIndex={1}
-              src={url}
+              src={"/VirtualVisit/index.html"}
             ></iframe>
             <IonFab slot="fixed" horizontal="end" vertical="bottom">
               <IonFabButton>

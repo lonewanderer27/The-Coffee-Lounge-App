@@ -71,6 +71,7 @@ function App() {
       <IonReactRouter>
         <IonTabs>
           <IonRouterOutlet>
+            <Route exact path="/virtualVisit/index.html" />
             <AuthWrapper fallback={<Login />}>
               <Route exact path="/account">
                 <Account />

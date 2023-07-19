@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/VirtualVisit/style.css" />
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
+    <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css" />    
+    <title>TCL 3D View</title>
+  </head>
+  <body>
+    <!-- Copy the following canvas and components in your page, changing their size / texts and other values if needed  -->
+    <div style="position: relative;">
+      <canvas
+        id="viewerCanvas"
+        class="viewerComponent"
+        tabindex="1"
+      ></canvas>
+      <div id="optionsDiv">
+        <select id="levelsAndCameras" class="viewerComponent custom-select"></select>
+        <div>
+          <label id="aerialViewLabel" class="viewerComponent">Aerial View</label>
+          <input id="aerialView" type="radio" name="visitType" style="visibility: hidden;" />
+        </div>
+        <div>
+          <label id="virtualVisitLabel" class="viewerComponent">Virtual Visit</label>
+          <input id="virtualVisit" type="radio" name="visitType" style="visibility: hidden;" />
+        </div>
+      </div>
+      <div id="viewerProgressDiv">
+        <progress id="viewerProgress" class="viewerComponent" value="0" max="200"></progress>
+        <label id="viewerProgressLabel" class="viewerComponent"></label>
+      </div>
+    </div>
+    <script type="text/javascript" src="/VirtualVisit/lib/big.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/gl-matrix-min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/jszip.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/core.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/geom.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/stroke.min.js"></script>
+    <script
+      type="text/javascript"
+      src="/VirtualVisit/lib/batik-svgpathparser.min.js"
+    ></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/jsXmlSaxParser.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/triangulator.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/viewmodel.min.js"></script>
+    <script type="text/javascript" src="/VirtualVisit/lib/viewhome.min.js"></script>
+    <script type="module" src="/VirtualVisit/main.js"></script>
+  </body>
+</html>
