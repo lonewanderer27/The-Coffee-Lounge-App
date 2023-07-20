@@ -65,7 +65,10 @@ export default function ProductCard(props: ProductType) {
             style={{ height: "auto", width: "100%" }}
           />
         </div>
-        <IonCardTitle style={{ fontSize: "1rem" }} className="ion-margin-top">
+        <IonCardTitle
+          style={{ fontSize: "1rem" }}
+          className="ion-margin-top whitespace-nowrap truncate overflow-hidden"
+        >
           {props.name}
         </IonCardTitle>
 
