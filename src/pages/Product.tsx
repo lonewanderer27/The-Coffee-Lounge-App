@@ -112,7 +112,7 @@ export default function ProductPage() {
             <IonRow className="ion-justify-content-center relative">
               {currentUser && (
                 <Heart
-                  className="absolute top-5 right-5"
+                  className="absolute top-2 right-2"
                   style={{ width: "2rem" }}
                   isActive={isFavorite}
                   onClick={() => toggleFavorite()}
@@ -123,17 +123,28 @@ export default function ProductPage() {
                 />
               )}
               {data.get("coffee_type") && (
-                <IonBadge className="absolute top-5 left-5">
+                <IonBadge className="absolute top-2 left-2">
                   {data.get("coffee_type")}
                 </IonBadge>
               )}
-              <img src={data.get("image")} alt={data.get("name")} width="60%" />
-              <IonText className="w-full text-xl font-semibold bottom-0 text-center">
+              <img
+                className={`${data.get("description") ? "mb-5" : ""}`}
+                src={data.get("image")}
+                alt={data.get("name")}
+                width="60%"
+              />
+              <IonText
+                className={`absolute w-full text-xl font-semibold bottom-0 ${
+                  !data.get("description") ? "text-center" : "text-left"
+                }`}
+              >
                 {data.get("name")}
               </IonText>
             </IonRow>
-            <IonRow className="ion-margin-bottom text-center">
-              <IonText className="w-full">{data.get("description")}</IonText>
+            <IonRow>
+              <IonText className="w-full text-justify">
+                {data.get("description")}
+              </IonText>
             </IonRow>
           </div>
           <form className="ion-padding">
