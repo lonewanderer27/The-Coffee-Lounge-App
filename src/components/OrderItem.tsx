@@ -16,12 +16,12 @@ import { doc, getFirestore } from "firebase/firestore";
 
 import { CartItemType } from "../types";
 import { ProductConvert } from "../converters/products";
+import { db } from "../main";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
 
 export default function OrderItem(props: CartItemType) {
-  const db = getFirestore();
   const [data, status] = useDocumentOnce(
     doc(db, "products", props.product_id).withConverter(ProductConvert)
   );

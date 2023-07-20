@@ -1,5 +1,6 @@
+import { initializeFirestore, memoryLocalCache } from "firebase/firestore";
+
 import App from "./App";
-import React from "react";
 import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
 import { initializeApp } from "firebase/app";
@@ -15,13 +16,14 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
+export const db = initializeFirestore(app, {
+  localCache: memoryLocalCache(),
+});
 
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
-  <React.StrictMode>
-    <RecoilRoot>
-      <App />
-    </RecoilRoot>
-  </React.StrictMode>
+  <RecoilRoot>
+    <App />
+  </RecoilRoot>
 );

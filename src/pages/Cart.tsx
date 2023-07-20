@@ -37,6 +37,7 @@ import {
 import { OrderProductType, OrderType } from "../types";
 
 import OrderItem from "../components/OrderItem";
+import { db } from "../main";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -44,7 +45,6 @@ import { useCart } from "../hooks/cart";
 import { useHistory } from "react-router-dom";
 
 const Cart: React.FC = () => {
-  const db = getFirestore();
   const [data, loading, error] = useAuthState(getAuth());
   const history = useHistory();
 

@@ -26,15 +26,16 @@ import {
 } from "@ionic/react";
 import { addOutline, heart, heartOutline, removeOutline } from "ionicons/icons";
 import { doc, getFirestore } from "firebase/firestore";
+import { useDocument, useDocumentOnce } from "react-firebase-hooks/firestore";
 
 import Heart from "react-heart";
 import { ProductConvert } from "../converters/products";
+import { db } from "../main";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
-import { useDocument } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
@@ -53,7 +54,6 @@ interface IFormInput {
 }
 
 export default function ProductPage() {
-  const db = getFirestore();
   const { product_id } = useParams<{
     product_id: string;
   }>();
@@ -61,7 +61,7 @@ export default function ProductPage() {
   console.log("product_id", product_id);
   const productId = useRecoilValue(productIdAtom);
 
-  const [data, dataLoading] = useDocument(
+  const [data, dataLoading] = useDocumentOnce(
     // "Loading" is a pseudo product id that exists in the database
     // so that on first render, where product_id is not yet determined
     // it will query the "Loading" product instead ;)

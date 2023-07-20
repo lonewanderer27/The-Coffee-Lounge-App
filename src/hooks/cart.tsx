@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { CartItemType } from "../types";
 import { ProductConvert } from "../converters/products";
 import { cartAtom } from "../atoms/cart";
+import { db } from "../main";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useIonToast } from "@ionic/react";
 
@@ -19,7 +20,6 @@ export function useCart() {
     });
   };
 
-  const db = getFirestore();
   const [cart, setCart] = useRecoilState(cartAtom);
   const [totalPrice, setTotalPrice] = useState(0);
   const [data] = useCollectionOnce(

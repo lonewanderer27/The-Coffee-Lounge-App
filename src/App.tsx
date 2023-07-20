@@ -174,7 +174,11 @@ export const AuthWrapper = ({
     return children as JSX.Element;
   }
 
-  return fallback as React.ReactElement;
+  if (!loading) {
+    return fallback as React.ReactElement;
+  }
+
+  return <></>;
 };
 
 export default App;
