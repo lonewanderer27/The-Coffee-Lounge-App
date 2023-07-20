@@ -77,7 +77,7 @@ export type OrderType = {
 export type OrderProductType = {
   product_id: string;
   quantity: number;
-  size?: AddOn;
+  size?: Size;
 };
 
 export enum PaymentOptionType {
