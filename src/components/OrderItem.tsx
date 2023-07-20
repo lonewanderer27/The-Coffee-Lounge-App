@@ -1,3 +1,4 @@
+import { CartItemType, Ice, Milk, Syrup } from "../types";
 import {
   IonBadge,
   IonCard,
@@ -12,11 +13,10 @@ import {
   IonText,
 } from "@ionic/react";
 import { add, removeOutline, trashOutline } from "ionicons/icons";
-import { doc, getFirestore } from "firebase/firestore";
 
-import { CartItemType } from "../types";
 import { ProductConvert } from "../converters/products";
 import { db } from "../main";
+import { doc } from "firebase/firestore";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
@@ -26,6 +26,15 @@ export default function OrderItem(props: CartItemType) {
     doc(db, "products", props.product_id).withConverter(ProductConvert)
   );
   const { removeFromCart, addItem, removeItem } = useCart();
+
+  const determineIfModified = () => {
+    if (props.size !== "Tall") return true;
+    if (props.milk !== Milk.None) return true;
+    if (props.syrup !== Syrup.None) return true;
+    if (props.additives.length !== 0) return true;
+    if (props.ice !== Ice.Normal) return true;
+    return false;
+  };
 
   if (data) {
     return (
@@ -64,10 +73,40 @@ export default function OrderItem(props: CartItemType) {
               </IonCol>
               <IonCol>
                 <IonText>{data.get("name")}</IonText>
+                {determineIfModified() && (
+                  <>
+                    <br />
+                    {/* <IonText id="modifications">Modified</IonText> */}
+                  </>
+                )}
                 {props.size && (
                   <>
                     <br />
                     <IonText>Size: {props.size}</IonText>
+                  </>
+                )}
+                {props.milk !== Milk.None && (
+                  <>
+                    <br />
+                    <IonText>Milk: {props.milk}</IonText>
+                  </>
+                )}
+                {props.syrup !== Syrup.None && (
+                  <>
+                    <br />
+                    <IonText>Syrup: {props.syrup}</IonText>
+                  </>
+                )}
+                {props.additives && props.additives.length != 0 && (
+                  <>
+                    <br />
+                    <IonText>Additives: {props.additives.join(", ")}</IonText>
+                  </>
+                )}
+                {props.ice && (
+                  <>
+                    <br />
+                    <IonText>Ice: {props.ice}</IonText>
                   </>
                 )}
               </IonCol>

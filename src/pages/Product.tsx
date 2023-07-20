@@ -1,3 +1,14 @@
+import "./Product.css";
+
+import {
+  Additive,
+  Ice,
+  Milk,
+  ProductConfig,
+  Size,
+  Sizes,
+  Syrup,
+} from "../types";
 import { Cup, LargeCup, MediumCup, SmallCup } from "../components/CupSizes";
 import {
   IonBackButton,
@@ -29,6 +40,7 @@ import { doc, getFirestore } from "firebase/firestore";
 import { useDocument, useDocumentOnce } from "react-firebase-hooks/firestore";
 
 import Heart from "react-heart";
+import { IceSize } from "../components/IceSizes";
 import { ProductConvert } from "../converters/products";
 import { db } from "../main";
 import { getAuth } from "firebase/auth";
@@ -40,18 +52,6 @@ import useFavorite from "../hooks/favorite";
 import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
-
-export enum Size {
-  Tall = "tall",
-  Grande = "grande",
-  Venti = "venti",
-  None = "none",
-}
-
-interface IFormInput {
-  size: Size;
-  quantity: number;
-}
 
 export default function ProductPage() {
   const { product_id } = useParams<{
@@ -72,10 +72,16 @@ export default function ProductPage() {
     register,
     setValue,
     watch,
+    getValues,
     formState: { isValid },
-  } = useForm<IFormInput>({
+  } = useForm<ProductConfig>({
     defaultValues: {
       quantity: 1,
+      size: Size.None,
+      milk: Milk.None,
+      syrup: Syrup.None,
+      additives: [],
+      ice: Ice.Normal,
     },
   });
 
@@ -133,41 +139,24 @@ export default function ProductPage() {
           <form className="ion-padding">
             {data.get("coffee_type") && (
               <div className="ion-padding">
-                <IonText className="text-xl">Sizes</IonText>
                 <IonSegment
                   onIonChange={(event) => {
                     setValue("size", event.detail.value as Size);
                   }}
                   value={watch("size")}
-                  className=" ion-margin-top"
                 >
-                  <IonSegmentButton value={Size.Tall}>
-                    <Cup
-                      size={Size.Tall}
-                      active={watch("size") === Size.Tall}
-                    />
-                  </IonSegmentButton>
-                  <IonSegmentButton value={Size.Grande}>
-                    <Cup
-                      size={Size.Grande}
-                      active={watch("size") === Size.Grande}
-                    />
-                  </IonSegmentButton>
-                  <IonSegmentButton value={Size.Venti}>
-                    <Cup
-                      size={Size.Venti}
-                      active={watch("size") === Size.Venti}
-                    />
-                  </IonSegmentButton>
+                  <IonSegmentButton value={Size.Tall}>S</IonSegmentButton>
+                  <IonSegmentButton value={Size.Grande}>M</IonSegmentButton>
+                  <IonSegmentButton value={Size.Venti}>L</IonSegmentButton>
                 </IonSegment>
               </div>
             )}
             <IonList>
-              <IonItem className="ion-align-items-center ion-margin-top">
+              <IonItem>
                 <IonCol className="ion-no-padding ion-padding-end">
                   <IonInput
                     label="Quantity"
-                    className="ion-text-right text-xl"
+                    className="ion-text-right"
                     {...register("quantity", { required: true })}
                   ></IonInput>
                 </IonCol>
@@ -189,6 +178,70 @@ export default function ProductPage() {
                   </IonButton>
                 </IonCol>
               </IonItem>
+              {data.get("coffee_type") && (
+                <>
+                  <IonItem>
+                    <IonSelect
+                      label="Milk"
+                      interface="action-sheet"
+                      interfaceOptions={{
+                        header: "Select your choice of milk",
+                      }}
+                      {...register("milk", { required: false })}
+                    >
+                      {Object.values(Milk).map((milk) => (
+                        <IonSelectOption value={milk}>{milk}</IonSelectOption>
+                      ))}
+                    </IonSelect>
+                  </IonItem>
+                  <IonItem>
+                    <IonSelect
+                      label="Syrup"
+                      interface="action-sheet"
+                      interfaceOptions={{
+                        header: "Select your choice of syrup",
+                      }}
+                      {...register("syrup", { required: false })}
+                    >
+                      {Object.values(Syrup).map((syrup) => (
+                        <IonSelectOption value={syrup}>{syrup}</IonSelectOption>
+                      ))}
+                    </IonSelect>
+                  </IonItem>
+                  {data.get("coffee_type") === "Cold Coffee" && (
+                    <>
+                      <IonItem>
+                        <IonSelect
+                          label="Additives"
+                          multiple
+                          {...register("additives", { required: false })}
+                          value={"None" && watch("additives")!.length == 0}
+                        >
+                          {Object.values(Additive).map((additive) => (
+                            <IonSelectOption value={additive}>
+                              {additive}
+                            </IonSelectOption>
+                          ))}
+                        </IonSelect>
+                      </IonItem>
+                      <IonItem>
+                        <IonSelect
+                          label="Ice"
+                          interface="action-sheet"
+                          interfaceOptions={{
+                            header: "Select the amount of your ice",
+                          }}
+                          {...register("ice", { required: true })}
+                        >
+                          {Object.values(Ice).map((ice) => (
+                            <IonSelectOption value={ice}>{ice}</IonSelectOption>
+                          ))}
+                        </IonSelect>
+                      </IonItem>
+                    </>
+                  )}
+                </>
+              )}
             </IonList>
           </form>
         </IonContent>
@@ -212,23 +265,14 @@ export default function ProductPage() {
                 <IonButton
                   disabled={!isValid || data.id === "Loading"}
                   onClick={() => {
-                    if (size === Size.None) {
-                      addToCart({
-                        product_id: product_id,
-                        quantity: qty,
-                        index: count,
-                      });
-                    } else {
-                      addToCart({
-                        product_id: product_id,
-                        quantity: qty,
-                        size: size,
-                        index: count,
-                      });
-                    }
+                    addToCart({
+                      product_id: product_id,
+                      index: count,
+                      ...getValues(),
+                    });
                   }}
                 >
-                  Add To Cart
+                  Buy Now
                 </IonButton>
               </IonCol>
             </IonRow>

@@ -1,7 +1,5 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 
-import { Size } from "./pages/Product";
-
 export type ProductType = {
   id: string;
   category: string;
@@ -57,7 +55,11 @@ export type CartItemType = {
   index: number;
   product_id: string;
   quantity: number;
-  size?: Size;
+  size: Size;
+  milk: Milk;
+  syrup: Syrup;
+  additives: Additive[];
+  ice: Ice;
 };
 
 export type OrderType = {
@@ -75,7 +77,7 @@ export type OrderType = {
 export type OrderProductType = {
   product_id: string;
   quantity: number;
-  size?: Size;
+  size?: AddOn;
 };
 
 export enum PaymentOptionType {
@@ -111,3 +113,145 @@ export type CardItemType = {
   cvc?: string;
   default?: boolean;
 };
+
+export type AddOn = {
+  name: string;
+  price: number;
+};
+
+export const Sizes: AddOn[] = [
+  {
+    name: "Tall",
+    price: 0,
+  },
+  {
+    name: "Grande",
+    price: 0,
+  },
+  {
+    name: "Venti",
+    price: 0,
+  },
+];
+
+export const Milks: AddOn[] = [
+  {
+    name: "Cow's",
+    price: 0,
+  },
+  {
+    name: "Lactose-Free",
+    price: 0,
+  },
+  {
+    name: "Skimmed",
+    price: 0,
+  },
+  {
+    name: "Vegetable",
+    price: 0,
+  },
+];
+
+export const Syrups: AddOn[] = [
+  {
+    name: "Amaretto",
+    price: 0,
+  },
+  {
+    name: "Caramel",
+    price: 0,
+  },
+  {
+    name: "Hazelnut",
+    price: 0,
+  },
+  {
+    name: "Irish Cream",
+    price: 0,
+  },
+  {
+    name: "Vanilla",
+    price: 0,
+  },
+];
+
+export const Additives: AddOn[] = [
+  {
+    name: "Ceylon Cinnamon",
+    price: 0,
+  },
+  {
+    name: "Grated Chocolate",
+    price: 0,
+  },
+  {
+    name: "Liquid Chocolate",
+    price: 0,
+  },
+  {
+    name: "Marshmallow",
+    price: 0,
+  },
+  {
+    name: "Whipped Cream",
+    price: 0,
+  },
+  {
+    name: "Nutmeg",
+    price: 0,
+  },
+  {
+    name: "Ice Cream",
+    price: 0,
+  },
+];
+
+export enum Size {
+  None = "None",
+  Tall = "Tall",
+  Grande = "Grande",
+  Venti = "Venti",
+}
+
+export enum Milk {
+  None = "None",
+  Cow_s = "Cow's",
+  Lactose_Free = "Lactose-Free",
+  Skimmed = "Skimmed",
+  Vegetable = "Vegetable",
+}
+
+export enum Syrup {
+  None = "None",
+  Amaretto = "Amaretto",
+  Caramel = "Caramel",
+  Hazelnut = "Hazelnut",
+  Irish_Cream = "Irish Cream",
+  Vanilla = "Vanilla",
+}
+
+export enum Additive {
+  Ceylon_Cinnamon = "Ceylon Cinnamon",
+  Grated_Chocolate = "Grated Chocolate",
+  Liquid_Chocolate = "Liquid Chocolate",
+  Marshmallow = "Marshmallow",
+  Whipped_Cream = "Whipped Cream",
+  Nutmeg = "Nutmeg",
+  Ice_Cream = "Ice Cream",
+}
+
+export enum Ice {
+  Light = "Light",
+  Normal = "Normal",
+  Extra = "Extra",
+}
+
+export interface ProductConfig {
+  size: Size;
+  quantity: number;
+  milk: Milk;
+  syrup: Syrup;
+  additives: [];
+  ice: Ice;
+}

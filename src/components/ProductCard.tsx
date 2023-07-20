@@ -1,3 +1,4 @@
+import { Ice, Milk, ProductType, Syrup } from "../types";
 import {
   IonCard,
   IonCardContent,
@@ -11,8 +12,7 @@ import {
 } from "@ionic/react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
-import { ProductType } from "../types";
-import { Size } from "../pages/Product";
+import { Size } from "../types";
 import { bagAddOutline } from "ionicons/icons";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
@@ -27,20 +27,16 @@ export default function ProductCard(props: ProductType) {
     event: React.MouseEvent<HTMLIonIconElement, MouseEvent>
   ) => {
     event.stopPropagation();
-    if (props.coffee_type) {
-      addToCart({
-        product_id: props.id,
-        quantity: 1,
-        size: Size.Grande,
-        index: count,
-      });
-    } else {
-      addToCart({
-        product_id: props.id,
-        quantity: 1,
-        index: count,
-      });
-    }
+    addToCart({
+      product_id: props.id,
+      quantity: 1,
+      size: Size.Tall,
+      milk: Milk.None,
+      syrup: Syrup.None,
+      additives: [],
+      ice: Ice.Normal,
+      index: count,
+    });
   };
 
   return (

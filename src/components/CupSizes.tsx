@@ -3,7 +3,7 @@ import "./CupSizes.css";
 import LCup from "/Large-Cup.svg";
 import MCup from "/Medium-Cup.svg";
 import SCup from "/Small-Cup.svg";
-import { Size } from "../pages/Product";
+import { Size } from "../types";
 
 export function Cup(props: { active?: boolean; size: Size }) {
   const determineSize = () => {
