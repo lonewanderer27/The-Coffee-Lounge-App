@@ -20,6 +20,7 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
+  IonLoading,
   IonModal,
   IonPage,
   IonRow,
@@ -43,15 +44,10 @@ import { useHistory } from "react-router";
 import { useState } from "react";
 
 export default function ProfileAndSecurity() {
-  const history = useHistory();
   const auth = getAuth();
-  const [data, status] = useAuthState(auth);
+  const [data] = useAuthState(auth);
   const [present, dismiss] = useIonLoading();
 
-  // const ref = doc(db, "users", auth.currentUser!.uid);
-  // const { status: userStatus, data: userData } = useFirestoreDocDataOnce(ref, {
-  //   idField: "id",
-  // });
   const [userData, userLoading] = useDocument(
     doc(db, "users", auth.currentUser!.uid).withConverter(UserConvert)
   );

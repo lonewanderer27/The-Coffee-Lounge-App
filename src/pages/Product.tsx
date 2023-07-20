@@ -95,44 +95,40 @@ export default function ProductPage() {
       <IonPage>
         <IonHeader translucent={true}>
           <IonToolbar>
-            <IonTitle>{data.get("name")}</IonTitle>
+            <IonTitle>Product</IonTitle>
             <IonButtons slot="start">
               <IonBackButton></IonBackButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
         <IonContent fullscreen>
-          <IonHeader collapse="condense">
-            <IonToolbar>
-              <IonTitle>{data.get("name")}</IonTitle>
-              <IonButtons slot="end" className="pr-10">
-                {currentUser && (
-                  <Heart
-                    style={{ width: "2rem" }}
-                    isActive={isFavorite}
-                    onClick={() => toggleFavorite()}
-                    animationTrigger="click"
-                    animationScale={1.2}
-                    inactiveColor="white"
-                    activeColor="red"
-                  />
-                )}
-                <IonBackButton></IonBackButton>
-              </IonButtons>
-            </IonToolbar>
-          </IonHeader>
-          <div className="ion-padding">
-            <IonRow className="ion-justify-content-center ">
-              <img src={data.get("image")} alt={data.get("name")} width="50%" />
+          <div className="ion-padding bg-slate-200 dark:bg-slate-800">
+            <IonRow className="ion-justify-content-center relative">
+              {currentUser && (
+                <Heart
+                  className="absolute top-5 right-5"
+                  style={{ width: "2rem" }}
+                  isActive={isFavorite}
+                  onClick={() => toggleFavorite()}
+                  animationTrigger="click"
+                  animationScale={1.2}
+                  inactiveColor="gray"
+                  activeColor="red"
+                />
+              )}
+              {data.get("coffee_type") && (
+                <IonBadge className="absolute top-5 left-5">
+                  {data.get("coffee_type")}
+                </IonBadge>
+              )}
+              <img src={data.get("image")} alt={data.get("name")} width="60%" />
+              <IonText className="w-full text-xl font-semibold bottom-0 text-center">
+                {data.get("name")}
+              </IonText>
             </IonRow>
             <IonRow className="ion-margin-bottom text-center">
               <IonText className="w-full">{data.get("description")}</IonText>
             </IonRow>
-            {data.get("coffee_type") && (
-              <div className="ion-justify-content-center flex w-full">
-                <IonBadge>{data.get("coffee_type")}</IonBadge>
-              </div>
-            )}
           </div>
           <form className="ion-padding">
             {data.get("coffee_type") && (
@@ -146,19 +142,22 @@ export default function ProductPage() {
                   className=" ion-margin-top"
                 >
                   <IonSegmentButton value={Size.Tall}>
-                    {/* <SmallCup active /> */}
-                    <Cup size={Size.Tall} active />
-                    {/* <IonLabel className="ion-margin-bottom">Tall</IonLabel> */}
+                    <Cup
+                      size={Size.Tall}
+                      active={watch("size") === Size.Tall}
+                    />
                   </IonSegmentButton>
                   <IonSegmentButton value={Size.Grande}>
-                    <Cup size={Size.Grande} />
-                    {/* <MediumCup /> */}
-                    {/* <IonLabel className="ion-margin-bottom">Grande</IonLabel> */}
+                    <Cup
+                      size={Size.Grande}
+                      active={watch("size") === Size.Grande}
+                    />
                   </IonSegmentButton>
                   <IonSegmentButton value={Size.Venti}>
-                    <Cup size={Size.Venti} />
-                    {/* <LargeCup /> */}
-                    {/* <IonLabel className="ion-margin-bottom">Venti</IonLabel> */}
+                    <Cup
+                      size={Size.Venti}
+                      active={watch("size") === Size.Venti}
+                    />
                   </IonSegmentButton>
                 </IonSegment>
               </div>

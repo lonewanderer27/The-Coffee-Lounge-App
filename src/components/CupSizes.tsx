@@ -23,10 +23,7 @@ export function Cup(props: { active?: boolean; size: Size }) {
     <img
       src={determineSize()}
       alt={`${props.size} Cup`}
-      className={`cupSizes ${props.active ? "color-green" : ""}`}
-      style={{
-        width: "65px",
-      }}
+      className={`cupSizes ${props.active ? "active" : ""} dark:fill-white`}
     />
   );
 }
