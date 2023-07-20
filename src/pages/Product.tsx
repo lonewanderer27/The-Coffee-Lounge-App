@@ -95,7 +95,7 @@ export default function ProductPage() {
       <IonPage>
         <IonHeader translucent={true}>
           <IonToolbar>
-            <IonTitle>Product</IonTitle>
+            <IonTitle>View Product</IonTitle>
             <IonButtons slot="start">
               <IonBackButton></IonBackButton>
             </IonButtons>
