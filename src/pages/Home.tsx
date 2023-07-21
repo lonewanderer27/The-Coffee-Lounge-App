@@ -36,13 +36,17 @@ import {
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
+import { categoryAtom } from "../atoms/products";
 import { chevronForwardOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
+import { useSetRecoilState } from "recoil";
 
 const Home: React.FC = () => {
+  const setCategory = useSetRecoilState(categoryAtom);
+
   const db = getFirestore();
   const [data, loading, error] = useCollectionOnce(
     collection(db, "categories").withConverter(CategoryConvert)
@@ -56,6 +60,16 @@ const Home: React.FC = () => {
   );
 
   const { favorites } = useFavorite();
+
+  const router = useIonRouter();
+  const switchCategory = (id: string, name: string, description: string) => {
+    setCategory({
+      id,
+      name,
+      description,
+    });
+    router.push(`/category?name=${name}&id=${id}&description=${description}`);
+  };
 
   return (
     <IonPage>
@@ -112,9 +126,13 @@ const Home: React.FC = () => {
                 className="w-full text-inherit ion-no-margin"
                 color="default"
                 size="large"
-                routerLink={`/category?name=${category.get("name")}&id=${
-                  category.id
-                }&description=${category.get("description")}`}
+                onClick={() =>
+                  switchCategory(
+                    category.id,
+                    category.get("name"),
+                    category.get("description")
+                  )
+                }
               >
                 <IonText className="mr-auto font-semibold" slot="start">
                   {category.get("altName")}

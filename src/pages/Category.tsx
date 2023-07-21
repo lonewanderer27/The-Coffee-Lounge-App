@@ -20,21 +20,23 @@ import CartBtn from "../components/CartBtn";
 import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
 import { ProductConvert } from "../converters/products";
+import { Suspense } from "react";
+import { categoryAtom } from "../atoms/products";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
+import { useRecoilValue } from "recoil";
 
 export default function CategoryPage() {
+  const categoryState = useRecoilValue(categoryAtom);
   const db = getFirestore();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
   const category: CategoryType = {
-    id: queryParams.get("id") || "",
-    name: queryParams.get("name") || "",
-    description: queryParams.get("description") || "",
+    id: queryParams.get("id") || categoryState.id,
+    name: queryParams.get("name") || categoryState.name,
+    description: queryParams.get("description") || categoryState.description,
   };
-
-  console.log("Category", category);
 
   const [productsData, productsLoading] = useCollectionOnce(
     query(
@@ -42,6 +44,10 @@ export default function CategoryPage() {
       where("category", "==", category.id)
     )
   );
+
+  if (productsLoading) {
+    return <></>;
+  }
 
   return (
     <IonPage>
