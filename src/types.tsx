@@ -220,7 +220,6 @@ export enum Milk {
   Lactose_Free = "Lactose-Free",
   Skimmed = "Skimmed",
   Vegetable = "Vegetable",
-  find = "find",
 }
 
 export enum Syrup {

@@ -202,6 +202,7 @@ export default function ProductPage() {
                     className="ion-text-right"
                     {...register("quantity", { required: true })}
                     type="number"
+                    readonly={true}
                   ></IonInput>
                 </IonCol>
                 <IonCol size="auto" className="ion ion-no-padding">
