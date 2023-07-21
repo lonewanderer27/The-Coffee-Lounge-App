@@ -80,15 +80,16 @@ export default function ProductPage() {
     watch,
     getValues,
     formState: { isValid, isDirty },
+    reset,
     handleSubmit,
   } = useForm<ProductConfig>({
     defaultValues: {
       quantity: 1,
-      size: Size.Tall,
+      size: data?.get("coffee_type") ? Size.Tall : Size.None,
       milk: Milk.None,
       syrup: Syrup.None,
       additives: [],
-      ice: Ice.Normal,
+      ice: data?.get("coffee_type") === "Cold Coffee" ? Ice.Normal : Ice.None,
     },
     mode: "all",
   });
@@ -110,9 +111,9 @@ export default function ProductPage() {
       return;
     } else {
       addToCart({
-        product_id: product_id,
+        product_id: product_id ?? productId,
         index: count,
-        ...getValues(),
+        ...watch(),
       });
     }
   };
@@ -127,6 +128,10 @@ export default function ProductPage() {
 
   useEffect(() => {
     computePrice();
+
+    return () => {
+      reset();
+    };
   }, [watch, data]);
 
   if (data != undefined) {
