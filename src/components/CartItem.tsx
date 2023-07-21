@@ -15,13 +15,13 @@ import {
 import { add, removeOutline, trashOutline, watch } from "ionicons/icons";
 import { computeProductPrice, useCart } from "../hooks/cart";
 import { doc, getFirestore } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { ProductConvert } from "../converters/products";
 import { phpString } from "../phpString";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
 
-export default function CartItem(props: CartItemType) {
+function CartItem(props: CartItemType) {
   const db = getFirestore();
   const [data, status] = useDocumentOnce(
     doc(db, "products", props.product_id).withConverter(ProductConvert)
@@ -29,11 +29,11 @@ export default function CartItem(props: CartItemType) {
   const { removeFromCart, addQty: addItem, removeQty: removeItem } = useCart();
 
   const determineIfModified = () => {
-    if (props.size !== Size.Tall) return true;
+    if (props.size !== Size.None && props.size !== Size.Tall) return true;
     if (props.milk !== Milk.None) return true;
     if (props.syrup !== Syrup.None) return true;
     if (props.additives.length !== 0) return true;
-    if (props.ice !== Ice.Normal) return true;
+    if (props.ice !== Ice.Normal && props.ice !== Ice.None) return true;
     return false;
   };
 
@@ -84,36 +84,22 @@ export default function CartItem(props: CartItemType) {
               </IonCol>
               <IonCol>
                 <IonText>{data.get("name")}</IonText>
-                {determineIfModified() == true && <br />}
-                {props.size !== Size.Tall && (
+                {determineIfModified() == true && (
                   <>
                     <br />
-                    <IonText>Size: {props.size}</IonText>
-                  </>
-                )}
-                {props.milk !== Milk.None && (
-                  <>
                     <br />
-                    <IonText>Milk: {props.milk}</IonText>
                   </>
                 )}
+                {props.ice !== Ice.None && <IonText>{props.ice} Ice, </IonText>}
+                {props.size !== Size.None && props.size !== Size.Tall && (
+                  <IonText>{props.size}, </IonText>
+                )}
+                {props.milk !== Milk.None && <IonText>{props.milk}, </IonText>}
                 {props.syrup !== Syrup.None && (
-                  <>
-                    <br />
-                    <IonText>Syrup: {props.syrup}</IonText>
-                  </>
+                  <IonText>{props.syrup}, </IonText>
                 )}
                 {props.additives && props.additives.length != 0 && (
-                  <>
-                    <br />
-                    <IonText>Additives: {props.additives.join(", ")}</IonText>
-                  </>
-                )}
-                {props.ice !== Ice.Normal && (
-                  <>
-                    <br />
-                    <IonText>Ice: {props.ice}</IonText>
-                  </>
+                  <IonText>{props.additives.join(", ")}</IonText>
                 )}
               </IonCol>
               <IonCol size="2" className="ion-text-end">
@@ -131,3 +117,5 @@ export default function CartItem(props: CartItemType) {
     );
   }
 }
+
+export default memo(CartItem);

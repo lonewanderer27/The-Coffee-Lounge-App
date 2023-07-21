@@ -27,7 +27,7 @@ export const computeProductPrice = (
 ) => {
   let price = basePrice;
 
-  if (cartItem.size !== Size.Tall) {
+  if (cartItem.size !== Size.None) {
     price += Sizes.find((s) => s.name === cartItem.size)?.price!;
   }
 

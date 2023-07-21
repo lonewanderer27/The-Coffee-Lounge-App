@@ -30,11 +30,11 @@ function ProductCard(props: ProductType) {
     addToCart({
       product_id: props.id,
       quantity: 1,
-      size: Size.Tall,
+      size: props.coffee_type ? Size.Tall : Size.None,
       milk: Milk.None,
       syrup: Syrup.None,
       additives: [],
-      ice: Ice.Normal,
+      ice: props.coffee_type === "Cold Coffee" ? Ice.Normal : Ice.None,
       index: count,
     });
   };
