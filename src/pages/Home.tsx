@@ -39,6 +39,7 @@ import ProductCard from "../components/ProductCard";
 import { categoryAtom } from "../atoms/products";
 import { chevronForwardOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
+import { memo } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
@@ -211,4 +212,4 @@ const Home: React.FC = () => {
   );
 };
 
-export default Home;
+export default memo(Home);

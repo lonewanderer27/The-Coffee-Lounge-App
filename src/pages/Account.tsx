@@ -27,12 +27,12 @@ import {
 } from "@ionic/react";
 import { chevronForwardOutline, pencilSharp } from "ionicons/icons";
 import { doc, getFirestore } from "firebase/firestore";
+import { memo, useEffect } from "react";
 
 import Avatar from "react-avatar";
 import { UserConvert } from "../converters/user";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { useEffect } from "react";
 import { useHistory } from "react-router";
 
 const Account: React.FC = () => {
@@ -162,4 +162,4 @@ const Account: React.FC = () => {
   }
 };
 
-export default Account;
+export default memo(Account);

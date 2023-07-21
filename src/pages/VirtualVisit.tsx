@@ -16,9 +16,9 @@ import {
   help,
   warningOutline,
 } from "ionicons/icons";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
-export default function VirtualVisit() {
+function VirtualVisit() {
   const [iframeRef, setIframeRef] = useState<HTMLIFrameElement | null>(null);
 
   // Online state
@@ -95,3 +95,5 @@ export default function VirtualVisit() {
     </IonPage>
   );
 }
+
+export default memo(VirtualVisit);

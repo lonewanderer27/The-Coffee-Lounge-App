@@ -35,7 +35,7 @@ import {
   help,
   settings,
 } from "ionicons/icons";
-import { useEffect, useRef, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 
 import { EffectCards } from "swiper/modules";
 import { warningOutline } from "ionicons/icons";
@@ -358,4 +358,4 @@ const Explore: React.FC = () => {
   );
 };
 
-export default Explore;
+export default memo(Explore);

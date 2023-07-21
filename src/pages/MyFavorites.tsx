@@ -23,9 +23,10 @@ import { useCollection, useDocument } from "react-firebase-hooks/firestore";
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { UserConvert } from "../converters/user";
+import { memo } from "react";
 import useFavorite from "../hooks/favorite";
 
-export default function MyFavorites() {
+function MyFavorites() {
   const db = getFirestore();
   const { favorites } = useFavorite();
 
@@ -83,3 +84,5 @@ export default function MyFavorites() {
     </IonPage>
   );
 }
+
+export default memo(MyFavorites);
