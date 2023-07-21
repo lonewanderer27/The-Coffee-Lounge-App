@@ -1,17 +1,6 @@
 import "./Cart.css";
 
 import {
-  FieldValue,
-  addDoc,
-  arrayUnion,
-  collection,
-  doc,
-  getFirestore,
-  serverTimestamp,
-  updateDoc,
-  writeBatch,
-} from "firebase/firestore";
-import {
   IonAlert,
   IonBackButton,
   IonButton,
@@ -25,73 +14,19 @@ import {
   IonList,
   IonPage,
   IonRow,
-  IonSegment,
-  IonSegmentButton,
   IonText,
   IonTitle,
   IonToolbar,
-  SegmentChangeEventDetail,
-  SegmentValue,
-  useIonLoading,
 } from "@ionic/react";
-import { OrderProductType, OrderType } from "../types";
 
 import CartItem from "../components/CartItem";
-import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useCart } from "../hooks/cart";
-import { useHistory } from "react-router-dom";
 
 const Cart: React.FC = () => {
-  const db = getFirestore();
-  const [data, loading, error] = useAuthState(getAuth());
-  const history = useHistory();
-
   const { cart, setCart, totalPrice, count } = useCart();
-  const [presentLoading, dismiss] = useIonLoading();
 
-  function handleCheckout() {
-    if (!data) {
-      history.push("/login");
-      return;
-    }
-
-    (async () => {
-      // create the order document for the user
-      presentLoading("Checking out...");
-
-      const products = cart.map((item) => {
-        let productObj: OrderProductType = {
-          product_id: item.product_id,
-          quantity: item.quantity,
-        };
-        if (item.size) {
-          productObj["size"] = item.size;
-        }
-        return productObj;
-      });
-
-      const newOrder: OrderType = {
-        user_uid: data!.uid,
-        products: products,
-        total_price: totalPrice,
-        payment_status: "pending",
-        created_at: serverTimestamp(),
-      };
-
-      const orderRef = await addDoc(collection(db, "orders"), newOrder);
-
-      // empty cart
-      setCart([]);
-
-      // dismiss loading
-      dismiss();
-
-      // redirect to checkout page
-      history.push("/checkout/" + orderRef.id);
-    })();
-  }
+  console.table(cart);
 
   return (
     <IonPage>
@@ -159,10 +94,7 @@ const Cart: React.FC = () => {
               </div>
             </IonCol>
             <IonCol>
-              <IonButton
-                disabled={count === 0}
-                onClick={() => handleCheckout()}
-              >
+              <IonButton disabled={count === 0} routerLink="/checkout">
                 Checkout
               </IonButton>
             </IonCol>

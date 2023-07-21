@@ -32,6 +32,7 @@ import {
   bagOutline,
   homeOutline,
   personCircleOutline,
+  receiptOutline,
   starOutline,
 } from "ionicons/icons";
 
@@ -43,6 +44,7 @@ import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
 import ChangePassword from "./pages/Account/ProfileAndSecurity/ChangePassword";
 import Checkout from "./pages/Checkout";
+import DeliveryAddress from "./pages/DeliveryAddresses";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -50,11 +52,14 @@ import Login from "./pages/Login";
 import MyAddresses from "./pages/Account/MyAddresses";
 import MyCards from "./pages/Account/MyCards";
 import MyFavorites from "./pages/MyFavorites";
-import Order from "./pages/Order";
+import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders";
+import PaymentMethods from "./pages/Checkout/PaymentMethods";
+import ProcessPayment from "./pages/Order/ProcessPayment";
 import ProductPage from "./pages/Product";
 import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
 import React from "react";
+import Receipt from "./pages/Order/Receipt";
 import Register from "./pages/Register";
 import VirtualVisit from "./pages/VirtualVisit";
 import { bagHandleOutline } from "ionicons/icons";
@@ -86,23 +91,38 @@ function App() {
               <Route exact path="/account/bankaccountscards">
                 <MyCards />
               </Route>
-              <Route exact path="/account/cards/:card_id">
+              <Route path="/account/cards/:card_id">
                 <Card />
               </Route>
               <Route exact path="/account/changepass">
                 <ChangePassword />
               </Route>
-              <Route exact path="/checkout/:order_id">
+              <Route exact path="/checkout/">
                 <Checkout />
+              </Route>
+              <Route exact path="/checkout/choose-payoption">
+                <PaymentMethods />
+              </Route>
+              <Route exact path="/delivery-addresses">
+                <DeliveryAddress />
+              </Route>
+              <Route exact path="/delivery-addresses/choose">
+                <DeliveryAddress choose={true} />
               </Route>
               <Route exact path="/orders">
                 <Orders />
               </Route>
-              <Route exact path="/orders/:order_id">
+              <Route path="/orders/:order_id">
                 <Order />
               </Route>
               <Route exact path="/my-favorites">
                 <MyFavorites />
+              </Route>
+              <Route exact path="/order/:order_id/process-payment/">
+                <ProcessPayment />
+              </Route>
+              <Route exact path="/order/:order_id/receipt">
+                <Receipt />
               </Route>
             </AuthWrapper>
             <Route exact path="/home">
@@ -129,7 +149,7 @@ function App() {
             <Route path="/category">
               <CategoryPage />
             </Route>
-            <Route exact path="/product/:product_id">
+            <Route path="/product/:product_id">
               <ProductPage />
             </Route>
             <Route exact path="/about">
@@ -150,7 +170,7 @@ function App() {
               <IonLabel>Cart</IonLabel>
             </IonTabButton>
             <IonTabButton tab="order" href="/orders">
-              <IonIcon aria-hidden="true" icon={bagHandleOutline} />
+              <IonIcon aria-hidden="true" icon={receiptOutline} />
               <IonLabel>Orders</IonLabel>
             </IonTabButton>
             <IonTabButton tab="account" href="/account">

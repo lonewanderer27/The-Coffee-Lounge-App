@@ -59,6 +59,9 @@ dependencies:
   react-avatar:
     specifier: ^5.0.3
     version: 5.0.3(@babel/runtime@7.22.6)(core-js-pure@3.31.1)(prop-types@15.8.1)(react@18.2.0)
+  react-barcode:
+    specifier: ^1.4.6
+    version: 1.4.6(react@18.2.0)
   react-credit-cards:
     specifier: ^0.8.3
     version: 0.8.3(prop-types@15.8.1)(react@18.2.0)
@@ -6259,6 +6262,11 @@ packages:
       argparse: 2.0.1
     dev: true
 
+  /jsbarcode@3.11.5:
+    resolution: {integrity: sha512-zv3KsH51zD00I/LrFzFSM6dst7rDn0vIMzaiZFL7qusTjPZiPtxg3zxetp0RR7obmjTw4f6NyGgbdkBCgZUIrA==}
+    hasBin: true
+    dev: false
+
   /jsbn@0.1.1:
     resolution: {integrity: sha512-UVU9dibq2JcFWxQPA6KCqj5O42VOmAY3zQUfEKxU0KpTGXwNoCjkX1e13eHNvw/xPynt6pU0rZ1htjWTNTSXsg==}
     dev: true
@@ -7898,6 +7906,16 @@ packages:
       core-js-pure: 3.31.1
       is-retina: 1.0.3
       md5: 2.3.0
+      prop-types: 15.8.1
+      react: 18.2.0
+    dev: false
+
+  /react-barcode@1.4.6(react@18.2.0):
+    resolution: {integrity: sha512-56WCPqjgpExPVi5LgKOfxM6uSCB4Wd1r94jY2VEwkIdigPjLp8P9RyIBIyQmDraxtYGOHE0e4Uer4+QrmOIy7Q==}
+    peerDependencies:
+      react: ^16.0.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      jsbarcode: 3.11.5
       prop-types: 15.8.1
       react: 18.2.0
     dev: false

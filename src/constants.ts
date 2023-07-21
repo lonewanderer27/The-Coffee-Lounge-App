@@ -1,4 +1,4 @@
-import { BranchType } from "./types";
+import { BranchType, DeliveryAddressType, VoucherType } from "./types";
 
 export const CardImages = [
   {
@@ -82,5 +82,52 @@ export const Branches: BranchType[] = [
       type: "work",
     },
     main: false,
+  },
+];
+
+export const Addresses: DeliveryAddressType[] = [
+  {
+    name: "Jane Smith",
+    user_uid: "5678",
+    barangay: "Greenhills",
+    city: "San Juan",
+    region: "Metro Manila",
+    province: "NCR",
+    postal_code: 1503,
+    phone_number: "+639123456789",
+    type: "work",
+  },
+  {
+    name: "Juan Dela Cruz",
+    user_uid: "9012",
+    barangay: "Brgy. 1",
+    city: "Laoag City",
+    region: "Ilocos Region",
+    province: "Ilocos Norte",
+    postal_code: 2900,
+    phone_number: "+639098765432",
+    type: "home",
+  },
+  {
+    name: "Maria Garcia",
+    user_uid: "3456",
+    barangay: "Brgy. 2",
+    city: "Vigan City",
+    region: "Ilocos Region",
+    province: "Ilocos Sur",
+    postal_code: 2700,
+    phone_number: "+639876543210",
+    type: "work",
+  },
+  {
+    name: "Pedro Santos",
+    user_uid: "7890",
+    barangay: "Brgy. 3",
+    city: "Bacarra",
+    region: "Ilocos Region",
+    province: "Ilocos Norte",
+    postal_code: 2916,
+    phone_number: "+639456789012",
+    type: "home",
   },
 ];

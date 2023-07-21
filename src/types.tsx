@@ -64,15 +64,17 @@ export type CartItemType = {
 export type OrderType = {
   id?: string;
   created_at: Timestamp | FieldValue;
-  products: OrderProductType[];
+  products: CartItemType[];
   payment_option: PaymentOptionType;
   delivery_address_id?: string;
   payment_status: PaymentStatusType;
   total_price: number;
   user_uid: string;
   delivery_fee?: number;
-  branch?: BranchType;
+  branch: BranchType;
   delivery_option: DeliveryOptionType;
+  payment_at?: Timestamp | FieldValue;
+  delivery_at?: Timestamp | FieldValue;
 };
 
 export type OrderProductType = {
@@ -215,6 +217,7 @@ export const Additives: AddOn[] = [
 ];
 
 export enum Size {
+  None = "None",
   Tall = "Tall",
   Grande = "Grande",
   Venti = "Venti",
@@ -248,6 +251,7 @@ export enum Additive {
 }
 
 export enum Ice {
+  None = "None",
   Light = "Light",
   Normal = "Normal",
   Extra = "Extra",

@@ -4,6 +4,8 @@ import {
   IonContent,
   IonHeader,
   IonPage,
+  IonSegment,
+  IonSegmentButton,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
@@ -11,24 +13,12 @@ import {
 export default function Orders() {
   return (
     <IonPage>
-      <IonHeader translucent={true}>
-        <IonToolbar>
-          <IonTitle>Orders</IonTitle>
-          <IonButtons slot="start">
-            <IonBackButton></IonBackButton>
-          </IonButtons>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Orders</IonTitle>
-            <IonButtons slot="start">
-              <IonBackButton></IonBackButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
-      </IonContent>
+      <IonToolbar>
+        <IonSegment value="ongoing">
+          <IonSegmentButton value="ongoing">Ongoing</IonSegmentButton>
+          <IonSegmentButton value="history">History</IonSegmentButton>
+        </IonSegment>
+      </IonToolbar>
     </IonPage>
   );
 }

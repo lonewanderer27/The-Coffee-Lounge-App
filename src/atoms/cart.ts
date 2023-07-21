@@ -1,7 +1,7 @@
-import { SetterOrUpdater, atom } from "recoil";
 import { log, sessionStorageEffect } from ".";
 
 import { CartItemType } from "../types";
+import { atom } from "recoil";
 
 export const cartAtom = atom<CartItemType[]>({
   key: "cart",

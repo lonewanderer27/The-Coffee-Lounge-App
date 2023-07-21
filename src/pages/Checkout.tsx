@@ -2,52 +2,67 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
+  IonCheckbox,
   IonContent,
+  IonFooter,
   IonHeader,
+  IonItem,
   IonLabel,
+  IonList,
+  IonListHeader,
   IonModal,
   IonPage,
+  IonRadio,
+  IonRadioGroup,
   IonSelect,
   IonSelectOption,
   IonText,
   IonTitle,
   IonToolbar,
+  useIonLoading,
+  useIonRouter,
 } from "@ionic/react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { doc, getFirestore } from "firebase/firestore";
+import {
+  OrderProductType,
+  OrderType,
+  PaymentOptionType,
+  PaymentStatusType,
+} from "../types";
+import { SubmitHandler, set, useForm } from "react-hook-form";
+import {
+  addDoc,
+  collection,
+  doc,
+  getFirestore,
+  serverTimestamp,
+} from "firebase/firestore";
+import {
+  branchAtom,
+  deliverOptionAtom,
+  payOptionAtom,
+  readyToPayAtom,
+} from "../atoms/checkout";
 import { useEffect, useState } from "react";
 import { useHistory, useLocation, useParams } from "react-router";
+import { useRecoilState, useRecoilValue } from "recoil";
 
-import { PaymentOptionType } from "../types";
+import { Branches } from "../constants";
+import { DeliveryOptionType } from "../types";
 import QRCode from "react-qr-code";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { getAuth } from "firebase/auth";
+import { phpString } from "../phpString";
+import { useCart } from "../hooks/cart";
+import { useCheckout } from "../hooks/checkout";
 
 export default function Checkout() {
-  const [showQR, setShowQR] = useState(false);
-  const { order_id } = useParams<{ order_id: string }>();
-  const history = useHistory();
+  const { totalPrice, count } = useCart();
+  const { handlePay } = useCheckout(totalPrice);
+  const router = useIonRouter();
 
-  const [data, status] = useDocument(doc(getFirestore(), "orders", order_id));
-
-  const {
-    register,
-    handleSubmit,
-    formState: { isValid },
-  } = useForm<{ payOption: PaymentOptionType }>();
-
-  const onSubmit: SubmitHandler<{ payOption: PaymentOptionType }> = (data) => {
-    console.log(data);
-    if (data.payOption === PaymentOptionType.OverTheCounter) {
-      setShowQR(true);
-    }
-  };
-
-  useEffect(() => {
-    if (data?.get("payment_status") === "paid") {
-      setShowQR(false);
-      history.replace("/orders/" + order_id);
-    }
-  }, [data, status]);
+  const payOption = useRecoilValue(payOptionAtom);
+  const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);
+  const [branch, setBranch] = useRecoilState(branchAtom);
+  const readyToPay = useRecoilValue(readyToPayAtom);
 
   return (
     <IonPage>
@@ -60,52 +75,75 @@ export default function Checkout() {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Checkout</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <form className="ion-padding" onSubmit={handleSubmit(onSubmit)}>
-          <IonSelect
-            label="Payment Option"
-            {...register("payOption", { required: true })}
-          >
-            {Object.entries(PaymentOptionType).map(([key, value]) => (
-              <IonSelectOption key={key} value={value}>
-                {value}
-              </IonSelectOption>
+        <IonList className="ion-margin-top">
+          <IonItem>
+            <IonText className="font-semibold">
+              How do you want to get your order?
+              <h6 className="my-2">* We are open from 8:00AM - 10:00PM</h6>
+            </IonText>
+          </IonItem>
+          <IonRadioGroup onIonChange={(e) => setDeliverOption(e.detail.value)}>
+            {Object.values(DeliveryOptionType).map((deliveryOption) => (
+              <IonItem key={`IonItem${deliveryOption}`}>
+                <IonRadio
+                  key={`IonRadio${deliveryOption}`}
+                  value={deliveryOption}
+                >
+                  {deliveryOption}
+                </IonRadio>
+              </IonItem>
             ))}
-          </IonSelect>
-          <IonButton expand="block" disabled={!isValid} type="submit">
-            <IonLabel>Continue</IonLabel>
-          </IonButton>
-        </form>
-        <IonModal isOpen={showQR}>
-          <IonHeader translucent={true}>
-            <IonToolbar>
-              <IonTitle>
-                <IonLabel>Over the Counter</IonLabel>
-              </IonTitle>
-            </IonToolbar>
-          </IonHeader>
-          <IonContent className="ion-text-center">
-            <div>
-              <IonText>
-                <h2>Scan QR Code</h2>
-                <p className="ion-text-center">
-                  Present this QR code to the cashier
-                </p>
-              </IonText>
-              <QRCode value={order_id} />
-              <IonText>
-                <p className="ion-text-center">
-                  Order ID: <strong>{order_id}</strong>
-                </p>
-              </IonText>
-            </div>
-          </IonContent>
-        </IonModal>
+          </IonRadioGroup>
+          {deliverOption === DeliveryOptionType.Delivery && (
+            <IonItem routerLink="/delivery-addresses/choose">
+              <IonLabel>Choose Address</IonLabel>
+              <IonLabel className="ion-text-end">1</IonLabel>
+            </IonItem>
+          )}
+          {deliverOption === DeliveryOptionType.Pickup && (
+            <IonItem>
+              <IonSelect
+                label="Choose Branch"
+                interface="action-sheet"
+                onIonChange={(e) => setBranch(e.detail.value)}
+                value={branch}
+              >
+                {Object.values(Branches).map((branch) => (
+                  <IonSelectOption key={`IonSelectOption${branch.id}`}>
+                    {branch.address.city} Branch
+                  </IonSelectOption>
+                ))}
+              </IonSelect>
+            </IonItem>
+          )}
+        </IonList>
+        <IonList className="ion-margin-top">
+          <IonItem routerLink="/checkout/choose-payoption">
+            <IonText>Payment Method</IonText>
+            <IonLabel className="ion-text-end">{payOption}</IonLabel>
+          </IonItem>
+        </IonList>
+        <IonList>
+          <IonListHeader>
+            <IonLabel>Payment Summary</IonLabel>
+          </IonListHeader>
+          <IonItem>
+            <IonLabel>Total Price</IonLabel>
+            <IonLabel>{phpString.format(totalPrice)}</IonLabel>
+          </IonItem>
+        </IonList>
       </IonContent>
+      <IonFooter>
+        <IonToolbar className="ion-padding">
+          <IonButton
+            expand="block"
+            disabled={!readyToPay}
+            onClick={() => handlePay()}
+          >
+            <IonLabel>Pay</IonLabel>
+          </IonButton>
+        </IonToolbar>
+      </IonFooter>
     </IonPage>
   );
 }
