@@ -26,9 +26,7 @@ import {
   IonTabButton,
   IonTabs,
   setupIonicReact,
-  useIonLoading,
 } from "@ionic/react";
-import React, { useEffect } from "react";
 import { Redirect, Route } from "react-router-dom";
 import {
   bagOutline,
@@ -56,12 +54,11 @@ import Order from "./pages/Order";
 import Orders from "./pages/Orders";
 import ProductPage from "./pages/Product";
 import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
+import React from "react";
 import Register from "./pages/Register";
 import VirtualVisit from "./pages/VirtualVisit";
 import { bagHandleOutline } from "ionicons/icons";
-import { getApp } from "firebase/app";
 import { getAuth } from "firebase/auth"; // Firebase v9+
-import { getFirestore } from "firebase/firestore"; // Firebase v9+
 import { useAuthState } from "react-firebase-hooks/auth";
 
 setupIonicReact();

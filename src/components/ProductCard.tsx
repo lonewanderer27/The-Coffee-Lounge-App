@@ -12,12 +12,13 @@ import {
 
 import { Size } from "../types";
 import { bagAddOutline } from "ionicons/icons";
+import { memo } from "react";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
 import { useCart } from "../hooks/cart";
 import { useSetRecoilState } from "recoil";
 
-export default function ProductCard(props: ProductType) {
+function ProductCard(props: ProductType) {
   const { addToCart, count } = useCart();
   const router = useIonRouter();
   const setProductId = useSetRecoilState(productIdAtom);
@@ -73,3 +74,5 @@ export default function ProductCard(props: ProductType) {
     </IonCol>
   );
 }
+
+export default memo(ProductCard);
