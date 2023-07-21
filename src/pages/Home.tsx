@@ -166,7 +166,7 @@ const Home: React.FC = () => {
               </IonCol>
             </IonRow>
           ))}
-          {favorites.length > 0 && (
+          {favorites.length > 1 && (
             <IonRow className="ion-margin-bottom">
               <IonButton
                 fill="clear"
