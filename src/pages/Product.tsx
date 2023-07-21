@@ -46,6 +46,7 @@ import { computeProductPrice, useCart } from "../hooks/cart";
 import { doc, getFirestore } from "firebase/firestore";
 import { useEffect, useState } from "react";
 
+import CartBtn from "../components/CartBtn";
 import Heart from "react-heart";
 import { ProductConvert } from "../converters/products";
 import { getAuth } from "firebase/auth";
@@ -142,6 +143,9 @@ export default function ProductPage() {
             <IonTitle>View Product</IonTitle>
             <IonButtons slot="start">
               <IonBackButton></IonBackButton>
+            </IonButtons>
+            <IonButtons slot="end">
+              <CartBtn/>
             </IonButtons>
           </IonToolbar>
         </IonHeader>

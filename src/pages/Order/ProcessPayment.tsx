@@ -21,6 +21,7 @@ import { bagCheckOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { orderAtom } from "../../atoms/order";
 import { useDocument } from "react-firebase-hooks/firestore";
+import { useEffect } from "react";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
@@ -40,6 +41,8 @@ export default function ProcessPayment() {
   ).withConverter(OrderConvert);
   const [order, loading] = useDocument(orderRef);
 
+  console.log("order: ", order);
+
   const payMyself = () => {
     updateDoc(doc(db, "orders", order_id ?? orderDetails?.id), {
       payment_status: PaymentStatusType.Paid,
@@ -51,11 +54,11 @@ export default function ProcessPayment() {
       .catch(() => {});
   };
 
-  useIonViewDidEnter(() => {
-    if (orderDetails?.payment_status === "pending") {
+  useEffect(() => {
+    if (orderDetails?.payment_status === PaymentStatusType.Pending) {
       payMyself();
     }
-  }, [orderDetails]);
+  }, []);
 
   return (
     <IonPage>

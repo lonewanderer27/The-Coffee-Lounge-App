@@ -12,11 +12,6 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
-  IonListHeader,
-  IonLoading,
   IonPage,
   IonRow,
   IonText,
@@ -25,6 +20,7 @@ import {
   isPlatform,
   useIonRouter,
 } from "@ionic/react";
+import { Suspense, lazy, memo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import {
   collection,
@@ -38,9 +34,6 @@ import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { categoryAtom } from "../atoms/products";
 import { chevronForwardOutline } from "ionicons/icons";
-import { getAuth } from "firebase/auth";
-import { memo } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 import { useSetRecoilState } from "recoil";

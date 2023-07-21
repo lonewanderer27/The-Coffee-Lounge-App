@@ -2,45 +2,25 @@ import "swiper/css";
 import "swiper/css/effect-cards";
 import "./Explore.css";
 
-import { Autoplay, Pagination, Thumbs } from "swiper/modules";
+import { Autoplay, Pagination } from "swiper/modules";
 import {
-  IonAlert,
   IonButton,
-  IonButtons,
   IonCard,
   IonCardContent,
   IonCardHeader,
   IonCardTitle,
-  IonCol,
   IonContent,
-  IonFab,
-  IonFabButton,
-  IonFabList,
-  IonGrid,
   IonHeader,
-  IonIcon,
   IonImg,
   IonPage,
-  IonRow,
   IonText,
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  bagOutline,
-  chevronUpCircle,
-  colorPalette,
-  globe,
-  help,
-  settings,
-} from "ionicons/icons";
-import { memo, useEffect, useRef, useState } from "react";
+import { memo, useRef } from "react";
 
 import { EffectCards } from "swiper/modules";
-import { warningOutline } from "ionicons/icons";
-
-// import tlcBanner from "../assets/tlc_banner.webp";
 
 const Explore: React.FC = () => {
   const contentRef = useRef<HTMLIonContentElement>(null);

@@ -63,5 +63,8 @@
     "vite": "^4.3.9",
     "vitest": "^0.32.2"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "config": {
+    "ionic_manual_treeshaking": false
+  }
 }

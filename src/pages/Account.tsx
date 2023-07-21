@@ -27,13 +27,19 @@ import {
 } from "@ionic/react";
 import { chevronForwardOutline, pencilSharp } from "ionicons/icons";
 import { doc, getFirestore } from "firebase/firestore";
-import { memo, useEffect } from "react";
+import { lazy, memo, useEffect } from "react";
 
-import Avatar from "react-avatar";
 import { UserConvert } from "../converters/user";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router";
+
+const Avatar = lazy(() => import("react-avatar"))
+// import Avatar from "react-avatar";
+
+
+
+
 
 const Account: React.FC = () => {
   const db = getFirestore();

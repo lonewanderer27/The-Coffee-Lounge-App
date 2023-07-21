@@ -11,19 +11,13 @@ import {
   IonToolbar,
   isPlatform,
 } from "@ionic/react";
-import {
-  collection,
-  doc,
-  getFirestore,
-  query,
-  where,
-} from "firebase/firestore";
-import { useCollection, useDocument } from "react-firebase-hooks/firestore";
+import { collection, getFirestore, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { UserConvert } from "../converters/user";
 import { memo } from "react";
+import { useCollection } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 
 function MyFavorites() {

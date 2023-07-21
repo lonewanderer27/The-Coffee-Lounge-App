@@ -1,6 +1,10 @@
+// import { Suspense, lazy } from "react";
 import { initializeFirestore, memoryLocalCache } from "firebase/firestore";
 
+// const App = lazy(() => import("./App"));
 import App from "./App";
+// import { IonSpinner } from "@ionic/react";
+// import App from "./App";
 import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
 import { initializeApp } from "firebase/app";

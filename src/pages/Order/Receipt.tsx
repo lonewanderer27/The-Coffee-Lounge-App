@@ -1,4 +1,3 @@
-import { CardItemType, CartItemType } from "../../types";
 import {
   IonBackButton,
   IonButtons,
@@ -7,9 +6,6 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
-  IonItem,
-  IonLabel,
-  IonList,
   IonPage,
   IonRow,
   IonText,
@@ -18,15 +14,18 @@ import {
 } from "@ionic/react";
 import { Timestamp, doc, getFirestore } from "firebase/firestore";
 
-import Barcode from "react-barcode";
+import { CartItemType } from "../../types";
 import { OrderConvert } from "../../converters/orders";
 import ReceiptItems from "./ReceiptItems";
+import { lazy } from "react";
 import { orderAtom } from "../../atoms/order";
 import { phpString } from "../../phpString";
 import { shieldCheckmarkOutline } from "ionicons/icons";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
+
+const Barcode = lazy(() => import("react-barcode"));
 
 export default function Receipt() {
   const orderDetails = useRecoilValue(orderAtom);

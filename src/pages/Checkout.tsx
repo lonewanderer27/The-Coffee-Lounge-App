@@ -2,7 +2,6 @@ import {
   IonBackButton,
   IonButton,
   IonButtons,
-  IonCheckbox,
   IonContent,
   IonFooter,
   IonHeader,
@@ -10,7 +9,6 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonModal,
   IonPage,
   IonRadio,
   IonRadioGroup,
@@ -19,37 +17,18 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  useIonLoading,
   useIonRouter,
 } from "@ionic/react";
-import {
-  OrderProductType,
-  OrderType,
-  PaymentOptionType,
-  PaymentStatusType,
-} from "../types";
-import { SubmitHandler, set, useForm } from "react-hook-form";
-import {
-  addDoc,
-  collection,
-  doc,
-  getFirestore,
-  serverTimestamp,
-} from "firebase/firestore";
 import {
   branchAtom,
   deliverOptionAtom,
   payOptionAtom,
   readyToPayAtom,
 } from "../atoms/checkout";
-import { useEffect, useState } from "react";
-import { useHistory, useLocation, useParams } from "react-router";
 import { useRecoilState, useRecoilValue } from "recoil";
 
 import { Branches } from "../constants";
 import { DeliveryOptionType } from "../types";
-import QRCode from "react-qr-code";
-import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 import { useCheckout } from "../hooks/checkout";

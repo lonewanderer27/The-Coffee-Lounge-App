@@ -1,7 +1,7 @@
 import {
-  CartItemType,
-  OrderProductType,
+  DeliveryOptionType,
   OrderType,
+  PaymentOptionType,
   PaymentStatusType,
 } from "../types";
 import {
@@ -50,6 +50,7 @@ export const useCheckout = (totalPrice: number) => {
         products: cart,
         total_price: totalPrice,
         payment_status: PaymentStatusType.Pending,
+        payment_at: serverTimestamp(),
         created_at: serverTimestamp(),
         delivery_option: deliverOption!,
         payment_option: payOption!,

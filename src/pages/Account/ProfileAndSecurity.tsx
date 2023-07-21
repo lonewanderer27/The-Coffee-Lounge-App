@@ -22,10 +22,8 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonLoading,
   IonModal,
   IonPage,
-  IonRow,
   IonText,
   IonTitle,
   IonToolbar,
@@ -34,15 +32,15 @@ import {
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { doc, getFirestore } from "firebase/firestore";
+import { lazy, useState } from "react";
 
-import Avatar from "react-avatar";
 import { FirebaseError } from "firebase/app";
 import { UserConvert } from "../../converters/user";
 import { chevronForwardOutline } from "ionicons/icons";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
-import { useHistory } from "react-router";
-import { useState } from "react";
+
+const Avatar = lazy(() => import("react-avatar"));
 
 export default function ProfileAndSecurity() {
   const db = getFirestore();
