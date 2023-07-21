@@ -5,12 +5,15 @@ import {
   IonContent,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonPage,
+  IonText,
   IonTitle,
   IonToolbar,
   useIonLoading,
   useIonToast,
+  useIonViewDidEnter,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
@@ -18,6 +21,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import { Action } from "../components/Action";
 import { FirebaseError } from "firebase/app";
 import { logInOutline } from "ionicons/icons";
+import { useColorScheme } from "../hooks/page";
 import { useHistory } from "react-router";
 
 interface IFormInput {
@@ -31,6 +35,7 @@ const Login: React.FC = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { isValid },
   } = useForm<IFormInput>();
 
@@ -62,56 +67,57 @@ const Login: React.FC = () => {
       });
   };
 
+  const { colorScheme } = useColorScheme();
+
+  useIonViewDidEnter(() => {
+    setFocus("email");
+  }, []);
+
   return (
     <IonPage>
-      <IonHeader translucent={true}>
-        <IonToolbar>
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Login</IonTitle>
-          </IonToolbar>
-        </IonHeader>
-        <form
-          className="ion-padding"
-          onSubmit={handleSubmit(onSubmit)}
-          style={{
-            height: window.innerHeight - 150,
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-          }}
-        >
-          <IonInput
-            label="Email"
-            type="email"
-            className="ion-text-right"
-            {...register("email", { required: true })}
-          />
-          <IonInput
-            label="Password"
-            type="password"
-            className="ion-text-right"
-            {...register("password", { required: true })}
-          />
-          <IonButton
-            expand="block"
-            disabled={!isValid}
-            type="submit"
-            className="ion-margin-top"
+        <div className="h-full flex">
+          <form
+            className="ion-padding flex flex-col justify-center h-full"
+            onSubmit={handleSubmit(onSubmit)}
           >
-            Sign in
-            <IonIcon src={logInOutline} />
-          </IonButton>
-          <Action
-            message="Don't have an account?"
-            link="/register"
-            text="Signup"
-          />
-        </form>
+            <IonImg
+              src={
+                colorScheme === "dark"
+                  ? "/slogan_white_mode.png"
+                  : "/slogan_dark_mode.png"
+              }
+              className="w-[35%] mx-auto"
+            />
+            <IonInput
+              label="Email"
+              labelPlacement="start"
+              type="email"
+              className="ion-text-right"
+              {...register("email", { required: true })}
+            ></IonInput>
+            <IonInput
+              label="Password"
+              type="password"
+              className="ion-text-right"
+              {...register("password", { required: true })}
+            ></IonInput>
+            <IonButton
+              expand="block"
+              disabled={!isValid}
+              type="submit"
+              className="ion-margin-top"
+            >
+              Sign in
+              <IonIcon src={logInOutline} />
+            </IonButton>
+            <Action
+              message="Don't have an account?"
+              link="/register"
+              text="Signup"
+            />
+          </form>
+        </div>
       </IonContent>
     </IonPage>
   );

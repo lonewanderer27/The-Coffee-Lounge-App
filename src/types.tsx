@@ -44,8 +44,6 @@ export interface DeliveryAddressType extends AddressType {
 export type UserType = {
   id: string;
   default_address: string;
-  first_name: string;
-  last_name: string;
   nickname: string;
   gender: string;
   favorites?: string[];
@@ -66,13 +64,15 @@ export type CartItemType = {
 export type OrderType = {
   id?: string;
   created_at: Timestamp | FieldValue;
-  delivery_address_id?: string;
   products: OrderProductType[];
+  payment_option: PaymentOptionType;
+  delivery_address_id?: string;
   payment_status: PaymentStatusType;
   total_price: number;
   user_uid: string;
   delivery_fee?: number;
-  delivery_option?: DeliveryOptionType;
+  branch?: BranchType;
+  delivery_option: DeliveryOptionType;
 };
 
 export type OrderProductType = {
@@ -94,9 +94,15 @@ export enum PaymentOptionType {
   DebitCard = "Debit Card",
 }
 
-export type DeliveryOptionType = "pickup" | "delivery";
+export enum DeliveryOptionType {
+  Pickup = "Pickup",
+  Delivery = "Delivery",
+}
 
-export type PaymentStatusType = "paid" | "pending";
+export enum PaymentStatusType {
+  Paid = "paid",
+  Pending = "pending",
+}
 
 export type BranchType = {
   id?: string;
@@ -255,4 +261,18 @@ export interface ProductConfig {
   additives: [];
   ice: Ice;
   name?: string;
+}
+
+export interface VoucherType {
+  id?: string;
+  code: string;
+  discount: number;
+  min_spend: number;
+  max_discount: number;
+  start_date: Timestamp;
+  end_date: Timestamp;
+  active: boolean;
+  type: "percent" | "fixed";
+  created_at: Timestamp;
+  updated_at: Timestamp;
 }

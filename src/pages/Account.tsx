@@ -81,17 +81,12 @@ const Account: React.FC = () => {
                 {currentUser?.photoURL ? (
                   <img src={currentUser.photoURL} />
                 ) : (
-                  <Avatar name={userData!.get("first_name")} round />
+                  <Avatar name={userData!.get("nickname")} round />
                 )}
               </IonCol>
-              <IonCol className="ion-padding-start">
+              <IonCol className="ion-padding-start flex items-center">
                 <IonText>
-                  <h2>
-                    {userData!.get("first_name")} {userData!.get("last_name")}
-                  </h2>
-                </IonText>
-                <IonText>
-                  <h6>Nickname: {userData!.get("nickname")}</h6>
+                  <h2>{userData!.get("nickname")}</h2>
                 </IonText>
               </IonCol>
             </IonRow>

@@ -136,21 +136,13 @@ export default function ProfileAndSecurity() {
             {data?.photoURL ? (
               <img src={data?.photoURL} />
             ) : (
-              <Avatar name={userData!.get("first_name")} round />
+              <Avatar name={userData!.get("nickname")} round />
             )}
           </div>
           <IonList>
             <IonListHeader>
               <IonLabel>Basic Information</IonLabel>
             </IonListHeader>
-            <IonItem>
-              <IonLabel>First Name</IonLabel>
-              <IonLabel>{userData!.get("first_name")}</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel>Last Name</IonLabel>
-              <IonLabel>{userData!.get("last_name")}</IonLabel>
-            </IonItem>
             <IonItem>
               <IonLabel>Nickname</IonLabel>
               <IonLabel>{userData!.get("nickname")}</IonLabel>
@@ -171,7 +163,6 @@ export default function ProfileAndSecurity() {
             <IonItem>
               <IonText>Email</IonText>
               <IonText className="ms-auto">{data?.email}</IonText>
-              {/* <IonLabel>adrianejames27@gmail.com</IonLabel> */}
             </IonItem>
             <IonItem id="last-signed-in">
               <IonLabel>Last Signed In</IonLabel>

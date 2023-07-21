@@ -8,7 +8,7 @@ export const Action = (props: {
 }) => (
   <IonRow className={`ion-text-${props.align} ion-justify-content-center`}>
     <IonCol size="12">
-      <p>
+      <p className="text-center">
         {props.message}
         <IonRouterLink className="custom-link" routerLink={props.link}>
           {" "}
