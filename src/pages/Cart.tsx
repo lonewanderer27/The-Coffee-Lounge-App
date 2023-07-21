@@ -36,8 +36,7 @@ import {
 } from "@ionic/react";
 import { OrderProductType, OrderType } from "../types";
 
-import OrderItem from "../components/OrderItem";
-import { db } from "../main";
+import CartItem from "../components/CartItem";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -45,6 +44,7 @@ import { useCart } from "../hooks/cart";
 import { useHistory } from "react-router-dom";
 
 const Cart: React.FC = () => {
+  const db = getFirestore();
   const [data, loading, error] = useAuthState(getAuth());
   const history = useHistory();
 
@@ -115,7 +115,7 @@ const Cart: React.FC = () => {
         </IonHeader>
         <IonList>
           {cart.map((item, index) => (
-            <OrderItem
+            <CartItem
               key={"order:" + item.product_id + index}
               {...item}
               index={index}
@@ -149,7 +149,6 @@ const Cart: React.FC = () => {
               className="ion-justify-content-center ion-align-items-center"
             >
               <div
-                className="ion-padding"
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -159,6 +158,7 @@ const Cart: React.FC = () => {
                   textAlign: "center",
                 }}
               >
+                <IonText>Total Price</IonText>
                 <IonText>
                   <h3 className="ion-no-margin">
                     {phpString.format(totalPrice)}

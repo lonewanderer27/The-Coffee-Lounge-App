@@ -60,6 +60,7 @@ export type CartItemType = {
   syrup: Syrup;
   additives: Additive[];
   ice: Ice;
+  name?: string;
 };
 
 export type OrderType = {
@@ -126,89 +127,88 @@ export const Sizes: AddOn[] = [
   },
   {
     name: "Grande",
-    price: 0,
+    price: 17.99,
   },
   {
     name: "Venti",
-    price: 0,
+    price: 22.99,
   },
 ];
 
 export const Milks: AddOn[] = [
   {
     name: "Cow's",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Lactose-Free",
-    price: 0,
+    price: 5.0,
   },
   {
     name: "Skimmed",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Vegetable",
-    price: 0,
+    price: 7.9,
   },
 ];
 
 export const Syrups: AddOn[] = [
   {
     name: "Amaretto",
-    price: 0,
+    price: 3.75,
   },
   {
     name: "Caramel",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Hazelnut",
-    price: 0,
+    price: 3.75,
   },
   {
     name: "Irish Cream",
-    price: 0,
+    price: 3.75,
   },
   {
     name: "Vanilla",
-    price: 0,
+    price: 2.9,
   },
 ];
 
 export const Additives: AddOn[] = [
   {
     name: "Ceylon Cinnamon",
-    price: 0,
+    price: 1.25,
   },
   {
     name: "Grated Chocolate",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Liquid Chocolate",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Marshmallow",
-    price: 0,
+    price: 1.25,
   },
   {
     name: "Whipped Cream",
-    price: 0,
+    price: 2.9,
   },
   {
     name: "Nutmeg",
-    price: 0,
+    price: 1.25,
   },
   {
     name: "Ice Cream",
-    price: 0,
+    price: 5.0,
   },
 ];
 
 export enum Size {
-  None = "None",
   Tall = "Tall",
   Grande = "Grande",
   Venti = "Venti",
@@ -220,6 +220,7 @@ export enum Milk {
   Lactose_Free = "Lactose-Free",
   Skimmed = "Skimmed",
   Vegetable = "Vegetable",
+  find = "find",
 }
 
 export enum Syrup {
@@ -254,4 +255,5 @@ export interface ProductConfig {
   syrup: Syrup;
   additives: [];
   ice: Ice;
+  name?: string;
 }

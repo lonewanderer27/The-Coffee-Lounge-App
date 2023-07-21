@@ -1,4 +1,4 @@
-import { CartItemType, Ice, Milk, Syrup } from "../types";
+import { CartItemType, Ice, Milk, Size, Syrup } from "../types";
 import {
   IonBadge,
   IonCard,
@@ -12,29 +12,39 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import { add, removeOutline, trashOutline } from "ionicons/icons";
+import { add, removeOutline, trashOutline, watch } from "ionicons/icons";
+import { computeProductPrice, useCart } from "../hooks/cart";
+import { doc, getFirestore } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 import { ProductConvert } from "../converters/products";
-import { db } from "../main";
-import { doc } from "firebase/firestore";
 import { phpString } from "../phpString";
-import { useCart } from "../hooks/cart";
 import { useDocumentOnce } from "react-firebase-hooks/firestore";
 
-export default function OrderItem(props: CartItemType) {
+export default function CartItem(props: CartItemType) {
+  const db = getFirestore();
   const [data, status] = useDocumentOnce(
     doc(db, "products", props.product_id).withConverter(ProductConvert)
   );
-  const { removeFromCart, addItem, removeItem } = useCart();
+  const { removeFromCart, addQty: addItem, removeQty: removeItem } = useCart();
 
   const determineIfModified = () => {
-    if (props.size !== "Tall") return true;
+    if (props.size !== Size.Tall) return true;
     if (props.milk !== Milk.None) return true;
     if (props.syrup !== Syrup.None) return true;
     if (props.additives.length !== 0) return true;
     if (props.ice !== Ice.Normal) return true;
     return false;
   };
+
+  const [productPrice, setProductPrice] = useState(0);
+  useEffect(() => {
+    if (!status) {
+      setProductPrice(computeProductPrice(data!.get("price"), props));
+    }
+  });
+
+  console.log("CartItem props: ", props);
 
   if (data) {
     return (
@@ -69,17 +79,13 @@ export default function OrderItem(props: CartItemType) {
                   alt={data.get("name")}
                   width="50px"
                   height="auto"
+                  className="my-auto"
                 />
               </IonCol>
               <IonCol>
                 <IonText>{data.get("name")}</IonText>
-                {determineIfModified() && (
-                  <>
-                    <br />
-                    {/* <IonText id="modifications">Modified</IonText> */}
-                  </>
-                )}
-                {props.size && (
+                {determineIfModified() == true && <br />}
+                {props.size !== Size.Tall && (
                   <>
                     <br />
                     <IonText>Size: {props.size}</IonText>
@@ -103,7 +109,7 @@ export default function OrderItem(props: CartItemType) {
                     <IonText>Additives: {props.additives.join(", ")}</IonText>
                   </>
                 )}
-                {props.ice && (
+                {props.ice !== Ice.Normal && (
                   <>
                     <br />
                     <IonText>Ice: {props.ice}</IonText>
@@ -115,7 +121,7 @@ export default function OrderItem(props: CartItemType) {
               </IonCol>
               <IonCol size="3" className="ion-text-end">
                 <IonBadge>
-                  {phpString.format(data.get("price") * props.quantity)}
+                  {phpString.format(productPrice * props.quantity)}
                 </IonBadge>
               </IonCol>
             </IonRow>

@@ -2,6 +2,7 @@ import "./Product.css";
 
 import {
   Additive,
+  Additives,
   Ice,
   Milk,
   ProductConfig,
@@ -15,6 +16,7 @@ import {
   IonBadge,
   IonButton,
   IonButtons,
+  IonCheckbox,
   IonCol,
   IonContent,
   IonFooter,
@@ -24,6 +26,7 @@ import {
   IonItem,
   IonLabel,
   IonList,
+  IonModal,
   IonPage,
   IonRow,
   IonSegment,
@@ -33,32 +36,33 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
+  useIonAlert,
   useIonLoading,
 } from "@ionic/react";
-import { addOutline, heart, heartOutline, removeOutline } from "ionicons/icons";
+import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { addOutline, removeOutline } from "ionicons/icons";
+import { computeProductPrice, useCart } from "../hooks/cart";
 import { doc, getFirestore } from "firebase/firestore";
-import { useDocument, useDocumentOnce } from "react-firebase-hooks/firestore";
+import { useEffect, useState } from "react";
 
 import Heart from "react-heart";
-import { IceSize } from "../components/IceSizes";
 import { ProductConvert } from "../converters/products";
-import { db } from "../main";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useCart } from "../hooks/cart";
+import { useDocumentOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
-import { useForm } from "react-hook-form";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
 export default function ProductPage() {
+  const db = getFirestore();
   const { product_id } = useParams<{
     product_id: string;
   }>();
   const [currentUser] = useAuthState(getAuth());
-  console.log("product_id", product_id);
+  // console.log("product_id", product_id);
   const productId = useRecoilValue(productIdAtom);
 
   const [data, dataLoading] = useDocumentOnce(
@@ -69,32 +73,60 @@ export default function ProductPage() {
   );
 
   const {
+    control,
     register,
     setValue,
     watch,
     getValues,
-    formState: { isValid },
+    formState: { isValid, isDirty },
+    handleSubmit,
   } = useForm<ProductConfig>({
     defaultValues: {
       quantity: 1,
-      size: Size.None,
+      size: Size.Tall,
       milk: Milk.None,
       syrup: Syrup.None,
       additives: [],
       ice: Ice.Normal,
     },
+    mode: "all",
   });
-
-  const qty = watch("quantity");
-  const size = watch("size");
-
-  console.log("Product");
-  console.log(data);
-  console.log("size", size);
 
   const { addToCart, count } = useCart();
 
   const { isFavorite, toggleFavorite } = useFavorite(product_id ?? productId);
+
+  const [presentAlert] = useIonAlert();
+
+  const onSubmit: SubmitHandler<ProductConfig> = (data) => {
+    console.log(data);
+    if (data.additives.length > 2) {
+      presentAlert({
+        header: "Too many additives",
+        message: "You can only select up to 2 additives",
+        buttons: ["OK"],
+      });
+      return;
+    } else {
+      addToCart({
+        product_id: product_id,
+        index: count,
+        ...getValues(),
+      });
+    }
+  };
+
+  const [totalPrice, setTotalPrice] = useState(0);
+
+  const computePrice = () => {
+    if (!dataLoading) {
+      setTotalPrice(computeProductPrice(data!.get("price"), getValues()));
+    }
+  };
+
+  useEffect(() => {
+    computePrice();
+  }, [watch, data]);
 
   if (data != undefined) {
     return (
@@ -153,8 +185,8 @@ export default function ProductPage() {
                 <IonSegment
                   onIonChange={(event) => {
                     setValue("size", event.detail.value as Size);
+                    computePrice();
                   }}
-                  value={watch("size")}
                 >
                   <IonSegmentButton value={Size.Tall}>S</IonSegmentButton>
                   <IonSegmentButton value={Size.Grande}>M</IonSegmentButton>
@@ -169,21 +201,27 @@ export default function ProductPage() {
                     label="Quantity"
                     className="ion-text-right"
                     {...register("quantity", { required: true })}
+                    type="number"
                   ></IonInput>
                 </IonCol>
                 <IonCol size="auto" className="ion ion-no-padding">
                   <IonButton
                     size="small"
                     onClick={() => {
-                      if (qty > 1) setValue("quantity", qty - 1);
+                      if (watch("quantity") > 1)
+                        setValue("quantity", watch("quantity") - 1);
+                      computePrice();
                     }}
-                    disabled={qty <= 1}
+                    disabled={watch("quantity") <= 1}
                   >
                     <IonIcon src={removeOutline} />
                   </IonButton>
                   <IonButton
                     size="small"
-                    onClick={() => setValue("quantity", qty + 1)}
+                    onClick={() => {
+                      setValue("quantity", watch("quantity") + 1);
+                      computePrice();
+                    }}
                   >
                     <IonIcon src={addOutline} />
                   </IonButton>
@@ -199,6 +237,10 @@ export default function ProductPage() {
                         header: "Select your choice of milk",
                       }}
                       {...register("milk", { required: false })}
+                      onIonChange={(e) => {
+                        setValue("milk", e.detail.value);
+                        computePrice();
+                      }}
                     >
                       {Object.values(Milk).map((milk) => (
                         <IonSelectOption value={milk}>{milk}</IonSelectOption>
@@ -213,6 +255,10 @@ export default function ProductPage() {
                         header: "Select your choice of syrup",
                       }}
                       {...register("syrup", { required: false })}
+                      onIonChange={(e) => {
+                        setValue("syrup", e.detail.value);
+                        computePrice();
+                      }}
                     >
                       {Object.values(Syrup).map((syrup) => (
                         <IonSelectOption value={syrup}>{syrup}</IonSelectOption>
@@ -223,29 +269,43 @@ export default function ProductPage() {
                     <>
                       <IonItem>
                         <IonSelect
-                          label="Additives"
-                          multiple
-                          {...register("additives", { required: false })}
-                          value={"None" && watch("additives")!.length == 0}
-                        >
-                          {Object.values(Additive).map((additive) => (
-                            <IonSelectOption value={additive}>
-                              {additive}
-                            </IonSelectOption>
-                          ))}
-                        </IonSelect>
-                      </IonItem>
-                      <IonItem>
-                        <IonSelect
                           label="Ice"
                           interface="action-sheet"
                           interfaceOptions={{
                             header: "Select the amount of your ice",
                           }}
                           {...register("ice", { required: true })}
+                          onIonChange={(e) => {
+                            setValue("ice", e.detail.value);
+                            computePrice();
+                          }}
                         >
                           {Object.values(Ice).map((ice) => (
-                            <IonSelectOption value={ice}>{ice}</IonSelectOption>
+                            <IonSelectOption value={ice}>
+                              <IonText>{ice}</IonText>
+                            </IonSelectOption>
+                          ))}
+                        </IonSelect>
+                      </IonItem>
+                      <IonItem>
+                        <IonSelect
+                          label="Additives"
+                          multiple={true}
+                          interfaceOptions={{
+                            header: "Select up to 2 additives",
+                          }}
+                          {...register("additives", {
+                            required: false,
+                          })}
+                          onIonChange={(e) => {
+                            setValue("additives", e.detail.value);
+                            computePrice();
+                          }}
+                        >
+                          {Object.values(Additive).map((additive) => (
+                            <IonSelectOption value={additive}>
+                              {additive}
+                            </IonSelectOption>
                           ))}
                         </IonSelect>
                       </IonItem>
@@ -267,22 +327,13 @@ export default function ProductPage() {
                   <IonText>Price</IonText>
                   <IonText>
                     <h3 className="ion-no-margin">
-                      {phpString.format(data.get("price"))}
+                      {phpString.format(totalPrice * watch("quantity"))}
                     </h3>
                   </IonText>
                 </div>
               </IonCol>
               <IonCol>
-                <IonButton
-                  disabled={!isValid || data.id === "Loading"}
-                  onClick={() => {
-                    addToCart({
-                      product_id: product_id,
-                      index: count,
-                      ...getValues(),
-                    });
-                  }}
-                >
+                <IonButton onClick={() => handleSubmit(onSubmit)()}>
                   Buy Now
                 </IonButton>
               </IonCol>
