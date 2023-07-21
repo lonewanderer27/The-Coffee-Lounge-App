@@ -23,6 +23,7 @@ import {
   IonTitle,
   IonToolbar,
   isPlatform,
+  useIonRouter,
 } from "@ionic/react";
 import { chevronForwardOutline, pencilSharp } from "ionicons/icons";
 import { doc, getFirestore } from "firebase/firestore";
@@ -37,6 +38,7 @@ import { useHistory } from "react-router";
 const Account: React.FC = () => {
   const db = getFirestore();
   const history = useHistory();
+  const router = useIonRouter();
   const { currentUser } = getAuth();
   const auth = getAuth();
 
@@ -125,7 +127,7 @@ const Account: React.FC = () => {
             <IonListHeader>
               <IonLabel>Support</IonLabel>
             </IonListHeader>
-            <IonItem>
+            <IonItem onClick={() => router.push("/about")}>
               <IonLabel>About</IonLabel>
               <IonIcon src={chevronForwardOutline}></IonIcon>
             </IonItem>

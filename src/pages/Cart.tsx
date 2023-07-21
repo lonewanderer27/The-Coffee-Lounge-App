@@ -105,14 +105,6 @@ const Cart: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonHeader collapse="condense">
-          <IonToolbar>
-            <IonTitle size="large">Cart</IonTitle>
-            <IonButtons slot="start">
-              <IonBackButton></IonBackButton>
-            </IonButtons>
-          </IonToolbar>
-        </IonHeader>
         <IonList>
           {cart.map((item, index) => (
             <CartItem
