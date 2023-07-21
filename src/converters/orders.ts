@@ -1,4 +1,3 @@
-import { CategoryType, OrderType, ProductType } from "../types";
 import {
   FirestoreDataConverter,
   QueryDocumentSnapshot,
@@ -6,6 +5,8 @@ import {
   WithFieldValue,
   serverTimestamp,
 } from "firebase/firestore";
+
+import { OrderType } from "../types";
 
 export const OrderConvert: FirestoreDataConverter<OrderType> = {
   fromFirestore(
@@ -18,6 +19,7 @@ export const OrderConvert: FirestoreDataConverter<OrderType> = {
       delivery_address_id,
       products,
       payment_status,
+      payment_option,
       total_price,
       user_uid,
       delivery_fee,
@@ -29,6 +31,7 @@ export const OrderConvert: FirestoreDataConverter<OrderType> = {
       delivery_address_id,
       products,
       payment_status,
+      payment_option,
       total_price,
       user_uid,
       delivery_fee,
