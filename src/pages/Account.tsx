@@ -27,13 +27,13 @@ import { doc, getFirestore } from "firebase/firestore";
 
 import Avatar from "react-avatar";
 import { UserConvert } from "../converters/user";
-import { db } from "../main";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
 const Account: React.FC = () => {
+  const db = getFirestore();
   const history = useHistory();
   const { currentUser } = getAuth();
   const auth = getAuth();

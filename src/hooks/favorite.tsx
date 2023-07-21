@@ -7,11 +7,11 @@ import {
 } from "firebase/firestore";
 
 import { UserConvert } from "../converters/user";
-import { db } from "../main";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 
 export default function useFavorite(product_id?: string) {
+  const db = getFirestore();
   const { currentUser } = getAuth();
 
   // "Loading" is a pseudo product id that exists in the database

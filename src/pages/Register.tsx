@@ -29,7 +29,6 @@ import {
 import { doc, getFirestore, setDoc } from "firebase/firestore";
 
 import { Action } from "../components/Action";
-import { db } from "../main";
 import { useHistory } from "react-router";
 
 enum GenderEnum {
@@ -49,6 +48,7 @@ interface IFormInput {
 }
 
 const Register: React.FC = () => {
+  const db = getFirestore();
   const auth = getAuth();
   const history = useHistory();
 

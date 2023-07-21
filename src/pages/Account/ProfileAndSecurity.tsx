@@ -37,13 +37,13 @@ import Avatar from "react-avatar";
 import { FirebaseError } from "firebase/app";
 import { UserConvert } from "../../converters/user";
 import { chevronForwardOutline } from "ionicons/icons";
-import { db } from "../../main";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router";
 import { useState } from "react";
 
 export default function ProfileAndSecurity() {
+  const db = getFirestore();
   const auth = getAuth();
   const [data] = useAuthState(auth);
   const [present, dismiss] = useIonLoading();

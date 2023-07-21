@@ -20,11 +20,11 @@ import CartBtn from "../components/CartBtn";
 import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
 import { ProductConvert } from "../converters/products";
-import { db } from "../main";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
 
 export default function CategoryPage() {
+  const db = getFirestore();
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
 
