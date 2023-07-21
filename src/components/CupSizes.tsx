@@ -1,5 +1,6 @@
 import "./CupSizes.css";
 
+import { IonImg } from "@ionic/react";
 import LCup from "/Large-Cup.svg";
 import MCup from "/Medium-Cup.svg";
 import SCup from "/Small-Cup.svg";
@@ -20,7 +21,7 @@ export function Cup(props: { active?: boolean; size: Size }) {
   };
 
   return (
-    <img
+    <IonImg
       src={determineSize()}
       alt={`${props.size} Cup`}
       className={`cupSizes ${props.active ? "active" : ""} dark:fill-white`}

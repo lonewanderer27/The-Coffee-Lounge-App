@@ -2,6 +2,7 @@ import "./Account.css";
 
 import {
   IonAlert,
+  IonAvatar,
   IonButton,
   IonButtons,
   IonCol,
@@ -10,6 +11,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -71,11 +73,12 @@ const Account: React.FC = () => {
               <IonTitle size="large">Account</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonGrid className="ion-padding">
+          <IonGrid className="ion-padding-horizontal">
             <IonRow>
               <IonCol size="auto">
-                {currentUser?.photoURL && <img src={currentUser.photoURL} />}
-                {!currentUser?.photoURL && (
+                {currentUser?.photoURL ? (
+                  <img src={currentUser.photoURL} />
+                ) : (
                   <Avatar name={userData!.get("first_name")} round />
                 )}
               </IonCol>

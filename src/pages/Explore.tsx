@@ -19,6 +19,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonPage,
   IonRow,
   IonText,
@@ -62,7 +63,7 @@ const Explore: React.FC = () => {
         </IonHeader>
         <div className="ion-padding">
           <div style={{ marginBottom: "50px" }}>
-            <img
+            <IonImg
               src="/outdoor/TCL - PICTURE 2 (OUTSIDE).webp"
               style={{ borderRadius: "10px" }}
             />
@@ -91,7 +92,7 @@ const Explore: React.FC = () => {
                 breakfast nor bread.
               </p>
             </IonText>
-            <img
+            <IonImg
               src="/outdoor/the-coffee-lounge-2nd-floor-facing-from-the-outside-railing-day.webp"
               style={{ borderRadius: "10px" }}
             />
@@ -104,7 +105,7 @@ const Explore: React.FC = () => {
                 giving enough workspace to work on group projects.
               </p>
             </IonText>
-            <img
+            <IonImg
               src="/outdoor/TCL - Picture 1 (OUTSIDE).webp"
               style={{ borderRadius: "10px" }}
             />
@@ -120,7 +121,7 @@ const Explore: React.FC = () => {
         >
           <SwiperSlide>
             <IonCard>
-              <img src="3D View Placeholder.webp" />
+              <IonImg src="3D View Placeholder.webp" />
               <IonCardHeader>
                 <IonCardTitle>
                   <IonText>3D View</IonText>
@@ -135,7 +136,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>Ground Floor Lounge</IonCardTitle>
               </IonCardHeader>
@@ -152,7 +153,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 2 (1ST FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 2 (1ST FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>Entrance</IonCardTitle>
               </IonCardHeader>
@@ -169,7 +170,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 3 (1ST FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 3 (1ST FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>Ground Floor VIP Area</IonCardTitle>
               </IonCardHeader>
@@ -186,7 +187,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/the-coffee-lounge-ground-floor-realistic.webp" />
+              <IonImg src="/indoor/the-coffee-lounge-ground-floor-realistic.webp" />
               <IonCardHeader>
                 <IonCardTitle>Ground Floor VIP Area</IonCardTitle>
               </IonCardHeader>
@@ -203,7 +204,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 4 (1ST FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 4 (1ST FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>Ground Floor Bar</IonCardTitle>
               </IonCardHeader>
@@ -220,7 +221,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 1 (1ST FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>Ground Floor Bar</IonCardTitle>
               </IonCardHeader>
@@ -237,7 +238,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 1 (2ND FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 1 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor Balcony</IonCardTitle>
               </IonCardHeader>
@@ -254,7 +255,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 2 (2ND FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 2 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor Lounge</IonCardTitle>
               </IonCardHeader>
@@ -271,7 +272,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="indoor/TCL - PICTURE 3 (2ND FLOOR).webp" />
+              <IonImg src="indoor/TCL - PICTURE 3 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor Bar</IonCardTitle>
               </IonCardHeader>
@@ -288,7 +289,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 4 (2ND FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 4 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor VIP Area</IonCardTitle>
               </IonCardHeader>
@@ -305,7 +306,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 5 (2ND FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 5 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor B Function Room</IonCardTitle>
               </IonCardHeader>
@@ -322,7 +323,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
           <SwiperSlide>
             <IonCard>
-              <img src="/indoor/TCL - PICTURE 6 (2ND FLOOR).webp" />
+              <IonImg src="/indoor/TCL - PICTURE 6 (2ND FLOOR).webp" />
               <IonCardHeader>
                 <IonCardTitle>2nd Floor Function Rooms</IonCardTitle>
               </IonCardHeader>
@@ -340,7 +341,7 @@ const Explore: React.FC = () => {
           </SwiperSlide>
         </Swiper>
         {/* <IonCard>
-          <img src="3D View Placeholder.webp" />
+          <IonImg src="3D View Placeholder.webp" />
           <IonCardHeader>
             <IonCardTitle>
               <IonText>3D View</IonText>

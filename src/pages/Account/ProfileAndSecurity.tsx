@@ -7,6 +7,7 @@ import {
 } from "firebase/auth";
 import {
   IonAlert,
+  IonAvatar,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -15,6 +16,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -130,16 +132,13 @@ export default function ProfileAndSecurity() {
               <IonTitle size="large">Profile & Security</IonTitle>
             </IonToolbar>
           </IonHeader>
-          <IonGrid className="ion-padding">
-            <IonRow>
-              <IonCol size="auto">
-                {data?.photoURL && <img src={data?.photoURL} />}
-                {!data?.photoURL && (
-                  <Avatar name={userData!.get("first_name")} round />
-                )}
-              </IonCol>
-            </IonRow>
-          </IonGrid>
+          <div className="ion-padding flex justify-center">
+            {data?.photoURL ? (
+              <img src={data?.photoURL} />
+            ) : (
+              <Avatar name={userData!.get("first_name")} round />
+            )}
+          </div>
           <IonList>
             <IonListHeader>
               <IonLabel>Basic Information</IonLabel>

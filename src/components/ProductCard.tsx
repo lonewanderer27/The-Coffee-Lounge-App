@@ -2,21 +2,20 @@ import { Ice, Milk, ProductType, Syrup } from "../types";
 import {
   IonCard,
   IonCardContent,
-  IonCardSubtitle,
   IonCardTitle,
   IonCol,
   IonIcon,
-  IonLabel,
+  IonImg,
   IonText,
   useIonRouter,
 } from "@ionic/react";
-import { useRecoilState, useSetRecoilState } from "recoil";
 
 import { Size } from "../types";
 import { bagAddOutline } from "ionicons/icons";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
 import { useCart } from "../hooks/cart";
+import { useSetRecoilState } from "recoil";
 
 export default function ProductCard(props: ProductType) {
   const { addToCart, count } = useCart();
@@ -48,23 +47,14 @@ export default function ProductCard(props: ProductType) {
           router.push(`/product/${props.id}`);
         }}
       >
-        <div
-          style={{
-            backgroundColor: "gray",
-            borderRadius: "5px",
-            padding: "5px",
-          }}
-        >
-          <img
+        <div className="bg-slate-200 dark:bg-gray-700 rounded-md p-[5px]">
+          <IonImg
+            className="h-[148px] w-full"
             src={props.image}
             alt={props.name}
-            style={{ height: "auto", width: "100%" }}
           />
         </div>
-        <IonCardTitle
-          style={{ fontSize: "1rem" }}
-          className="ion-margin-top whitespace-nowrap truncate overflow-hidden"
-        >
+        <IonCardTitle className="ion-margin-top whitespace-nowrap truncate overflow-hidden text-base">
           {props.name}
         </IonCardTitle>
 

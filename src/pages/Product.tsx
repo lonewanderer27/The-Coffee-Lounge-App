@@ -22,6 +22,7 @@ import {
   IonFooter,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -159,14 +160,13 @@ export default function ProductPage() {
                   {data.get("coffee_type")}
                 </IonBadge>
               )}
-              <img
-                className={`${data.get("description") ? "mb-5" : ""}`}
+              <IonImg
+                className={`${data.get("description") ? "mb-5" : ""} w-[60%]`}
                 src={data.get("image")}
                 alt={data.get("name")}
-                width="60%"
               />
               <IonText
-                className={`absolute w-full text-xl font-semibold bottom-0 ${
+                className={`absolute w-full text-2xl font-semibold bottom-0 ${
                   !data.get("description") ? "text-center" : "text-left"
                 }`}
               >
