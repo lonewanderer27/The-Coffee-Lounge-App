@@ -51,6 +51,7 @@ export type UserType = {
 
 export type CartItemType = {
   index: number;
+  product_snapshot: ProductType;
   product_id: string;
   quantity: number;
   size: Size;

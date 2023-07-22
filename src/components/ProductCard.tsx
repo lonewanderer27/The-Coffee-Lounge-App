@@ -29,6 +29,7 @@ function ProductCard(props: ProductType) {
     event.stopPropagation();
     addToCart({
       product_id: props.id,
+      product_snapshot: props,
       quantity: 1,
       size: props.coffee_type ? Size.Tall : Size.None,
       milk: Milk.None,

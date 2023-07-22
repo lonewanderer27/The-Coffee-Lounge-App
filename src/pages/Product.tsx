@@ -71,7 +71,7 @@ export default function ProductPage() {
   // console.log("product_id", product_id);
   const productId = useRecoilValue(productIdAtom);
 
-  const [data, dataLoading, dataError, dataSnapshot, dataReload] =
+  const [productData, productLoading, dataError, dataSnapshot, productReload] =
     useDocumentDataOnce(
       // "Loading" is a pseudo product id that exists in the database
       // so that on first render, where product_id is not yet determined
@@ -99,11 +99,11 @@ export default function ProductPage() {
   } = useForm<ProductConfig>({
     defaultValues: {
       quantity: 1,
-      size: data!.coffee_type ? Size.Tall : Size.None,
+      size: productData!.coffee_type ? Size.Tall : Size.None,
       milk: Milk.None,
       syrup: Syrup.None,
       additives: [],
-      ice: data!.coffee_type === "Cold Coffee" ? Ice.Normal : Ice.None,
+      ice: productData!.coffee_type === "Cold Coffee" ? Ice.Normal : Ice.None,
     },
     mode: "all",
   });
@@ -126,6 +126,7 @@ export default function ProductPage() {
     } else {
       addToCart({
         product_id: product_id ?? productId,
+        product_snapshot: productData!,
         index: count,
         ...watch(),
       });
@@ -135,8 +136,8 @@ export default function ProductPage() {
   const [totalPrice, setTotalPrice] = useState(0);
 
   const computePrice = () => {
-    if (!dataLoading) {
-      setTotalPrice(computeProductPrice(data!.price, getValues()));
+    if (!productLoading) {
+      setTotalPrice(computeProductPrice(productData!.price, getValues()));
     }
   };
 
@@ -146,9 +147,11 @@ export default function ProductPage() {
     return () => {
       reset();
     };
-  }, [watch, data]);
+  }, [watch, productData]);
 
-  if (data != undefined) {
+  console.log(productData);
+
+  if (productData != undefined) {
     return (
       <IonPage>
         <IonHeader translucent={true}>
@@ -172,7 +175,7 @@ export default function ProductPage() {
                   isActive={isFavorite ? true : false}
                   onClick={() => {
                     toggleFavorite();
-                    dataReload();
+                    productReload();
                   }}
                   animationTrigger="click"
                   animationScale={1.2}
@@ -180,32 +183,34 @@ export default function ProductPage() {
                   activeColor="red"
                 />
               )}
-              {data.coffee_type && (
+              {productData.coffee_type && (
                 <IonBadge className="absolute top-2 left-2">
-                  {data.coffee_type}
+                  {productData.coffee_type}
                 </IonBadge>
               )}
               <IonImg
-                className={`${data.description ? "mb-5" : ""} w-[60%]`}
-                src={data.image}
-                alt={data.name}
+                className={`${
+                  productData.description ? "mb-5" : ""
+                } w-[60%] h-auto`}
+                src={productData.image}
+                alt={productData.name}
               />
               <IonText
                 className={`absolute w-full text-2xl font-semibold bottom-0 ${
-                  !data.description ? "text-center" : "text-left"
+                  !productData.description ? "text-center" : "text-left"
                 }`}
               >
-                {data.name}
+                {productData.name}
               </IonText>
             </IonRow>
             <IonRow>
               <IonText className="w-full text-justify">
-                {data.description}
+                {productData.description}
               </IonText>
             </IonRow>
           </div>
           <form className="ion-padding">
-            {data.coffee_type && (
+            {productData.coffee_type && (
               <div className="ion-padding">
                 <IonSegment
                   onIonChange={(event) => {
@@ -226,7 +231,6 @@ export default function ProductPage() {
                     label="Quantity"
                     className="ion-text-right"
                     {...register("quantity", { required: true })}
-                    type="number"
                     readonly={true}
                   ></IonInput>
                 </IonCol>
@@ -253,7 +257,7 @@ export default function ProductPage() {
                   </IonButton>
                 </IonCol>
               </IonItem>
-              {data.coffee_type && (
+              {productData.coffee_type && (
                 <>
                   <IonItem>
                     <IonSelect
@@ -301,7 +305,7 @@ export default function ProductPage() {
                       ))}
                     </IonSelect>
                   </IonItem>
-                  {data.coffee_type === "Cold Coffee" && (
+                  {productData.coffee_type === "Cold Coffee" && (
                     <>
                       <IonItem>
                         <IonSelect

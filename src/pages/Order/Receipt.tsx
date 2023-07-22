@@ -12,7 +12,7 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
-import { Timestamp, doc, getFirestore } from "firebase/firestore";
+import { doc, getFirestore } from "firebase/firestore";
 
 import { CartItemType } from "../../types";
 import { OrderConvert } from "../../converters/orders";
@@ -21,7 +21,7 @@ import { lazy } from "react";
 import { orderAtom } from "../../atoms/order";
 import { phpString } from "../../phpString";
 import { shieldCheckmarkOutline } from "ionicons/icons";
-import { useDocument } from "react-firebase-hooks/firestore";
+import { useDocumentDataOnce } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
@@ -38,9 +38,13 @@ export default function Receipt() {
     "orders",
     order_id ?? orderDetails?.id
   ).withConverter(OrderConvert);
-  const [order, loading] = useDocument(orderRef);
+  const [order, loading] = useDocumentDataOnce(orderRef);
 
   console.log("order", order);
+
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <IonPage>
@@ -94,9 +98,7 @@ export default function Receipt() {
                 <IonCol className="ion-text-end">
                   <IonText color="#555555">
                     <span>
-                      {new Date(
-                        order?.get("payment_at").toDate()
-                      ).toDateString()}
+                      {new Date(order!.payment_at!.toDate()).toDateString()}
                     </span>
                   </IonText>
                 </IonCol>
@@ -111,7 +113,7 @@ export default function Receipt() {
                   <IonText color="#555555">
                     <span>
                       {new Date(
-                        order?.get("payment_at").toDate()
+                        order!.payment_at!.toDate()
                       ).toLocaleTimeString()}
                     </span>
                   </IonText>
@@ -125,14 +127,12 @@ export default function Receipt() {
                   </IonText>
                 </IonCol>
               </IonRow>
-              {order
-                ?.get("products")
-                .map((product: CartItemType, index: number) => (
-                  <ReceiptItems
-                    key={"order:" + product.product_id + index}
-                    {...product}
-                  />
-                ))}
+              {order?.products.map((product: CartItemType, index: number) => (
+                <ReceiptItems
+                  key={"order:" + product.product_id + index}
+                  {...product}
+                />
+              ))}
 
               <IonRow className="ion-margin-top">
                 <IonCol className="ion-text-start" size="12">
@@ -145,7 +145,7 @@ export default function Receipt() {
                 </IonCol>
                 <IonCol className="ion-text-end">
                   <IonText color="#555555">
-                    {phpString.format(order?.get("total_price"))}
+                    {phpString.format(order!.total_price)}
                   </IonText>
                 </IonCol>
               </IonRow>
@@ -157,7 +157,7 @@ export default function Receipt() {
                 </IonCol>
                 <IonCol className="ion-text-end">
                   <IonText color="#555555">
-                    <span>{order?.get("payment_option")}</span>
+                    <span>{order?.payment_option}</span>
                   </IonText>
                 </IonCol>
               </IonRow>

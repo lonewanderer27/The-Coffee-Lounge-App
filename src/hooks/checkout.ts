@@ -6,6 +6,7 @@ import {
   PaymentStatusType,
 } from "../types";
 import {
+  Timestamp,
   addDoc,
   collection,
   getFirestore,
@@ -52,8 +53,8 @@ export const useCheckout = (totalPrice: number) => {
         total_price: totalPrice,
         payment_option: payOption!,
         payment_status: PaymentStatusType.Pending,
-        payment_at: serverTimestamp(),
-        created_at: serverTimestamp(),
+        payment_at: serverTimestamp() as Timestamp,
+        created_at: serverTimestamp() as Timestamp,
         delivery_option: deliverOption!,
         delivery_status: DeliveryStatusType.Pending,
         branch: branchOption!,
