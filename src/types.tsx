@@ -65,17 +65,26 @@ export type OrderType = {
   id?: string;
   created_at: Timestamp | FieldValue;
   products: CartItemType[];
-  payment_option: PaymentOptionType;
-  delivery_address_id?: string;
-  payment_status: PaymentStatusType;
   total_price: number;
   user_uid: string;
-  delivery_fee?: number;
   branch: BranchType;
-  delivery_option: DeliveryOptionType;
+  payment_status: PaymentStatusType;
   payment_at?: Timestamp | FieldValue;
+  payment_option: PaymentOptionType;
   delivery_at?: Timestamp | FieldValue;
+  delivery_status: DeliveryStatusType;
+  delivery_option: DeliveryOptionType;
+  delivery_address_id?: string;
+  delivery_fee?: number;
 };
+
+export enum DeliveryStatusType {
+  Pending = "Pending",
+  Preparing = "Preparing",
+  OnTheWay = "On the Way",
+  Delivered = "Delivered",
+  Cancelled = "Cancelled",
+}
 
 export type OrderProductType = {
   product_id: string;

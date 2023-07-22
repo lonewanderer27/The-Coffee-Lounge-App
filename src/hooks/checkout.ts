@@ -1,5 +1,6 @@
 import {
   DeliveryOptionType,
+  DeliveryStatusType,
   OrderType,
   PaymentOptionType,
   PaymentStatusType,
@@ -49,11 +50,12 @@ export const useCheckout = (totalPrice: number) => {
         user_uid: currentUser?.uid,
         products: cart,
         total_price: totalPrice,
+        payment_option: payOption!,
         payment_status: PaymentStatusType.Pending,
         payment_at: serverTimestamp(),
         created_at: serverTimestamp(),
         delivery_option: deliverOption!,
-        payment_option: payOption!,
+        delivery_status: DeliveryStatusType.Pending,
         branch: branchOption!,
       };
 
