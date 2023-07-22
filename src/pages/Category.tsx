@@ -1,30 +1,30 @@
 import {
   IonBackButton,
-  IonButton,
   IonButtons,
   IonContent,
   IonGrid,
   IonHeader,
-  IonIcon,
-  IonLoading,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
+  RefresherEventDetail,
   isPlatform,
 } from "@ionic/react";
-import { collection, getFirestore, or, query, where } from "firebase/firestore";
+import { collection, getFirestore, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import { CategoryType } from "../types";
 import ProductCard from "../components/ProductCard";
 import { ProductConvert } from "../converters/products";
-import { Suspense } from "react";
 import { categoryAtom } from "../atoms/products";
 import { useCollectionOnce } from "react-firebase-hooks/firestore";
 import { useLocation } from "react-router";
 import { useRecoilValue } from "recoil";
+import { useRefresh } from "../hooks/page";
 
 export default function CategoryPage() {
   const categoryState = useRecoilValue(categoryAtom);
@@ -38,12 +38,19 @@ export default function CategoryPage() {
     description: queryParams.get("description") || categoryState.description,
   };
 
-  const [productsData, productsLoading] = useCollectionOnce(
+  const [productsData, productsLoading, snapshot, refresh] = useCollectionOnce(
     query(
       collection(db, "products").withConverter(ProductConvert),
       where("category", "==", category.id)
-    )
+    ),
+    {
+      getOptions: {
+        source: "cache",
+      },
+    }
   );
+
+  const handleRefresh = useRefresh([refresh]);
 
   if (productsLoading) {
     return <></>;
@@ -64,7 +71,10 @@ export default function CategoryPage() {
           )}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">{category.name}</IonTitle>

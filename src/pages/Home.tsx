@@ -13,44 +13,55 @@ import {
   IonHeader,
   IonIcon,
   IonPage,
+  IonRefresher,
+  IonRefresherContent,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
+  RefresherEventDetail,
   isPlatform,
   useIonRouter,
 } from "@ionic/react";
-import { Suspense, lazy, memo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import {
-  collection,
-  getFirestore,
-  limit,
-  query,
-  where,
-} from "firebase/firestore";
+import { collection, getFirestore, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
+import { ProductLoading } from "../constants";
 import { categoryAtom } from "../atoms/products";
 import { chevronForwardOutline } from "ionicons/icons";
-import { useCollectionOnce } from "react-firebase-hooks/firestore";
+import { memo } from "react";
+import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
+import { useRefresh } from "../hooks/page";
 import { useSetRecoilState } from "recoil";
 
 const Home: React.FC = () => {
   const setCategory = useSetRecoilState(categoryAtom);
 
   const db = getFirestore();
-  const [data, loading, error] = useCollectionOnce(
+  const [data, loading, error, snapshot, refresh] = useCollectionDataOnce(
     collection(db, "categories").withConverter(CategoryConvert)
   );
 
-  const [productsData, productsLoading, productsError] = useCollectionOnce(
+  const [
+    productsData,
+    productsLoading,
+    productsError,
+    productsSnapshot,
+    productsRefresh,
+  ] = useCollectionDataOnce(
     query(
       collection(db, "products").withConverter(ProductConvert),
       where("name", "!=", "Loading")
-    )
+    ),
+    {
+      getOptions: {
+        source: "cache",
+      },
+      initialValue: [ProductLoading],
+    }
   );
 
   const { favorites } = useFavorite();
@@ -65,6 +76,14 @@ const Home: React.FC = () => {
     router.push(`/category?name=${name}&id=${id}&description=${description}`);
   };
 
+  const handleRefresh = useRefresh(
+    [refresh, productsRefresh]
+  )
+
+  if (loading || productsLoading) {
+    return <></>;
+  }
+
   return (
     <IonPage>
       <IonHeader translucent={true}>
@@ -77,7 +96,10 @@ const Home: React.FC = () => {
           )}
         </IonToolbar>
       </IonHeader>
-      <IonContent fullscreen>
+      <IonContent>
+        <IonRefresher slot="fixed" onIonRefresh={handleRefresh}>
+          <IonRefresherContent></IonRefresherContent>
+        </IonRefresher>
         <IonHeader collapse="condense">
           <IonToolbar>
             <IonTitle size="large">Home</IonTitle>
@@ -113,7 +135,7 @@ const Home: React.FC = () => {
           </SwiperSlide>
         </Swiper>
         <IonGrid className="ion-padding-vertical">
-          {data?.docs?.map((category) => (
+          {data!.map((category) => (
             <IonRow key={category.id + "ionrow"} className="ion-margin-bottom">
               <IonButton
                 fill="clear"
@@ -123,35 +145,33 @@ const Home: React.FC = () => {
                 onClick={() =>
                   switchCategory(
                     category.id,
-                    category.get("name"),
-                    category.get("description")
+                    category.name,
+                    category.description
                   )
                 }
               >
                 <IonText className="mr-auto font-semibold" slot="start">
-                  {category.get("altName")}
+                  {category.altName}
                 </IonText>
                 <IonIcon src={chevronForwardOutline} slot="end"></IonIcon>
               </IonButton>
               <IonCol size="12">
                 <IonGrid>
                   <IonRow>
-                    {productsData?.docs
-                      ?.filter(
-                        (product) => product.get("category") == category.id
-                      )
+                    {productsData!
+                      .filter((product) => product.category == category.id)
                       .slice(0, 2)
                       .map((product) => (
                         <ProductCard
                           key={product.id}
-                          image={product.get("image")}
+                          image={product.image}
                           id={product.id}
-                          category={product.get("category")}
-                          name={product.get("name")}
-                          price={product.get("price")}
-                          sales={product.get("sales")}
-                          description={product.get("description")}
-                          coffee_type={product.get("coffee_type")}
+                          category={product.category}
+                          name={product.name}
+                          price={product.price}
+                          sales={product.sales}
+                          description={product.description}
+                          coffee_type={product.coffee_type}
                         />
                       ))}
                   </IonRow>
@@ -176,22 +196,22 @@ const Home: React.FC = () => {
               <IonCol size="12">
                 <IonGrid>
                   <IonRow>
-                    {productsData?.docs
-                      ?.filter((product) =>
+                    {productsData!
+                      .filter((product) =>
                         favorites?.includes(product.id) ? true : false
                       )
                       .slice(0, 2)
                       .map((product) => (
                         <ProductCard
                           key={product.id}
-                          image={product.get("image")}
+                          image={product.image}
                           id={product.id}
-                          category={product.get("category")}
-                          name={product.get("name")}
-                          price={product.get("price")}
-                          sales={product.get("sales")}
-                          description={product.get("description")}
-                          coffee_type={product.get("coffee_type")}
+                          category={product.category}
+                          name={product.name}
+                          price={product.price}
+                          sales={product.sales}
+                          description={product.description}
+                          coffee_type={product.coffee_type}
                         />
                       ))}
                   </IonRow>

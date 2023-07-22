@@ -40,20 +40,24 @@ import {
   useIonAlert,
   useIonLoading,
 } from "@ionic/react";
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { addOutline, removeOutline } from "ionicons/icons";
 import { computeProductPrice, useCart } from "../hooks/cart";
 import { doc, getFirestore } from "firebase/firestore";
+import {
+  useDocumentDataOnce,
+  useDocumentOnce,
+} from "react-firebase-hooks/firestore";
 import { useEffect, useState } from "react";
 
 import CartBtn from "../components/CartBtn";
 import Heart from "react-heart";
 import { ProductConvert } from "../converters/products";
+import { ProductLoading } from "../constants";
 import { getAuth } from "firebase/auth";
 import { phpString } from "../phpString";
 import { productIdAtom } from "../atoms/products";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useDocumentOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
@@ -67,12 +71,21 @@ export default function ProductPage() {
   // console.log("product_id", product_id);
   const productId = useRecoilValue(productIdAtom);
 
-  const [data, dataLoading] = useDocumentOnce(
-    // "Loading" is a pseudo product id that exists in the database
-    // so that on first render, where product_id is not yet determined
-    // it will query the "Loading" product instead ;)
-    doc(db, "products", product_id ?? productId).withConverter(ProductConvert)
-  );
+  const [data, dataLoading, dataError, dataSnapshot, dataReload] =
+    useDocumentDataOnce(
+      // "Loading" is a pseudo product id that exists in the database
+      // so that on first render, where product_id is not yet determined
+      // it will query the "Loading" product instead ;)
+      doc(db, "products", product_id ?? productId).withConverter(
+        ProductConvert
+      ),
+      {
+        getOptions: {
+          source: "cache",
+        },
+        initialValue: ProductLoading,
+      }
+    );
 
   const {
     control,
@@ -86,11 +99,11 @@ export default function ProductPage() {
   } = useForm<ProductConfig>({
     defaultValues: {
       quantity: 1,
-      size: data?.get("coffee_type") ? Size.Tall : Size.None,
+      size: data!.coffee_type ? Size.Tall : Size.None,
       milk: Milk.None,
       syrup: Syrup.None,
       additives: [],
-      ice: data?.get("coffee_type") === "Cold Coffee" ? Ice.Normal : Ice.None,
+      ice: data!.coffee_type === "Cold Coffee" ? Ice.Normal : Ice.None,
     },
     mode: "all",
   });
@@ -123,7 +136,7 @@ export default function ProductPage() {
 
   const computePrice = () => {
     if (!dataLoading) {
-      setTotalPrice(computeProductPrice(data!.get("price"), getValues()));
+      setTotalPrice(computeProductPrice(data!.price, getValues()));
     }
   };
 
@@ -145,7 +158,7 @@ export default function ProductPage() {
               <IonBackButton></IonBackButton>
             </IonButtons>
             <IonButtons slot="end">
-              <CartBtn/>
+              <CartBtn />
             </IonButtons>
           </IonToolbar>
         </IonHeader>
@@ -156,40 +169,43 @@ export default function ProductPage() {
                 <Heart
                   className="absolute top-2 right-2"
                   style={{ width: "2rem" }}
-                  isActive={isFavorite}
-                  onClick={() => toggleFavorite()}
+                  isActive={isFavorite ? true : false}
+                  onClick={() => {
+                    toggleFavorite();
+                    dataReload();
+                  }}
                   animationTrigger="click"
                   animationScale={1.2}
                   inactiveColor="gray"
                   activeColor="red"
                 />
               )}
-              {data.get("coffee_type") && (
+              {data.coffee_type && (
                 <IonBadge className="absolute top-2 left-2">
-                  {data.get("coffee_type")}
+                  {data.coffee_type}
                 </IonBadge>
               )}
               <IonImg
-                className={`${data.get("description") ? "mb-5" : ""} w-[60%]`}
-                src={data.get("image")}
-                alt={data.get("name")}
+                className={`${data.description ? "mb-5" : ""} w-[60%]`}
+                src={data.image}
+                alt={data.name}
               />
               <IonText
                 className={`absolute w-full text-2xl font-semibold bottom-0 ${
-                  !data.get("description") ? "text-center" : "text-left"
+                  !data.description ? "text-center" : "text-left"
                 }`}
               >
-                {data.get("name")}
+                {data.name}
               </IonText>
             </IonRow>
             <IonRow>
               <IonText className="w-full text-justify">
-                {data.get("description")}
+                {data.description}
               </IonText>
             </IonRow>
           </div>
           <form className="ion-padding">
-            {data.get("coffee_type") && (
+            {data.coffee_type && (
               <div className="ion-padding">
                 <IonSegment
                   onIonChange={(event) => {
@@ -237,7 +253,7 @@ export default function ProductPage() {
                   </IonButton>
                 </IonCol>
               </IonItem>
-              {data.get("coffee_type") && (
+              {data.coffee_type && (
                 <>
                   <IonItem>
                     <IonSelect
@@ -253,7 +269,12 @@ export default function ProductPage() {
                       }}
                     >
                       {Object.values(Milk).map((milk) => (
-                        <IonSelectOption value={milk}>{milk}</IonSelectOption>
+                        <IonSelectOption
+                          key={"ionselectoption:" + milk}
+                          value={milk}
+                        >
+                          {milk}
+                        </IonSelectOption>
                       ))}
                     </IonSelect>
                   </IonItem>
@@ -271,11 +292,16 @@ export default function ProductPage() {
                       }}
                     >
                       {Object.values(Syrup).map((syrup) => (
-                        <IonSelectOption value={syrup}>{syrup}</IonSelectOption>
+                        <IonSelectOption
+                          key={`ionselectoption${syrup}`}
+                          value={syrup}
+                        >
+                          {syrup}
+                        </IonSelectOption>
                       ))}
                     </IonSelect>
                   </IonItem>
-                  {data.get("coffee_type") === "Cold Coffee" && (
+                  {data.coffee_type === "Cold Coffee" && (
                     <>
                       <IonItem>
                         <IonSelect
@@ -291,7 +317,10 @@ export default function ProductPage() {
                           }}
                         >
                           {Object.values(Ice).map((ice) => (
-                            <IonSelectOption value={ice}>
+                            <IonSelectOption
+                              key={`ionselectoption:${ice}`}
+                              value={ice}
+                            >
                               <IonText>{ice}</IonText>
                             </IonSelectOption>
                           ))}
@@ -313,7 +342,10 @@ export default function ProductPage() {
                           }}
                         >
                           {Object.values(Additive).map((additive) => (
-                            <IonSelectOption value={additive}>
+                            <IonSelectOption
+                              key={`ionselectoption:${additive}`}
+                              value={additive}
+                            >
                               {additive}
                             </IonSelectOption>
                           ))}

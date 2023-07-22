@@ -1,4 +1,10 @@
-import { BranchType, DeliveryAddressType, VoucherType } from "./types";
+import {
+  BranchType,
+  CategoryType,
+  DeliveryAddressType,
+  ProductType,
+  VoucherType,
+} from "./types";
 
 export const CardImages = [
   {
@@ -131,3 +137,20 @@ export const Addresses: DeliveryAddressType[] = [
     type: "home",
   },
 ];
+
+export const ProductLoading: ProductType = {
+  id: "loading",
+  name: "Loading...",
+  description: "Loading...",
+  price: 0,
+  image: "https://via.placeholder.com/150",
+  category: "Loading...",
+  sales: 0,
+};
+
+export const CategoryLoading: CategoryType = {
+  id: "loading",
+  name: "Loading...",
+  description: "Loading...",
+  altName: "Loading",
+};

@@ -5,6 +5,7 @@ import {
   IonContent,
   IonGrid,
   IonHeader,
+  IonLoading,
   IonPage,
   IonRow,
   IonTitle,
@@ -15,9 +16,10 @@ import { collection, getFirestore, query, where } from "firebase/firestore";
 
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
-import { UserConvert } from "../converters/user";
+import { ProductConvert } from "../converters/products";
+import { ProductLoading } from "../constants";
 import { memo } from "react";
-import { useCollection } from "react-firebase-hooks/firestore";
+import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 
 function MyFavorites() {
@@ -25,10 +27,16 @@ function MyFavorites() {
   const { favorites } = useFavorite();
 
   const productsRef = query(
-    collection(db, "products").withConverter(UserConvert),
+    collection(db, "products").withConverter(ProductConvert),
     where("__name__", "in", favorites)
   );
-  const [productsData, productsLoading] = useCollection(productsRef);
+  const [productsData, productsLoading] = useCollectionDataOnce(productsRef, {
+    initialValue: [ProductLoading],
+  });
+
+  if (productsLoading) {
+    return <IonLoading isOpen={true} message={"Loading..."}></IonLoading>;
+  }
 
   return (
     <IonPage>
@@ -56,17 +64,17 @@ function MyFavorites() {
             <IonCol size="12">
               <IonGrid>
                 <IonRow>
-                  {productsData?.docs?.map((product) => (
+                  {productsData!.map((product) => (
                     <ProductCard
                       key={product.id}
-                      image={product.get("image")}
+                      image={product.image}
                       id={product.id}
-                      category={product.get("category")}
-                      name={product.get("name")}
-                      price={product.get("price")}
-                      sales={product.get("sales")}
-                      description={product.get("description")}
-                      coffee_type={product.get("coffee_type")}
+                      category={product.category}
+                      name={product.name}
+                      price={product.price}
+                      sales={product.sales}
+                      description={product.description}
+                      coffee_type={product.coffee_type}
                     />
                   ))}
                 </IonRow>

@@ -32,7 +32,6 @@ const Cart: React.FC = () => {
     <IonPage>
       <IonHeader translucent={true}>
         <IonToolbar>
-          <IonButtons slot="end"></IonButtons>
           <IonTitle>Cart</IonTitle>
           <IonButtons slot="start">
             <IonBackButton></IonBackButton>

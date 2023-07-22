@@ -1,5 +1,10 @@
 // import { Suspense, lazy } from "react";
-import { initializeFirestore, memoryLocalCache } from "firebase/firestore";
+import {
+  CACHE_SIZE_UNLIMITED,
+  initializeFirestore,
+  persistentLocalCache,
+  persistentMultipleTabManager,
+} from "firebase/firestore";
 
 // const App = lazy(() => import("./App"));
 import App from "./App";
@@ -21,7 +26,10 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 initializeFirestore(app, {
-  localCache: memoryLocalCache(),
+  localCache: persistentLocalCache({
+    tabManager: persistentMultipleTabManager(),
+    cacheSizeBytes: CACHE_SIZE_UNLIMITED,
+  }),
 });
 
 const container = document.getElementById("root");
