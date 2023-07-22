@@ -14,14 +14,10 @@ export const UserConvert: FirestoreDataConverter<UserType> = {
     options: SnapshotOptions
   ): UserType {
     const data = snapshot.data(options);
-    const { default_address, nickname, gender, favorites } = data;
     return {
       id: snapshot.id,
-      default_address,
-      nickname,
-      gender,
-      favorites,
-    };
+      ...data,
+    } as UserType;
   },
   toFirestore: (user: WithFieldValue<UserType>) => ({
     ...user,
