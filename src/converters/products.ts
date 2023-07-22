@@ -13,13 +13,10 @@ export const CategoryConvert: FirestoreDataConverter<CategoryType> = {
     options: SnapshotOptions
   ): CategoryType {
     const data = snapshot.data(options);
-    const { name, description, altName } = data;
     return {
       id: snapshot.id,
-      name,
-      description,
-      altName,
-    };
+      ...data,
+    } as CategoryType;
   },
   toFirestore: (category: WithFieldValue<CategoryType>) => ({
     ...category,
@@ -33,16 +30,10 @@ export const ProductConvert: FirestoreDataConverter<ProductType> = {
     options: SnapshotOptions
   ): ProductType {
     const data = snapshot.data(options);
-    const { name, description, price, image, category, sales } = data;
     return {
       id: snapshot.id,
-      name,
-      description,
-      price,
-      image,
-      sales,
-      category,
-    };
+      ...data,
+    } as ProductType;
   },
   toFirestore: (product: WithFieldValue<ProductType>) => ({
     ...product,
