@@ -63,15 +63,15 @@ export type CartItemType = {
 
 export type OrderType = {
   id?: string;
-  created_at: Timestamp | FieldValue;
+  created_at: Timestamp;
   products: CartItemType[];
   total_price: number;
   user_uid: string;
   branch: BranchType;
   payment_status: PaymentStatusType;
-  payment_at?: Timestamp | FieldValue;
+  payment_at?: Timestamp;
   payment_option: PaymentOptionType;
-  delivery_at?: Timestamp | FieldValue;
+  delivery_at?: Timestamp;
   delivery_status: DeliveryStatusType;
   delivery_option: DeliveryOptionType;
   delivery_address_id?: string;
