@@ -38,7 +38,6 @@ import {
   IonTitle,
   IonToolbar,
   useIonAlert,
-  useIonLoading,
 } from "@ionic/react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { addOutline, removeOutline } from "ionicons/icons";
@@ -149,6 +148,18 @@ export default function ProductPage() {
     };
   }, [watch, productData]);
 
+  useEffect(() => {
+    if (productData != undefined) {
+      if (productData.coffee_type === "Cold Coffee") {
+        // setValue("size", Size.Tall);
+        setValue("ice", Ice.Normal);
+      }
+      if (productData.coffee_type) {
+        setValue("size", Size.Tall);
+      }
+    }
+  }, [productData]);
+
   console.log(productData);
 
   if (productData != undefined) {
@@ -217,6 +228,7 @@ export default function ProductPage() {
                     setValue("size", event.detail.value as Size);
                     computePrice();
                   }}
+                  value={watch("size")}
                 >
                   <IonSegmentButton value={Size.Tall}>S</IonSegmentButton>
                   <IonSegmentButton value={Size.Grande}>M</IonSegmentButton>
@@ -232,6 +244,7 @@ export default function ProductPage() {
                     className="ion-text-right"
                     {...register("quantity", { required: true })}
                     readonly={true}
+                    value={watch("quantity") + ""}
                   ></IonInput>
                 </IonCol>
                 <IonCol size="auto" className="ion ion-no-padding">
@@ -271,6 +284,7 @@ export default function ProductPage() {
                         setValue("milk", e.detail.value);
                         computePrice();
                       }}
+                      value={watch("milk")}
                     >
                       {Object.values(Milk).map((milk) => (
                         <IonSelectOption
@@ -294,6 +308,7 @@ export default function ProductPage() {
                         setValue("syrup", e.detail.value);
                         computePrice();
                       }}
+                      value={watch("syrup")}
                     >
                       {Object.values(Syrup).map((syrup) => (
                         <IonSelectOption
@@ -319,6 +334,7 @@ export default function ProductPage() {
                             setValue("ice", e.detail.value);
                             computePrice();
                           }}
+                          value={watch("ice")}
                         >
                           {Object.values(Ice).map((ice) => (
                             <IonSelectOption
@@ -344,6 +360,7 @@ export default function ProductPage() {
                             setValue("additives", e.detail.value);
                             computePrice();
                           }}
+                          value={watch("additives")}
                         >
                           {Object.values(Additive).map((additive) => (
                             <IonSelectOption

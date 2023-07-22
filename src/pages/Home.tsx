@@ -162,17 +162,7 @@ const Home: React.FC = () => {
                       .filter((product) => product.category == category.id)
                       .slice(0, 2)
                       .map((product) => (
-                        <ProductCard
-                          key={product.id}
-                          image={product.image}
-                          id={product.id}
-                          category={product.category}
-                          name={product.name}
-                          price={product.price}
-                          sales={product.sales}
-                          description={product.description}
-                          coffee_type={product.coffee_type}
-                        />
+                        <ProductCard key={product.id} {...product} />
                       ))}
                   </IonRow>
                 </IonGrid>

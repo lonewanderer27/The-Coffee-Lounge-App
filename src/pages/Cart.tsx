@@ -20,6 +20,7 @@ import {
 } from "@ionic/react";
 
 import CartItem from "../components/CartItem";
+import { memo } from "react";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 
@@ -104,4 +105,4 @@ const Cart: React.FC = () => {
   );
 };
 
-export default Cart;
+export default memo(Cart);

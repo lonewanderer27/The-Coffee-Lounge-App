@@ -92,15 +92,7 @@ export default function CategoryPage() {
               {productsData!
                 .filter((product) => product.name != "Loading")
                 .map((product, index) => (
-                  <ProductCard
-                    key={`productcard:${index}`}
-                    image={product.image}
-                    id={product.id}
-                    category={product.category}
-                    name={product.name}
-                    price={product.price}
-                    sales={product.sales}
-                  />
+                  <ProductCard key={`productcard:${index}`} {...product} />
                 ))}
             </IonRow>
           </IonGrid>

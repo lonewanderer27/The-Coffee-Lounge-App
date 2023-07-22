@@ -27,6 +27,8 @@ function ProductCard(props: ProductType) {
     event: React.MouseEvent<HTMLIonIconElement, MouseEvent>
   ) => {
     event.stopPropagation();
+    console.log("product props", props);
+
     addToCart({
       product_id: props.id,
       product_snapshot: props,
