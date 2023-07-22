@@ -143,7 +143,7 @@ export const ProductLoading: ProductType = {
   name: "Loading...",
   description: "Loading...",
   price: 0,
-  image: "https://via.placeholder.com/150",
+  image: "/logo.png",
   category: "Loading...",
   sales: 0,
 };
