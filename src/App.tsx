@@ -1,17 +1,15 @@
 /* Core CSS required for Ionic components to work properly */
+
 import "@ionic/react/css/core.css";
-/* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
-/* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-/* Theme variables */
 import "./theme/variables.css";
 import "./theme/index.css";
 import "./global.styles.css";
@@ -63,6 +61,12 @@ import { getAuth } from "firebase/auth"; // Firebase v9+
 import { memo } from "react";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
+
+/* Basic CSS for apps built with Ionic */
+
+/* Optional CSS utils that can be commented out */
+
+/* Theme variables */
 
 setupIonicReact();
 
@@ -116,10 +120,10 @@ function App() {
               <Route exact path="/my-favorites">
                 <MyFavorites />
               </Route>
-              <Route exact path="/order/:order_id/process-payment/">
+              <Route exact path="/orders/:order_id/process-payment/">
                 <ProcessPayment />
               </Route>
-              <Route exact path="/order/:order_id/receipt">
+              <Route exact path="/orders/:order_id/receipt">
                 <Receipt />
               </Route>
             </AuthWrapper>

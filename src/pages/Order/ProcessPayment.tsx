@@ -121,7 +121,7 @@ export default function ProcessPayment() {
             </IonText>
             <Action
               message="Show"
-              link={`/order/${order?.id}/receipt`}
+              link={`/orders/${order?.id}/receipt`}
               text="Receipt"
             />
           </div>

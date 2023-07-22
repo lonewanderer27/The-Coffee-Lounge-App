@@ -20,6 +20,7 @@ import {
 import { useIonAlert, useIonLoading, useIonRouter } from "@ionic/react";
 import { useRecoilState, useSetRecoilState } from "recoil";
 
+import { OrderConvert } from "../converters/orders";
 import { cartAtom } from "../atoms/cart";
 import { getAuth } from "firebase/auth";
 import { orderAtom } from "../atoms/order";
@@ -60,8 +61,12 @@ export const useCheckout = (totalPrice: number) => {
         branch: branchOption!,
       };
 
-      addDoc(collection(db, "orders"), newOrder)
-        .then((order) => {
+      (async () => {
+        try {
+          const order = (
+            await addDoc(collection(db, "orders"), newOrder)
+          ).withConverter(OrderConvert);
+
           console.log("Success adding order: ", order);
 
           // clear the cart
@@ -77,12 +82,10 @@ export const useCheckout = (totalPrice: number) => {
           dismiss();
 
           // redirect to processing payment page
-          router.push(`/order/${order.id}/process-payment/`);
-        })
-        .catch((error) => {
+          router.push(`/orders/${order.id}/process-payment/`);
+        } catch {
           // dismiss loading
           dismiss();
-          console.error("Error adding document: ", error);
 
           showAlert({
             header: "Error",
@@ -94,7 +97,8 @@ export const useCheckout = (totalPrice: number) => {
             ],
             onDidDismiss: () => hideAlert(),
           });
-        });
+        }
+      })();
     })();
   }
 
