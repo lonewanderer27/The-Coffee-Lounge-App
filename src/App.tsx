@@ -22,8 +22,9 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  useIonRouter,
 } from "@ionic/react";
-import { Redirect, Route } from "react-router-dom";
+import { Redirect, Route, useLocation } from "react-router-dom";
 import {
   bagOutline,
   homeOutline,
@@ -58,9 +59,9 @@ import Receipt from "./pages/Order/Receipt";
 import Register from "./pages/Register";
 import VirtualVisit from "./pages/VirtualVisit";
 import { getAuth } from "firebase/auth"; // Firebase v9+
-import { memo } from "react";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useEffect } from "react";
 
 /* Basic CSS for apps built with Ionic */
 
@@ -77,7 +78,7 @@ function App() {
         <IonTabs>
           <IonRouterOutlet>
             <Route exact path="/virtualVisit/index.html" />
-            <AuthWrapper fallback={<Login />}>
+            <AuthWrapper>
               <Route exact path="/account">
                 <Account />
               </Route>
@@ -188,20 +189,53 @@ function App() {
 
 export const AuthWrapper = ({
   children,
-  fallback,
-}: React.PropsWithChildren<{ fallback?: React.ReactElement }>): JSX.Element => {
+}: React.PropsWithChildren): JSX.Element => {
   const auth = getAuth();
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
+  const router = useIonRouter();
+
+  useResetNextParam();
 
   if (user) {
-    return children as JSX.Element;
+    return children as unknown as JSX.Element;
   }
 
-  if (!loading) {
-    return fallback as React.ReactElement;
+  if (!loading && user === null) {
+    if (router.routeInfo.pathname !== "/login") {
+      router.push("/login?redirect=" + router.routeInfo.pathname.split("/")[1]);
+    }
+    return (<Login />) as unknown as JSX.Element;
   }
 
   return <></>;
 };
 
 export default App;
+
+export function useResetNextParam(): void {
+  useEffect(() => {
+    const resetNextParam = (): void => {
+      const urlSearchParams = new URLSearchParams(window.location.search);
+      urlSearchParams.delete("redirect");
+      window.history.replaceState(null, "", window.location.pathname);
+    };
+
+    resetNextParam();
+  }, []);
+}
+
+export function nextUrl(url: string) {
+  const searchParams = new URLSearchParams(location.search);
+  const nextUrl = searchParams.get("redirect") || null;
+
+  console.log("nextUrl: ", "/" + nextUrl);
+  console.log("url: ", url);
+
+  if (nextUrl === null) {
+    console.log(`redirecting to url: ${url}`);
+    return url;
+  } else {
+    console.log(`redirecting to nextUrl: /${nextUrl}`);
+    return `/${nextUrl}`;
+  }
+}

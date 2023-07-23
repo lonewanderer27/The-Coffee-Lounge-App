@@ -6,3 +6,9 @@
   top: 50%;
   transform: translateY(-50%);
 }
+
+@media (prefers-color-scheme: dark) {
+  .tcl-logo {
+    filter: brightness(165%) hue-rotate(198deg) invert(100%) opacity(83%);
+  }
+}

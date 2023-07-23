@@ -57,9 +57,6 @@ const Home: React.FC = () => {
       where("name", "!=", "Loading")
     ),
     {
-      getOptions: {
-        source: "cache",
-      },
       initialValue: [ProductLoading],
     }
   );

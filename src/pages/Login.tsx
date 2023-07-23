@@ -8,6 +8,7 @@ import {
   IonInput,
   IonPage,
   useIonLoading,
+  useIonRouter,
   useIonToast,
   useIonViewDidEnter,
 } from "@ionic/react";
@@ -16,7 +17,9 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 
 import { Action } from "../components/Action";
 import { FirebaseError } from "firebase/app";
+import Logo2 from "../assets/The Coffee Lounge - Logo 2.svg";
 import { logInOutline } from "ionicons/icons";
+import { nextUrl } from "../App";
 import { useColorScheme } from "../hooks/page";
 import { useHistory } from "react-router";
 
@@ -27,6 +30,7 @@ interface IFormInput {
 
 const Login: React.FC = () => {
   const auth = getAuth();
+  const router = useIonRouter();
 
   const {
     register,
@@ -52,7 +56,7 @@ const Login: React.FC = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         dismiss();
-        history.push("/account");
+        router.push(nextUrl("/account"));
       })
       .catch((error: FirebaseError) => {
         dismiss();
@@ -77,14 +81,7 @@ const Login: React.FC = () => {
             className="ion-padding flex flex-col justify-center h-full"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <IonImg
-              src={
-                colorScheme === "dark"
-                  ? "/slogan_white_mode.png"
-                  : "/slogan_dark_mode.png"
-              }
-              className="w-[35%] mx-auto"
-            />
+            <img src={Logo2} className="w-[35%] mx-auto tcl-logo" />
             <IonInput
               label="Email"
               labelPlacement="start"
