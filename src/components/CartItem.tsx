@@ -4,6 +4,7 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
+  IonImg,
   IonItem,
   IonItemOption,
   IonItemOptions,
@@ -65,11 +66,13 @@ function CartItem(props: CartItemType) {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonCol size="auto">
-              <img
+              <IonImg
                 src={props.product_snapshot.image}
                 alt={props.product_snapshot.name}
-                width="50px"
-                height="auto"
+                style={{
+                  width: "50px",
+                  height: "auto",
+                }}
                 className="my-auto"
               />
             </IonCol>

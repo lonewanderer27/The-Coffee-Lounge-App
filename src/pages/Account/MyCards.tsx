@@ -7,6 +7,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonInput,
   IonItem,
   IonLabel,
@@ -57,7 +58,7 @@ export function CardItem(props: CardItemComponentType) {
           <IonText>{props.cardHolder}</IonText>
         </div>
         <div>
-          <img
+          <IonImg
             style={{ width: "80px" }}
             src={
               CardImages.find((card) =>

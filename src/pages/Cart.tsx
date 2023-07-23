@@ -40,26 +40,28 @@ const Cart: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent fullscreen>
-        <IonList>
-          {cart.map((item, index) => (
-            <CartItem
-              key={"order:" + item.product_id + index}
-              {...item}
-              index={index}
-            />
-          ))}
-          {count !== 0 && (
-            <IonItem>
-              <IonLabel
-                className="ion-text-center"
-                color="danger"
-                onClick={() => setCart([])}
-              >
-                Remove All Items
-              </IonLabel>
-            </IonItem>
-          )}
-        </IonList>
+        {count !== 0 && (
+          <IonList>
+            {cart.map((item, index) => (
+              <CartItem
+                key={"order:" + item.product_id + index}
+                {...item}
+                index={index}
+              />
+            ))}
+            {count !== 0 && (
+              <IonItem>
+                <IonLabel
+                  className="ion-text-center"
+                  color="danger"
+                  onClick={() => setCart([])}
+                >
+                  Remove All Items
+                </IonLabel>
+              </IonItem>
+            )}
+          </IonList>
+        )}
         {count === 0 && (
           <div id="notice">
             <IonText>

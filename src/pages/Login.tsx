@@ -81,7 +81,7 @@ const Login: React.FC = () => {
             className="ion-padding flex flex-col justify-center h-full"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <img src={Logo2} className="w-[35%] mx-auto tcl-logo" />
+            <IonImg src={Logo2} className="w-[35%] mx-auto tcl-logo" />
             <IonInput
               label="Email"
               labelPlacement="start"

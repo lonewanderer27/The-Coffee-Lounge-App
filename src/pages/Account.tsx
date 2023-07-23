@@ -85,7 +85,7 @@ const Account: React.FC = () => {
             <IonRow>
               <IonCol size="auto">
                 {currentUser?.photoURL ? (
-                  <img src={currentUser.photoURL} />
+                  <IonImg src={currentUser.photoURL} />
                 ) : (
                   <Avatar name={userData!.get("nickname")} round />
                 )}

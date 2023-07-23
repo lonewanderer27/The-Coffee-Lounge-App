@@ -80,7 +80,7 @@ export default function OrderItem(props: OrderType) {
   };
 
   return (
-    <IonCol size="12" className="w-full my-5">
+    <div className="w-full my-5">
       <IonRow className="flex items-center">
         <IonCol size="8">
           <IonCard className="mx-0 bg-transparent my-0 shadow-none">
@@ -106,9 +106,10 @@ export default function OrderItem(props: OrderType) {
             .map((product) => (
               <>
                 <IonCol size="2">
-                  <IonAvatar className="w-8 h-8">
-                    <IonImg src={product.product_snapshot?.image} />
-                  </IonAvatar>
+                  <IonImg
+                    src={product.product_snapshot?.image}
+                    className="h-7 w-full"
+                  />
                 </IonCol>
                 <IonCol size="9" className="flex items-center">
                   {`${product.product_snapshot.name}`}
@@ -156,6 +157,6 @@ export default function OrderItem(props: OrderType) {
         <IonText className="ml-auto font-semibold">Order Details</IonText>
         <IonIcon src={chevronForwardOutline} slot="end" />
       </IonButton>
-    </IonCol>
+    </div>
   );
 }

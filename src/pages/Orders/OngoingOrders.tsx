@@ -42,7 +42,7 @@ export default function OngoingOrders() {
         {orders
           ?.filter((o) => o.products[0].product_snapshot)
           .map((order) => (
-            <IonItem className="ion-no-padding flex flex-col justify-center">
+            <IonItem>
               <OrderItem key={`orderItem:${order.id}`} {...order} />
             </IonItem>
           ))}

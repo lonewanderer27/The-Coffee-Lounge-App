@@ -55,6 +55,10 @@ export const readyToPayAtom = selector<boolean>({
     const deliverOption = get(deliverOptionAtom);
     const branchOption = get(branchAtom);
 
+    if (get(payOptionAtom) === null) {
+      return false;
+    }
+
     if (get(cartAtom).length === 0) {
       return false;
     }

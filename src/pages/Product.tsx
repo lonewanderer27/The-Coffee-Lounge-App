@@ -252,7 +252,7 @@ export default function ProductPage() {
                     size="small"
                     onClick={() => {
                       if (watch("quantity") > 1)
-                        setValue("quantity", watch("quantity") - 1);
+                        setValue("quantity", Number(watch("quantity")) - 1);
                       computePrice();
                     }}
                     disabled={watch("quantity") <= 1}
@@ -262,7 +262,7 @@ export default function ProductPage() {
                   <IonButton
                     size="small"
                     onClick={() => {
-                      setValue("quantity", watch("quantity") + 1);
+                      setValue("quantity", Number(watch("quantity")) + 1);
                       computePrice();
                     }}
                   >

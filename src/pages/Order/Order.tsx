@@ -65,7 +65,10 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
           {order!.products
             .filter((product) => product.product_snapshot)
             .map((product) => (
-              <IonItem className="ion-no-margin">
+              <IonItem
+                key={`ionitem:${product.name}`}
+                className="ion-no-margin"
+              >
                 <IonRow>
                   <IonCol size="2">
                     <div className="bg-slate-700 p-2 rounded-xl">

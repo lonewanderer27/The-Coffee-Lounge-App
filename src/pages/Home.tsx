@@ -1,7 +1,7 @@
 import "./Account.css";
 import "swiper/css";
 
-import { Autoplay, Pagination } from "swiper/modules";
+import { Autoplay, Lazy, Navigation, Pagination } from "swiper/modules";
 import { CategoryConvert, ProductConvert } from "../converters/products";
 import {
   IonButton,
@@ -12,6 +12,7 @@ import {
   IonGrid,
   IonHeader,
   IonIcon,
+  IonImg,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -73,9 +74,7 @@ const Home: React.FC = () => {
     router.push(`/category?name=${name}&id=${id}&description=${description}`);
   };
 
-  const handleRefresh = useRefresh(
-    [refresh, productsRefresh]
-  )
+  const handleRefresh = useRefresh([refresh, productsRefresh]);
 
   if (loading || productsLoading) {
     return <></>;
@@ -110,10 +109,14 @@ const Home: React.FC = () => {
             delay: 2500,
           }}
           navigation={true}
-          modules={[Autoplay, Pagination]}
+          pagination={{
+            clickable: true,
+          }}
+          modules={[Autoplay, Pagination, Navigation]}
         >
           <SwiperSlide className="ion-padding">
             <img
+              className="rounded-sm"
               src="/slides/black_coffee.webp"
               style={{ borderRadius: "10px" }}
             />

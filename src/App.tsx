@@ -94,7 +94,7 @@ function App() {
               <Route exact path="/account/bankaccountscards">
                 <MyCards />
               </Route>
-              <Route path="/account/cards/:card_id">
+              <Route exact path="/account/cards/:card_id">
                 <Card />
               </Route>
               <Route exact path="/account/changepass">
@@ -115,7 +115,7 @@ function App() {
               <Route exact path="/orders">
                 <Orders />
               </Route>
-              <Route path="/orders/:order_id">
+              <Route exact path="/orders/:order_id">
                 <Order />
               </Route>
               <Route exact path="/my-favorites">
@@ -149,10 +149,10 @@ function App() {
             <Route exact path="/login">
               <Login />
             </Route>
-            <Route path="/category">
+            <Route exact path="/category">
               <CategoryPage />
             </Route>
-            <Route path="/product/:product_id">
+            <Route exact path="/product/:product_id">
               <ProductPage />
             </Route>
             <Route exact path="/about">

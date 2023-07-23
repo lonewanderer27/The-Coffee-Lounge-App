@@ -88,7 +88,7 @@ export default function Checkout() {
                 value={branch}
               >
                 {Object.values(Branches).map((branch) => (
-                  <IonSelectOption key={`IonSelectOption${branch.id}`}>
+                  <IonSelectOption key={`IonSelectOption${branch.name}`}>
                     {branch.address.city} Branch
                   </IonSelectOption>
                 ))}

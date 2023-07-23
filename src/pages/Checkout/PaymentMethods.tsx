@@ -63,8 +63,12 @@ export default function PaymentMethods() {
               value={payOption}
             >
               {results.map((value) => (
-                <IonItem>
-                  <IonRadio key={value} value={value}>
+                <IonItem key={value}>
+                  <IonRadio
+                    key={value}
+                    value={value}
+                    disabled={value === PaymentOptionType.OverTheCounter}
+                  >
                     {value}
                   </IonRadio>
                   <br />
