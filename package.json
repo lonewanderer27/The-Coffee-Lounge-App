@@ -17,7 +17,9 @@
     "@capacitor/core": "5.2.1",
     "@capacitor/haptics": "5.0.6",
     "@capacitor/keyboard": "5.0.6",
+    "@capacitor/preferences": "^5.0.6",
     "@capacitor/status-bar": "5.0.6",
+    "@dotlottie/react-player": "^1.1.1",
     "@ionic/react": "^7.0.0",
     "@ionic/react-router": "^7.0.0",
     "@lottiefiles/react-lottie-player": "^3.5.3",
@@ -49,6 +51,7 @@
     "vite-plugin-pwa": "^0.16.4"
   },
   "devDependencies": {
+    "@capacitor/assets": "2.0.4",
     "@capacitor/cli": "5.2.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",

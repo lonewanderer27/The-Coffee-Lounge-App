@@ -1,18 +1,16 @@
 import "./Account.css";
 import "swiper/css";
 
-import { Autoplay, Lazy, Navigation, Pagination } from "swiper/modules";
 import { CategoryConvert, ProductConvert } from "../converters/products";
 import {
   IonButton,
   IonButtons,
-  IonCard,
   IonCol,
   IonContent,
   IonGrid,
   IonHeader,
   IonIcon,
-  IonImg,
+  IonLoading,
   IonPage,
   IonRefresher,
   IonRefresherContent,
@@ -20,13 +18,13 @@ import {
   IonText,
   IonTitle,
   IonToolbar,
-  RefresherEventDetail,
   isPlatform,
   useIonRouter,
 } from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { collection, getFirestore, query, where } from "firebase/firestore";
 
+import { Autoplay } from "swiper/modules";
 import CartBtn from "../components/CartBtn";
 import ProductCard from "../components/ProductCard";
 import { ProductLoading } from "../constants";
@@ -108,11 +106,7 @@ const Home: React.FC = () => {
           autoplay={{
             delay: 2500,
           }}
-          navigation={true}
-          pagination={{
-            clickable: true,
-          }}
-          modules={[Autoplay, Pagination, Navigation]}
+          modules={[Autoplay]}
         >
           <SwiperSlide className="ion-padding">
             <img

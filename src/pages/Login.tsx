@@ -66,7 +66,7 @@ const Login: React.FC = () => {
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then((userCredential) => {
         dismiss();
-        router.push(nextUrl("/account"));
+        router.push(nextUrl("/home"));
       })
       .catch((error: FirebaseError) => {
         dismiss();

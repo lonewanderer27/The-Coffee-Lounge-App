@@ -1,5 +1,3 @@
-/* Core CSS required for Ionic components to work properly */
-
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -24,7 +22,8 @@ import {
   IonTabs,
   useIonRouter,
 } from "@ionic/react";
-import { Redirect, Route, useLocation } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
+import { Suspense, lazy, useEffect, useState } from "react";
 import {
   bagOutline,
   homeOutline,
@@ -33,7 +32,6 @@ import {
   starOutline,
 } from "ionicons/icons";
 
-import About from "./pages/About";
 import Account from "./pages/Account";
 import AccountEdit from "./pages/AccountEdit";
 import Card from "./pages/Account/Cards/Card";
@@ -52,7 +50,7 @@ import MyFavorites from "./pages/MyFavorites";
 import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders";
 import PaymentMethods from "./pages/Checkout/PaymentMethods";
-import ProcessPayment from "./pages/Order/ProcessPayment";
+import { Preferences } from "@capacitor/preferences";
 import ProductPage from "./pages/Product";
 import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
 import Receipt from "./pages/Order/Receipt";
@@ -62,133 +60,156 @@ import VirtualVisit from "./pages/VirtualVisit";
 import { getAuth } from "firebase/auth"; // Firebase v9+
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEffect } from "react";
 
-/* Basic CSS for apps built with Ionic */
+const Intro = lazy(() => import("./pages/Intro"));
 
-/* Optional CSS utils that can be commented out */
-
-/* Theme variables */
+const About = lazy(() => import("./pages/About"));
+const ProcessPayment = lazy(() => import("./pages/Order/ProcessPayment"));
 
 setupIonicReact();
 
+export const INTRO_KEY = "seen-intro";
+
 function App() {
-  return (
-    <IonApp>
-      <IonReactRouter>
-        <IonTabs>
-          <IonRouterOutlet>
-            <Route exact path="/virtualVisit/index.html" />
-            <AuthWrapper>
-              <Route exact path="/account">
-                <Account />
+  const [introSeen, setIntroSeen] = useState<boolean | null>(null);
+
+  useEffect(() => {
+    const checkStorage = async () => {
+      const seen = await Preferences.get({ key: INTRO_KEY });
+      console.log("seen: ", seen);
+      setIntroSeen(seen.value === "true");
+    };
+    checkStorage();
+  }, []);
+
+  console.log("introSeen: ", introSeen);
+
+  if (!introSeen || introSeen === null) {
+    return (
+      <Suspense>
+        <Intro setIntro={setIntroSeen} />
+      </Suspense>
+    );
+  } else {
+    return (
+      <IonApp>
+        <IonReactRouter>
+          <IonTabs>
+            <IonRouterOutlet>
+              <Route exact path="/virtualVisit/index.html" />
+              <AuthWrapper>
+                <Route exact path="/account">
+                  <Account setIntro={setIntroSeen} />
+                </Route>
+                <Route exact path="/account/edit">
+                  <AccountEdit />
+                </Route>
+                <Route exact path="/account/accountandsecurity">
+                  <ProfileAndSecurity />
+                </Route>
+                <Route exact path="/account/myaddresses">
+                  <MyAddresses />
+                </Route>
+                <Route exact path="/account/bankaccountscards">
+                  <MyCards />
+                </Route>
+                <Route exact path="/account/cards/:card_id">
+                  <Card />
+                </Route>
+                <Route exact path="/account/changepass">
+                  <ChangePassword />
+                </Route>
+                <Route exact path="/checkout/">
+                  <Checkout />
+                </Route>
+                <Route exact path="/checkout/choose-payoption">
+                  <PaymentMethods />
+                </Route>
+                <Route exact path="/delivery-addresses">
+                  <DeliveryAddress />
+                </Route>
+                <Route exact path="/delivery-addresses/choose">
+                  <DeliveryAddress choose={true} />
+                </Route>
+                <Route exact path="/orders">
+                  <Orders />
+                </Route>
+                <Route exact path="/orders/:order_id">
+                  <Order />
+                </Route>
+                <Route exact path="/my-favorites">
+                  <MyFavorites />
+                </Route>
+                <Route exact path="/orders/:order_id/process-payment/">
+                  <Suspense>
+                    <ProcessPayment />
+                  </Suspense>
+                </Route>
+                <Route exact path="/orders/:order_id/receipt">
+                  <Receipt />
+                </Route>
+              </AuthWrapper>
+              <Route exact path="/home">
+                <Home />
               </Route>
-              <Route exact path="/account/edit">
-                <AccountEdit />
+              <Route exact path="/virtualVisit">
+                <VirtualVisit />
               </Route>
-              <Route exact path="/account/accountandsecurity">
-                <ProfileAndSecurity />
+              <Route exact path="/explore">
+                <Explore />
               </Route>
-              <Route exact path="/account/myaddresses">
-                <MyAddresses />
+              <Route exact path="/cart">
+                <Cart />
               </Route>
-              <Route exact path="/account/bankaccountscards">
-                <MyCards />
+              <Route exact path="/">
+                <Redirect to="/home" />
               </Route>
-              <Route exact path="/account/cards/:card_id">
-                <Card />
+              <Route exact path="/register">
+                <Register />
               </Route>
-              <Route exact path="/account/changepass">
-                <ChangePassword />
+              <Route exact path="/login">
+                <Login />
               </Route>
-              <Route exact path="/checkout/">
-                <Checkout />
+              <Route path="/signin/">
+                <SignIn />
               </Route>
-              <Route exact path="/checkout/choose-payoption">
-                <PaymentMethods />
+              <Route exact path="/category">
+                <CategoryPage />
               </Route>
-              <Route exact path="/delivery-addresses">
-                <DeliveryAddress />
+              <Route exact path="/product/:product_id">
+                <ProductPage />
               </Route>
-              <Route exact path="/delivery-addresses/choose">
-                <DeliveryAddress choose={true} />
+              <Route exact path="/about">
+                <About />
               </Route>
-              <Route exact path="/orders">
-                <Orders />
-              </Route>
-              <Route exact path="/orders/:order_id">
-                <Order />
-              </Route>
-              <Route exact path="/my-favorites">
-                <MyFavorites />
-              </Route>
-              <Route exact path="/orders/:order_id/process-payment/">
-                <ProcessPayment />
-              </Route>
-              <Route exact path="/orders/:order_id/receipt">
-                <Receipt />
-              </Route>
-            </AuthWrapper>
-            <Route exact path="/home">
-              <Home />
-            </Route>
-            <Route exact path="/virtualVisit">
-              <VirtualVisit />
-            </Route>
-            <Route exact path="/explore">
-              <Explore />
-            </Route>
-            <Route exact path="/cart">
-              <Cart />
-            </Route>
-            <Route exact path="/">
-              <Redirect to="/home" />
-            </Route>
-            <Route exact path="/register">
-              <Register />
-            </Route>
-            <Route exact path="/login">
-              <Login />
-            </Route>
-            <Route path="/signin/">
-              <SignIn />
-            </Route>
-            <Route exact path="/category">
-              <CategoryPage />
-            </Route>
-            <Route exact path="/product/:product_id">
-              <ProductPage />
-            </Route>
-            <Route exact path="/about">
-              <About />
-            </Route>
-          </IonRouterOutlet>
-          <IonTabBar slot="bottom">
-            <IonTabButton tab="home" href="/home">
-              <IonIcon aria-hidden="true" icon={homeOutline} />
-              <IonLabel>Home</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="explore" href="/explore">
-              <IonIcon aria-hidden="true" icon={starOutline} />
-              <IonLabel>Explore</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="cart" href="/cart">
-              <IonIcon aria-hidden="true" icon={bagOutline} />
-              <IonLabel>Cart</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="order" href="/orders">
-              <IonIcon aria-hidden="true" icon={receiptOutline} />
-              <IonLabel>Orders</IonLabel>
-            </IonTabButton>
-            <IonTabButton tab="account" href="/account">
-              <IonIcon aria-hidden="true" icon={personCircleOutline} />
-              <IonLabel>Account</IonLabel>
-            </IonTabButton>
-          </IonTabBar>
-        </IonTabs>
-      </IonReactRouter>
-    </IonApp>
-  );
+            </IonRouterOutlet>
+            <IonTabBar slot="bottom">
+              <IonTabButton tab="home" href="/home">
+                <IonIcon aria-hidden="true" icon={homeOutline} />
+                <IonLabel>Home</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="explore" href="/explore">
+                <IonIcon aria-hidden="true" icon={starOutline} />
+                <IonLabel>Explore</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="cart" href="/cart">
+                <IonIcon aria-hidden="true" icon={bagOutline} />
+                <IonLabel>Cart</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="order" href="/orders">
+                <IonIcon aria-hidden="true" icon={receiptOutline} />
+                <IonLabel>Orders</IonLabel>
+              </IonTabButton>
+              <IonTabButton tab="account" href="/account">
+                <IonIcon aria-hidden="true" icon={personCircleOutline} />
+                <IonLabel>Account</IonLabel>
+              </IonTabButton>
+            </IonTabBar>
+          </IonTabs>
+        </IonReactRouter>
+      </IonApp>
+    );
+  }
 }
 
 export const AuthWrapper = ({
