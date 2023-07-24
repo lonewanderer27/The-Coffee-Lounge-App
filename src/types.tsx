@@ -1,5 +1,11 @@
 import { FieldValue, Timestamp } from "firebase/firestore";
 
+export enum LoginProvider {
+  Google,
+  EmailOTP,
+  EmailPassword,
+}
+
 export type ProductType = {
   id: string;
   category: string;

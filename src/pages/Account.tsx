@@ -58,7 +58,7 @@ const Account: React.FC = () => {
     }
   }, [userData]);
 
-  const logout = () => auth.signOut().then(() => history.push("/login"));
+  const logout = () => auth.signOut().then(() => history.push("/signin"));
 
   if (!userLoading) {
     return (
@@ -137,26 +137,26 @@ const Account: React.FC = () => {
               <IonIcon src={chevronForwardOutline}></IonIcon>
             </IonItem>
           </IonList>
-          <IonAlert
-            trigger="logout"
-            header="Logout"
-            message="Are you sure you want to log out?"
-            buttons={[
-              {
-                text: "Cancel",
-                role: "cancel",
-              },
-              {
-                text: "Logout",
-                handler: logout,
-              },
-            ]}
-          ></IonAlert>
-          <IonFooter className="ion-padding">
+          <div className="ion-padding">
             <IonButton expand="block" id="logout" className="ion-margin-top">
               Logout
             </IonButton>
-          </IonFooter>
+            <IonAlert
+              trigger="logout"
+              header="Logout"
+              message="Are you sure you want to log out?"
+              buttons={[
+                {
+                  text: "Cancel",
+                  role: "cancel",
+                },
+                {
+                  text: "Logout",
+                  handler: logout,
+                },
+              ]}
+            ></IonAlert>
+          </div>
         </IonContent>
       </IonPage>
     );

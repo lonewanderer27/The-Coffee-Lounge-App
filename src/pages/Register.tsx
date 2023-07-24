@@ -7,6 +7,7 @@ import {
   IonCardTitle,
   IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonImg,
   IonInput,
@@ -109,6 +110,14 @@ const Register: React.FC = () => {
 
   return (
     <IonPage>
+      <IonHeader translucent={true}>
+        <IonToolbar>
+          <IonTitle>Register</IonTitle>
+          <IonButtons slot="start">
+            <IonBackButton></IonBackButton>
+          </IonButtons>
+        </IonToolbar>
+      </IonHeader>
       <IonContent fullscreen>
         <div className="h-full flex">
           <form
@@ -125,23 +134,23 @@ const Register: React.FC = () => {
             />
             <IonInput
               label="Email"
-              // labelPlacement="floating"
-              className=" ion-margin-top ion-text-end"
+              labelPlacement="floating"
+              className="ion-margin-top ion-text-end"
               fill="outline"
               type="text"
               {...register("email", { required: true })}
             />
             <IonInput
-              className=" ion-margin-top ion-text-end"
+              className="mt-2 ion-text-end"
               fill="outline"
               label="Password"
-              // labelPlacement="floating"
+              labelPlacement="floating"
               type="password"
               {...register("password", { required: true })}
             />
 
-            <IonRow>
-              <IonCol className="ion-no-padding ion-margin-top">
+            <IonRow className="mt-2">
+              <IonCol className="pl-0">
                 <IonInput
                   fill="outline"
                   labelPlacement="floating"
@@ -150,7 +159,7 @@ const Register: React.FC = () => {
                   {...register("pronouns", { required: true })}
                 ></IonInput>
               </IonCol>
-              <IonCol className="ion-no-padding ion-margin-top">
+              <IonCol className="pr-0">
                 <IonInput
                   fill="outline"
                   label="Nickname"

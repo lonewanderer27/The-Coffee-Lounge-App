@@ -57,6 +57,7 @@ import ProductPage from "./pages/Product";
 import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
 import Receipt from "./pages/Order/Receipt";
 import Register from "./pages/Register";
+import SignIn from "./pages/SignIn";
 import VirtualVisit from "./pages/VirtualVisit";
 import { getAuth } from "firebase/auth"; // Firebase v9+
 import { setupIonicReact } from "@ionic/react";
@@ -148,6 +149,9 @@ function App() {
             </Route>
             <Route exact path="/login">
               <Login />
+            </Route>
+            <Route path="/signin/">
+              <SignIn />
             </Route>
             <Route exact path="/category">
               <CategoryPage />

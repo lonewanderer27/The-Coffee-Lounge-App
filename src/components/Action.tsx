@@ -5,6 +5,7 @@ export const Action = (props: {
   link: string;
   text: string;
   align?: "center" | "left" | "right";
+  arrow?: boolean;
 }) => (
   <IonRow className={`ion-text-${props.align} ion-justify-content-center`}>
     <IonCol size="12">
@@ -12,7 +13,7 @@ export const Action = (props: {
         {props.message}
         <IonRouterLink className="custom-link" routerLink={props.link}>
           {" "}
-          {props.text} &rarr;
+          {props.text} {props.arrow && "&rarr;"}
         </IonRouterLink>
       </p>
     </IonCol>
