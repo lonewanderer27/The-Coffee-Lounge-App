@@ -1,11 +1,7 @@
-import { Ice, OrderType, Size } from "../../types";
 import {
-  IonAvatar,
   IonBackButton,
   IonButton,
   IonButtons,
-  IonCard,
-  IonCardSubtitle,
   IonCol,
   IonContent,
   IonGrid,
@@ -21,15 +17,13 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { doc, getFirestore } from "firebase/firestore";
-import {
-  useDocumentData,
-  useDocumentDataOnce,
-} from "react-firebase-hooks/firestore";
 
 import { OrderConvert } from "../../converters/orders";
-import { Suspense } from "react";
+import OrderDescription from "../../utils";
+import { OrderType } from "../../types";
 import { orderAtom } from "../../atoms/order";
 import { phpString } from "../../phpString";
+import { useDocumentData } from "react-firebase-hooks/firestore";
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
@@ -65,16 +59,12 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
           {order!.products
             .filter((product) => product.product_snapshot)
             .map((product) => (
-              <IonItem
-                key={`ionitem:${product.name}`}
-                className="ion-no-margin"
-              >
+              <IonItem key={`ionitem:${product.name}`} className="m-0">
                 <IonRow>
                   <IonCol size="2">
                     <div className="bg-slate-200 dark:bg-gray-700 p-2 rounded-xl">
                       <IonImg
                         src={product.product_snapshot.image}
-                        className="h-10 w-full"
                         alt={product.product_snapshot.name}
                       />
                     </div>
@@ -86,44 +76,7 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
                           {product.product_snapshot.name}
                         </IonText>
                       </div>
-                      <div className="pt-2">
-                        {product.size != Size.None && (
-                          <IonText>Size {product.size}</IonText>
-                        )}
-                        {product.ice != Ice.Normal &&
-                          product.ice != Ice.None && (
-                            <IonText>
-                              {", "}
-                              {product.ice}
-                            </IonText>
-                          )}
-                        {product.milk != "None" && (
-                          <IonText>
-                            {", "}
-                            {product.milk}
-                          </IonText>
-                        )}
-                        {product.syrup != "None" && (
-                          <IonText>
-                            {", "}
-                            {product.syrup}
-                          </IonText>
-                        )}
-                      </div>
-                      <div>
-                        {product.additives.length != 0 && (
-                          <IonText>
-                            {product.additives.map((additive, index) => (
-                              <>
-                                {additive}{" "}
-                                {product.additives.length > index ? ", " : ""}
-                              </>
-                            ))}
-                            {product.additives.length == 0 &&
-                              "No Modifications"}
-                          </IonText>
-                        )}
-                      </div>
+                      <div className="pt-2">{OrderDescription(product)}</div>
                     </div>
                   </IonCol>
                   <IonCol size="3">
