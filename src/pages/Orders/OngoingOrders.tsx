@@ -17,8 +17,9 @@ import {
 import { DeliveryStatusType } from "../../types";
 import { OrderConvert } from "../../converters/orders";
 import OrderItem from "./OrderItem";
+import { memo } from "react";
 
-export default function OngoingOrders() {
+function OngoingOrders() {
   const db = getFirestore();
   const [orders, setOrders] = useCollectionData(
     query(
@@ -50,3 +51,5 @@ export default function OngoingOrders() {
     </IonContent>
   );
 }
+
+export default memo(OngoingOrders);

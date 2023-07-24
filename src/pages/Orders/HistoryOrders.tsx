@@ -15,11 +15,10 @@ import {
 import { DeliveryStatusType } from "../../types";
 import { OrderConvert } from "../../converters/orders";
 import OrderItem from "./OrderItem";
-import { getAuth } from "firebase/auth";
+import { memo } from "react";
 
-export default function HistoryOrders() {
+function HistoryOrders() {
   const db = getFirestore();
-  const { currentUser } = getAuth();
   const [orders, setOrders] = useCollectionData(
     query(
       collection(db, "orders").withConverter(OrderConvert),
@@ -41,3 +40,5 @@ export default function HistoryOrders() {
     </IonContent>
   );
 }
+
+export default memo(HistoryOrders);

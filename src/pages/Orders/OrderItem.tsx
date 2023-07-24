@@ -21,7 +21,7 @@ import {
   query,
   where,
 } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 
 import { ProductConvert } from "../../converters/products";
 import { chevronForwardOutline } from "ionicons/icons";
@@ -29,7 +29,7 @@ import { orderAtom } from "../../atoms/order";
 import { phpString } from "../../phpString";
 import { useSetRecoilState } from "recoil";
 
-export default function OrderItem(props: OrderType) {
+function OrderItem(props: OrderType) {
   const setOrder = useSetRecoilState(orderAtom);
   const [hasProductsSnapshot, setHasProductsSnapshot] = useState(false);
   const [products, setProducts] = useState<ProductType[]>([]);
@@ -160,3 +160,5 @@ export default function OrderItem(props: OrderType) {
     </div>
   );
 }
+
+export default memo(OrderItem);

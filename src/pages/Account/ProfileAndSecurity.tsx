@@ -132,7 +132,7 @@ export default function ProfileAndSecurity() {
           </IonHeader>
           <div className="ion-padding flex justify-center">
             {data?.photoURL ? (
-              <img src={data?.photoURL} />
+              <IonImg src={data?.photoURL} />
             ) : (
               <Avatar name={userData!.get("nickname")} round />
             )}

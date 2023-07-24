@@ -66,9 +66,9 @@ export const Branches: BranchType[] = [
     name: "The Coffee Lounge - Main Branch",
     address: {
       barangay: "Bangkal",
-      unit_number: "Room 204",
-      street_number: "3853",
-      street_name: "Macabulos",
+      unit_number: "1",
+      street_number: "1760",
+      street_name: "Evangelista",
       city: "Makati",
       region: "National Capital Region",
       phone_number: "09123456789",

@@ -4,7 +4,6 @@ import {
   IonCol,
   IonGrid,
   IonIcon,
-  IonImg,
   IonItem,
   IonItemOption,
   IonItemOptions,
@@ -12,10 +11,11 @@ import {
   IonRow,
   IonText,
 } from "@ionic/react";
-import { add, removeOutline, trashOutline, watch } from "ionicons/icons";
+import { add, removeOutline, trashOutline } from "ionicons/icons";
 import { computeProductPrice, useCart } from "../hooks/cart";
 import { memo, useEffect, useState } from "react";
 
+import OrderDescription from "../utils";
 import { phpString } from "../phpString";
 
 function CartItem(props: CartItemType) {
@@ -66,7 +66,7 @@ function CartItem(props: CartItemType) {
         <IonGrid>
           <IonRow className="ion-align-items-center">
             <IonCol size="auto">
-              <IonImg
+              <img
                 src={props.product_snapshot.image}
                 alt={props.product_snapshot.name}
                 style={{
@@ -84,15 +84,7 @@ function CartItem(props: CartItemType) {
                   <br />
                 </>
               )}
-              {props.ice !== Ice.None && <IonText>{props.ice} Ice, </IonText>}
-              {props.size !== Size.None && props.size !== Size.Tall && (
-                <IonText>{props.size}, </IonText>
-              )}
-              {props.milk !== Milk.None && <IonText>{props.milk}, </IonText>}
-              {props.syrup !== Syrup.None && <IonText>{props.syrup}, </IonText>}
-              {props.additives && props.additives.length != 0 && (
-                <IonText>{props.additives.join(", ")}</IonText>
-              )}
+              {OrderDescription(props)}
             </IonCol>
             <IonCol size="2" className="ion-text-end">
               <IonText>x {props.quantity}</IonText>

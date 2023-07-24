@@ -70,24 +70,20 @@ export default function ProductPage() {
   // console.log("product_id", product_id);
   const productId = useRecoilValue(productIdAtom);
 
-  const [productData, productLoading, dataError, dataSnapshot, productReload] =
-    useDocumentDataOnce(
-      // "Loading" is a pseudo product id that exists in the database
-      // so that on first render, where product_id is not yet determined
-      // it will query the "Loading" product instead ;)
-      doc(db, "products", product_id ?? productId).withConverter(
-        ProductConvert
-      ),
-      {
-        getOptions: {
-          source: "cache",
-        },
-        initialValue: ProductLoading,
-      }
-    );
+  const [productData, productLoading] = useDocumentDataOnce(
+    // "Loading" is a pseudo product id that exists in the database
+    // so that on first render, where product_id is not yet determined
+    // it will query the "Loading" product instead ;)
+    doc(db, "products", product_id ?? productId).withConverter(ProductConvert),
+    {
+      getOptions: {
+        source: "cache",
+      },
+      initialValue: ProductLoading,
+    }
+  );
 
   const {
-    control,
     register,
     setValue,
     watch,
@@ -186,7 +182,6 @@ export default function ProductPage() {
                   isActive={isFavorite ? true : false}
                   onClick={() => {
                     toggleFavorite();
-                    productReload();
                   }}
                   animationTrigger="click"
                   animationScale={1.2}

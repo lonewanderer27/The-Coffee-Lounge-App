@@ -1,18 +1,18 @@
-// import { Suspense, lazy } from "react";
 import {
   CACHE_SIZE_UNLIMITED,
   initializeFirestore,
   persistentLocalCache,
   persistentMultipleTabManager,
 } from "firebase/firestore";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReCaptchaV3Provider, initializeAppCheck } from "firebase/app-check";
 
-// const App = lazy(() => import("./App"));
 import App from "./App";
-// import { IonSpinner } from "@ionic/react";
-// import App from "./App";
 import { RecoilRoot } from "recoil";
 import { createRoot } from "react-dom/client";
 import { initializeApp } from "firebase/app";
+
+const queryClient = new QueryClient();
 
 const firebaseConfig = {
   apiKey: "AIzaSyDpRsaLBzTnR1hN1YCkePRqI6BpVdq_NQw",
@@ -32,10 +32,17 @@ initializeFirestore(app, {
   }),
 });
 
+export const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider("6LfXQEonAAAAAAjWlyLuYkL040qQff7DhZVxVCip"),
+  isTokenAutoRefreshEnabled: true,
+});
+
 const container = document.getElementById("root");
 const root = createRoot(container!);
 root.render(
   <RecoilRoot>
-    <App />
+    <QueryClientProvider client={queryClient}>
+      <App />
+    </QueryClientProvider>
   </RecoilRoot>
 );

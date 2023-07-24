@@ -8,12 +8,12 @@ import {
   IonSegmentButton,
   IonToolbar,
 } from "@ionic/react";
+import { memo, useState } from "react";
 
 import HistoryOrders from "./Orders/HistoryOrders";
 import OngoingOrders from "./Orders/OngoingOrders";
-import { useState } from "react";
 
-export default function Orders() {
+function Orders() {
   const [activeSegment, setActiveSegment] = useState<"ongoing" | "history">(
     "ongoing"
   );
@@ -39,3 +39,5 @@ export default function Orders() {
     </IonPage>
   );
 }
+
+export default memo(Orders);
