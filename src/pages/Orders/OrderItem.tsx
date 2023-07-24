@@ -107,6 +107,7 @@ function OrderItem(props: OrderType) {
               <>
                 <IonCol size="2">
                   <IonImg
+                    alt={product.product_snapshot.name}
                     src={product.product_snapshot?.image}
                     className="h-7 w-full"
                   />

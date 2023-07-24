@@ -71,8 +71,12 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
               >
                 <IonRow>
                   <IonCol size="2">
-                    <div className="bg-slate-700 p-2 rounded-xl">
-                      <IonImg src={product.product_snapshot.image} />
+                    <div className="bg-slate-200 dark:bg-gray-700 p-2 rounded-xl">
+                      <IonImg
+                        src={product.product_snapshot.image}
+                        className="h-10 w-full"
+                        alt={product.product_snapshot.name}
+                      />
                     </div>
                   </IonCol>
                   <IonCol size="7" className="ion-padding-start">
