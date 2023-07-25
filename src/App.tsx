@@ -12,6 +12,7 @@ import "./theme/variables.css";
 import "./theme/index.css";
 import "./global.styles.css";
 
+import { AnimatePresence, motion } from "framer-motion";
 import {
   IonApp,
   IonIcon,
@@ -33,7 +34,6 @@ import {
 } from "ionicons/icons";
 
 import Account from "./pages/Account";
-import AccountEdit from "./pages/AccountEdit";
 import Card from "./pages/Account/Cards/Card";
 import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
@@ -87,127 +87,136 @@ function App() {
   if (!introSeen || introSeen === null) {
     return (
       <Suspense>
-        <Intro setIntro={setIntroSeen} />
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          <Intro setIntro={setIntroSeen} />
+        </motion.div>
       </Suspense>
     );
   } else {
     return (
-      <IonApp>
-        <IonReactRouter>
-          <IonTabs>
-            <IonRouterOutlet>
-              <Route exact path="/virtualVisit/index.html" />
-              <AuthWrapper>
-                <Route exact path="/account">
-                  <Account setIntro={setIntroSeen} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 0.5 }}
+      >
+        <IonApp>
+          <IonReactRouter>
+            <IonTabs>
+              <IonRouterOutlet>
+                <Route exact path="/virtualVisit/index.html" />
+                <AuthWrapper>
+                  <Route exact path="/account">
+                    <Account setIntro={setIntroSeen} />
+                  </Route>
+                  <Route exact path="/account/accountandsecurity">
+                    <ProfileAndSecurity />
+                  </Route>
+                  <Route exact path="/account/myaddresses">
+                    <MyAddresses />
+                  </Route>
+                  <Route exact path="/account/bankaccountscards">
+                    <MyCards />
+                  </Route>
+                  <Route exact path="/account/cards/:card_id">
+                    <Card />
+                  </Route>
+                  <Route exact path="/account/changepass">
+                    <ChangePassword />
+                  </Route>
+                  <Route exact path="/checkout/">
+                    <Checkout />
+                  </Route>
+                  <Route exact path="/checkout/choose-payoption">
+                    <PaymentMethods />
+                  </Route>
+                  <Route exact path="/delivery-addresses">
+                    <DeliveryAddress />
+                  </Route>
+                  <Route exact path="/delivery-addresses/choose">
+                    <DeliveryAddress choose={true} />
+                  </Route>
+                  <Route exact path="/orders">
+                    <Orders />
+                  </Route>
+                  <Route exact path="/orders/:order_id">
+                    <Order />
+                  </Route>
+                  <Route exact path="/my-favorites">
+                    <MyFavorites />
+                  </Route>
+                  <Route exact path="/orders/:order_id/process-payment/">
+                    <Suspense>
+                      <ProcessPayment />
+                    </Suspense>
+                  </Route>
+                  <Route exact path="/orders/:order_id/receipt">
+                    <Receipt />
+                  </Route>
+                </AuthWrapper>
+                <Route exact path="/home">
+                  <Home />
                 </Route>
-                <Route exact path="/account/edit">
-                  <AccountEdit />
+                <Route exact path="/virtualVisit">
+                  <VirtualVisit />
                 </Route>
-                <Route exact path="/account/accountandsecurity">
-                  <ProfileAndSecurity />
+                <Route exact path="/explore">
+                  <Explore />
                 </Route>
-                <Route exact path="/account/myaddresses">
-                  <MyAddresses />
+                <Route exact path="/cart">
+                  <Cart />
                 </Route>
-                <Route exact path="/account/bankaccountscards">
-                  <MyCards />
+                <Route exact path="/">
+                  <Redirect to="/home" />
                 </Route>
-                <Route exact path="/account/cards/:card_id">
-                  <Card />
+                <Route exact path="/register">
+                  <Register />
                 </Route>
-                <Route exact path="/account/changepass">
-                  <ChangePassword />
+                <Route exact path="/login">
+                  <Login />
                 </Route>
-                <Route exact path="/checkout/">
-                  <Checkout />
+                <Route path="/signin/">
+                  <SignIn />
                 </Route>
-                <Route exact path="/checkout/choose-payoption">
-                  <PaymentMethods />
+                <Route exact path="/category">
+                  <CategoryPage />
                 </Route>
-                <Route exact path="/delivery-addresses">
-                  <DeliveryAddress />
+                <Route exact path="/product/:product_id">
+                  <ProductPage />
                 </Route>
-                <Route exact path="/delivery-addresses/choose">
-                  <DeliveryAddress choose={true} />
+                <Route exact path="/about">
+                  <About />
                 </Route>
-                <Route exact path="/orders">
-                  <Orders />
-                </Route>
-                <Route exact path="/orders/:order_id">
-                  <Order />
-                </Route>
-                <Route exact path="/my-favorites">
-                  <MyFavorites />
-                </Route>
-                <Route exact path="/orders/:order_id/process-payment/">
-                  <Suspense>
-                    <ProcessPayment />
-                  </Suspense>
-                </Route>
-                <Route exact path="/orders/:order_id/receipt">
-                  <Receipt />
-                </Route>
-              </AuthWrapper>
-              <Route exact path="/home">
-                <Home />
-              </Route>
-              <Route exact path="/virtualVisit">
-                <VirtualVisit />
-              </Route>
-              <Route exact path="/explore">
-                <Explore />
-              </Route>
-              <Route exact path="/cart">
-                <Cart />
-              </Route>
-              <Route exact path="/">
-                <Redirect to="/home" />
-              </Route>
-              <Route exact path="/register">
-                <Register />
-              </Route>
-              <Route exact path="/login">
-                <Login />
-              </Route>
-              <Route path="/signin/">
-                <SignIn />
-              </Route>
-              <Route exact path="/category">
-                <CategoryPage />
-              </Route>
-              <Route exact path="/product/:product_id">
-                <ProductPage />
-              </Route>
-              <Route exact path="/about">
-                <About />
-              </Route>
-            </IonRouterOutlet>
-            <IonTabBar slot="bottom">
-              <IonTabButton tab="home" href="/home">
-                <IonIcon aria-hidden="true" icon={homeOutline} />
-                <IonLabel>Home</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="explore" href="/explore">
-                <IonIcon aria-hidden="true" icon={starOutline} />
-                <IonLabel>Explore</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="cart" href="/cart">
-                <IonIcon aria-hidden="true" icon={bagOutline} />
-                <IonLabel>Cart</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="order" href="/orders">
-                <IonIcon aria-hidden="true" icon={receiptOutline} />
-                <IonLabel>Orders</IonLabel>
-              </IonTabButton>
-              <IonTabButton tab="account" href="/account">
-                <IonIcon aria-hidden="true" icon={personCircleOutline} />
-                <IonLabel>Account</IonLabel>
-              </IonTabButton>
-            </IonTabBar>
-          </IonTabs>
-        </IonReactRouter>
-      </IonApp>
+              </IonRouterOutlet>
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="home" href="/home">
+                  <IonIcon aria-hidden="true" icon={homeOutline} />
+                  <IonLabel>Home</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="explore" href="/explore">
+                  <IonIcon aria-hidden="true" icon={starOutline} />
+                  <IonLabel>Explore</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="cart" href="/cart">
+                  <IonIcon aria-hidden="true" icon={bagOutline} />
+                  <IonLabel>Cart</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="order" href="/orders">
+                  <IonIcon aria-hidden="true" icon={receiptOutline} />
+                  <IonLabel>Orders</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="account" href="/account">
+                  <IonIcon aria-hidden="true" icon={personCircleOutline} />
+                  <IonLabel>Account</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonReactRouter>
+        </IonApp>
+      </motion.div>
     );
   }
 }
