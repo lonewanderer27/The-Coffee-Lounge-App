@@ -1,7 +1,6 @@
 import "./Cart.css";
 
 import {
-  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
@@ -18,11 +17,13 @@ import {
   IonTitle,
   IonToolbar,
 } from "@ionic/react";
+import { Suspense, lazy, memo } from "react";
 
 import CartItem from "../components/CartItem";
-import { memo } from "react";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
+
+const EmptyCart = lazy(() => import("../pages/Cart/EmptyCart"));
 
 const Cart: React.FC = () => {
   const { cart, setCart, totalPrice, count } = useCart();
@@ -63,11 +64,9 @@ const Cart: React.FC = () => {
           </IonList>
         )}
         {count === 0 && (
-          <div id="notice">
-            <IonText>
-              <h4 className="ion-no-margin">No items in cart</h4>
-            </IonText>
-          </div>
+          <Suspense>
+            <EmptyCart />
+          </Suspense>
         )}
       </IonContent>
       <IonFooter>
@@ -108,3 +107,5 @@ const Cart: React.FC = () => {
 };
 
 export default memo(Cart);
+
+
