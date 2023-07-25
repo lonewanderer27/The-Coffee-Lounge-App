@@ -14,8 +14,8 @@ import {
 } from "firebase/firestore";
 
 import { Action } from "../../components/Action";
-import { OrderConvert } from "../../converters/orders";
 import { DotLottiePlayer } from "@dotlottie/react-player";
+import { OrderConvert } from "../../converters/orders";
 import { bagCheckOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { orderAtom } from "../../atoms/order";
@@ -65,7 +65,7 @@ export default function ProcessPayment() {
         {orderDetails?.payment_status === "pending" ||
           (order?.get("payment_status") === "pending" && (
             <div
-              className="flex w-100 h-full"
+              className="flex w-100 h-full p-16"
               style={{
                 display: "flex",
                 justifyContent: "center",
@@ -75,7 +75,7 @@ export default function ProcessPayment() {
               <DotLottiePlayer
                 autoplay
                 loop
-                src="/animation_coffee_load.lottie"
+                src="/lotties/animation_coffee_load.lottie"
                 style={{
                   height: "150px",
                 }}

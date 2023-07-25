@@ -2,14 +2,28 @@ import "@dotlottie/react-player/dist/index.css";
 import "swiper/css";
 import "swiper/css/pagination";
 
-import { IonApp, IonButton, IonContent, IonPage, IonText } from "@ionic/react";
+import {
+  DotLottiePlayer,
+  DotLottieRefProps,
+  PlayerEvents,
+} from "@dotlottie/react-player";
+import {
+  IonApp,
+  IonButton,
+  IonContent,
+  IonPage,
+  IonText,
+  useIonLoading,
+  useIonViewDidEnter,
+  useIonViewWillEnter,
+} from "@ionic/react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import { DotLottiePlayer } from "@dotlottie/react-player";
 import { INTRO_KEY } from "../App";
 import { Pagination } from "swiper/modules";
 import { Preferences } from "@capacitor/preferences";
 import Slogan from "../assets/The Coffee Lounge - Logo 2.svg";
+import { useRef } from "react";
 
 export default function Intro(props: {
   setIntro: React.Dispatch<React.SetStateAction<boolean | null>>;
@@ -26,29 +40,31 @@ export default function Intro(props: {
         <IonContent fullscreen>
           <Swiper modules={[Pagination]} pagination={true} className="h-[90%]">
             <SwiperSlide>
-              <DotLottiePlayer
-                src="/coffee-1-NJVoiHpml6.lottie"
-                autoplay
-                loop
-                className="p-5 pt-[25%]"
-                renderer="canvas"
-              >
-                <IonText>
-                  <h1 className="ion-text-center font-bold">
-                    Create Perfect Beverage
-                  </h1>
-                </IonText>
-                <IonText>
-                  <p className="text-center font-bold p-5">
-                    Customize your coffee exactly the way you like it - size,
-                    milk, syrup, ice, and more.
-                  </p>
-                </IonText>
-              </DotLottiePlayer>
+              {({ isVisible }) => (
+                <DotLottiePlayer
+                  src="/lotties/coffee-1-NJVoiHpml6.lottie"
+                  autoplay
+                  loop
+                  className="p-5 pt-[25%]"
+                  renderer="canvas"
+                >
+                  <IonText>
+                    <h1 className="ion-text-center font-bold">
+                      Create Perfect Beverage
+                    </h1>
+                  </IonText>
+                  <IonText>
+                    <p className="text-center font-bold p-5">
+                      Customize your coffee exactly the way you like it - size,
+                      milk, syrup, ice, and more.
+                    </p>
+                  </IonText>
+                </DotLottiePlayer>
+              )}
             </SwiperSlide>
             <SwiperSlide className="pt-[20%]">
               <DotLottiePlayer
-                src="/delivery-girl-cycling-city-g4Hj3urOHo.lottie"
+                src="/lotties/delivery-girl-cycling-city-g4Hj3urOHo.lottie"
                 autoplay
                 loop
                 renderer="canvas"
@@ -69,7 +85,7 @@ export default function Intro(props: {
             </SwiperSlide>
             <SwiperSlide className="pt-[20%]">
               <DotLottiePlayer
-                src="/futuristic-virtual-reality-glasses-helmet-t8rqMmyk1s.lottie"
+                src="/lotties/futuristic-virtual-reality-glasses-helmet-t8rqMmyk1s.lottie"
                 autoplay
                 loop
                 renderer="canvas"
