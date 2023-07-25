@@ -11,8 +11,6 @@ import { Pagination } from "swiper/modules";
 import { Preferences } from "@capacitor/preferences";
 import Slogan from "../assets/The Coffee Lounge - Logo 2.svg";
 
-// import "./Intro.css";
-
 export default function Intro(props: {
   setIntro: React.Dispatch<React.SetStateAction<boolean | null>>;
 }) {
@@ -26,13 +24,14 @@ export default function Intro(props: {
     <IonApp>
       <IonPage>
         <IonContent fullscreen>
-          <Swiper modules={[Pagination]} pagination={true}>
-            <SwiperSlide className="pt-[10%]">
+          <Swiper modules={[Pagination]} pagination={true} className="h-[90%]">
+            <SwiperSlide>
               <DotLottiePlayer
                 src="/coffee-1-NJVoiHpml6.lottie"
                 autoplay
                 loop
-                className="p-5"
+                className="p-5 pt-[25%]"
+                renderer="canvas"
               >
                 <IonText>
                   <h1 className="ion-text-center font-bold">
@@ -47,11 +46,12 @@ export default function Intro(props: {
                 </IonText>
               </DotLottiePlayer>
             </SwiperSlide>
-            <SwiperSlide className="pt-[30%]">
+            <SwiperSlide className="pt-[20%]">
               <DotLottiePlayer
                 src="/delivery-girl-cycling-city-g4Hj3urOHo.lottie"
                 autoplay
                 loop
+                renderer="canvas"
                 className="p-5"
               >
                 <IonText>
@@ -67,12 +67,13 @@ export default function Intro(props: {
                 </IonText>
               </DotLottiePlayer>
             </SwiperSlide>
-            <SwiperSlide className="pt-[30%]">
+            <SwiperSlide className="pt-[20%]">
               <DotLottiePlayer
                 src="/futuristic-virtual-reality-glasses-helmet-t8rqMmyk1s.lottie"
                 autoplay
                 loop
-                className="p-5"
+                renderer="canvas"
+                className=""
               >
                 <IonText>
                   <h1 className="ion-text-center font-bold">
@@ -86,7 +87,7 @@ export default function Intro(props: {
                 </IonText>
               </DotLottiePlayer>
             </SwiperSlide>
-            <SwiperSlide className="pt-[40%]">
+            <SwiperSlide className="pt-[20%]">
               <div className="text-center flex flex-col items-center justify-center h-full">
                 <img src={Slogan} className="w-[35%]"></img>
                 <IonText>
@@ -94,7 +95,7 @@ export default function Intro(props: {
                 </IonText>
                 <IonText>
                   <p className="text-center font-bold">
-                    Ready to experience a next level coffee shopping?
+                    Experience a new way of ordering coffee
                   </p>
                 </IonText>
                 <IonButton onClick={doneIntro}>
