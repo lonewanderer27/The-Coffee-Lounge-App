@@ -14,9 +14,8 @@ import {
 } from "firebase/firestore";
 
 import { Action } from "../../components/Action";
-import CoffeeLoad from "../../assets/animation_coffee_load.json";
 import { OrderConvert } from "../../converters/orders";
-import { Player } from "@lottiefiles/react-lottie-player";
+import { DotLottiePlayer } from "@dotlottie/react-player";
 import { bagCheckOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { orderAtom } from "../../atoms/order";
@@ -73,10 +72,10 @@ export default function ProcessPayment() {
                 alignItems: "center",
               }}
             >
-              <Player
+              <DotLottiePlayer
                 autoplay
                 loop
-                src={CoffeeLoad}
+                src="/animation_coffee_load.lottie"
                 style={{
                   height: "150px",
                 }}
@@ -84,7 +83,7 @@ export default function ProcessPayment() {
                 <div>
                   <IonText className="font-bold">Processing Payment</IonText>
                 </div>
-              </Player>
+              </DotLottiePlayer>
             </div>
           ))}
         {order?.get("payment_status") === PaymentStatusType.Paid && (
