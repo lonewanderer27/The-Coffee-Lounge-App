@@ -45,7 +45,6 @@ import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
 import Login from "./pages/Login";
 import MyAddresses from "./pages/Account/MyAddresses";
-import MyCards from "./pages/Account/MyCards";
 import MyFavorites from "./pages/MyFavorites";
 import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders";
@@ -61,8 +60,8 @@ import { getAuth } from "firebase/auth"; // Firebase v9+
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+const MyCards = lazy(() => import("./pages/Account/MyCards"));
 const Intro = lazy(() => import("./pages/Intro"));
-
 const About = lazy(() => import("./pages/About"));
 const ProcessPayment = lazy(() => import("./pages/Order/ProcessPayment"));
 
@@ -119,7 +118,9 @@ function App() {
                     <MyAddresses />
                   </Route>
                   <Route exact path="/account/bankaccountscards">
-                    <MyCards />
+                    <Suspense>
+                      <MyCards />
+                    </Suspense>
                   </Route>
                   <Route exact path="/account/cards/:card_id">
                     <Card />

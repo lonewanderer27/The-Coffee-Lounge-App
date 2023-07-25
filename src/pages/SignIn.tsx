@@ -19,17 +19,17 @@ import {
   signInWithEmailLink,
 } from "firebase/auth";
 import { logoGoogle, mail } from "ionicons/icons";
+import { memo, useEffect } from "react";
 
 import { Action } from "../components/Action";
 import { FirebaseError } from "firebase/app";
 import { LoginProvider } from "../types";
 import Logo2 from "../assets/The Coffee Lounge - Logo 2.svg";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useEffect } from "react";
 import { useLocation } from "react-router";
 import { useRecoilState } from "recoil";
 
-export default function SignIn() {
+const SignIn = () => {
   const auth = getAuth();
   const [user] = useAuthState(auth);
   const router = useIonRouter();
@@ -149,9 +149,9 @@ export default function SignIn() {
       </IonContent>
     </IonPage>
   );
-}
+};
 
-function Chooser() {
+const Chooser = memo(() => {
   const [loginProvider, setLoginProvider] = useRecoilState(loginProviderAtom);
 
   return (
@@ -187,9 +187,9 @@ function Chooser() {
       </IonButton>
     </>
   );
-}
+});
 
-function EmailOTP(props: { handleEmailOTP: () => void }) {
+const EmailOTP = memo((props: { handleEmailOTP: () => void }) => {
   const [email, setEmail] = useRecoilState(emailForSignin);
   const [loginProvider, setLoginProvider] = useRecoilState(loginProviderAtom);
 
@@ -222,4 +222,6 @@ function EmailOTP(props: { handleEmailOTP: () => void }) {
       </IonButton>
     </div>
   );
-}
+});
+
+export default memo(SignIn)

@@ -38,6 +38,9 @@ dependencies:
   '@lottiefiles/react-lottie-player':
     specifier: ^3.5.3
     version: 3.5.3(react@18.2.0)
+  '@rive-app/react-canvas':
+    specifier: ^3.0.56
+    version: 3.0.56(react@18.2.0)
   '@tanstack/react-query':
     specifier: ^4.32.0
     version: 4.32.0(react-dom@18.2.0)(react-native@0.71.12)(react@18.2.0)
@@ -3040,6 +3043,19 @@ packages:
 
   /@react-native/polyfills@2.0.0:
     resolution: {integrity: sha512-K0aGNn1TjalKj+65D7ycc1//H9roAQ51GJVk5ZJQFb2teECGmzd86bYDC0aYdbRf7gtovescq4Zt6FR0tgXiHQ==}
+    dev: false
+
+  /@rive-app/canvas@1.2.4:
+    resolution: {integrity: sha512-TfkTM0D+JMKTmkg3WhdoFaarLohMyrLeSLwwPLa9GiHNU9odFPptS0j5iprN/WygrTWsb5WoyXgCXVZpZIKAQg==}
+    dev: false
+
+  /@rive-app/react-canvas@3.0.56(react@18.2.0):
+    resolution: {integrity: sha512-gD888Bo3fsv1/2+v/bXmnZP2Ob9h8Ouco+mRdnFdi7UTt1kY8F5Sq5dzjKI0H3K66WXivachm7xQ5FInx4deVg==}
+    peerDependencies:
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
+    dependencies:
+      '@rive-app/canvas': 1.2.4
+      react: 18.2.0
     dev: false
 
   /@rollup/plugin-babel@5.3.1(@babel/core@7.22.9)(rollup@2.79.1):
