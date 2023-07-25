@@ -69,7 +69,7 @@ export default function Intro(props: {
             </SwiperSlide>
             <SwiperSlide className="pt-[30%]">
               <DotLottiePlayer
-                src="/futuristic-virtual-reality-glasses-helmet-t8rqMmyk1s.json"
+                src="/futuristic-virtual-reality-glasses-helmet-t8rqMmyk1s.lottie"
                 autoplay
                 loop
                 className="p-5"
