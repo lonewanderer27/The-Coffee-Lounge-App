@@ -74,7 +74,7 @@ export default function Checkout() {
             ))}
           </IonRadioGroup>
           {deliverOption === DeliveryOptionType.Delivery && (
-            <IonItem routerLink="/delivery-addresses/choose">
+            <IonItem routerLink="/account/delivery-addresses/choose">
               <IonLabel>Choose Address</IonLabel>
               <IonLabel className="ion-text-end">1</IonLabel>
             </IonItem>
@@ -98,7 +98,7 @@ export default function Checkout() {
         </IonList>
         <IonList className="ion-margin-top">
           <IonItem routerLink="/checkout/choose-payoption">
-            <IonText>Payment Method</IonText>
+            <IonText>Choose Payment Method</IonText>
             <IonLabel className="ion-text-end">{payOption}</IonLabel>
           </IonItem>
         </IonList>

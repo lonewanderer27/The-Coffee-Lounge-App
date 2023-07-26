@@ -3,20 +3,26 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { Controller, Pagination } from "swiper/modules";
 import {
   IonApp,
   IonButton,
+  IonButtons,
   IonContent,
+  IonFooter,
   IonPage,
   IonRow,
   IonText,
+  IonToolbar,
 } from "@ionic/react";
-import { Swiper, SwiperSlide } from "swiper/react";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 import { DotLottiePlayer } from "@dotlottie/react-player";
 import { INTRO_KEY } from "../App";
-import { Pagination } from "swiper/modules";
 import { Preferences } from "@capacitor/preferences";
+import { Swiper as SwiperType } from "swiper/types";
+import { getAuth } from "firebase/auth";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 
 // import { IPlayerProps, Player } from "@lottiefiles/react-lottie-player";
@@ -51,14 +57,25 @@ type slideType = {
 export default function Intro(props: {
   setIntro: React.Dispatch<React.SetStateAction<boolean | null>>;
 }) {
+  const [user] = useAuthState(getAuth());
+
   const doneIntro = () => {
     Preferences.set({ key: INTRO_KEY, value: "true" });
     props.setIntro(true);
-    window.history.replaceState({}, "", "/signin");
+    window.history.replaceState({}, "", user ? "/home" : "/signin");
   };
 
   const [index, setIndex] = useState<number>(0);
-  const [lottieSrc, setLottieSrc] = useState<string>(() => sliderData[0].image);
+  const [controlledSwiper, setControlledSwiper] = useState<SwiperType | null>(
+    null
+  );
+
+  const handleNext = () => {
+    setIndex((prev) => prev + 1);
+    controlledSwiper?.slideNext();
+  };
+
+  console.log("index: ", index);
 
   return (
     <IonApp>
@@ -99,13 +116,13 @@ export default function Intro(props: {
             </IonRow>
             <IonRow className="h-52">
               <Swiper
-                modules={[Pagination]}
+                modules={[Pagination, Controller]}
+                onSwiper={setControlledSwiper}
                 pagination={true}
                 watchSlidesProgress={true}
                 onSlideChange={(swiperCore) => {
                   const { activeIndex } = swiperCore;
                   if (activeIndex != 3) {
-                    setLottieSrc(sliderData[activeIndex].image);
                     setIndex(activeIndex);
                   }
                 }}
@@ -134,6 +151,18 @@ export default function Intro(props: {
             </IonRow>
           </div>
         </IonContent>
+        <IonFooter>
+          <IonToolbar className="ion-padding-horizontal">
+            <IonButton slot="start" fill="clear">
+              Skip
+            </IonButton>
+            {index <= 3 && (
+              <IonButton slot="end" onClick={handleNext}>
+                Next
+              </IonButton>
+            )}
+          </IonToolbar>
+        </IonFooter>
       </IonPage>
     </IonApp>
   );
@@ -158,7 +187,7 @@ const Player = (props: { src: string }) => {
       src={props.src}
       autoplay
       loop
-      className="p-5 my-5 w-full h-96"
+      className="p-5 mt-5 w-full h-96"
     />
   );
 };

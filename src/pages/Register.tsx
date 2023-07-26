@@ -29,7 +29,7 @@ import {
   getAuth,
   updateProfile,
 } from "firebase/auth";
-import { doc, getFirestore, setDoc } from "firebase/firestore";
+import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 
 import { Action } from "../components/Action";
 import { useColorScheme } from "../hooks/page";
@@ -93,6 +93,7 @@ const Register: React.FC = () => {
           await setDoc(doc(db, "users", user.uid), {
             nickname: data.nickname,
             pronouns: data.pronouns,
+            created_at: serverTimestamp(),
           });
           history.push("/account");
         })();
@@ -134,17 +135,17 @@ const Register: React.FC = () => {
             />
             <IonInput
               label="Email"
-              labelPlacement="floating"
-              className="ion-margin-top ion-text-end"
+              labelPlacement="fixed"
+              className="ion-margin-top"
               fill="outline"
               type="text"
               {...register("email", { required: true })}
             />
             <IonInput
-              className="mt-2 ion-text-end"
+              className="mt-2 "
               fill="outline"
               label="Password"
-              labelPlacement="floating"
+              labelPlacement="fixed"
               type="password"
               {...register("password", { required: true })}
             />

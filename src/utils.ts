@@ -1,4 +1,11 @@
-import { CartItemType, Ice, Milk, Size, Syrup } from "./types";
+import {
+  CartItemType,
+  DeliveryAddressType,
+  Ice,
+  Milk,
+  Size,
+  Syrup,
+} from "./types";
 
 /**
  * Returns a string describing the order based on the provided CartItemType.
@@ -18,6 +25,20 @@ export default function OrderDescription(props: CartItemType) {
     props.additives && props.additives.length != 0
       ? props.additives.join(", ")
       : false,
+  ]
+    .filter(Boolean)
+    .join(", ");
+}
+
+export function LocationDescription(props: DeliveryAddressType) {
+  return [
+    props.unit_number !== "" ? props.unit_number : false,
+    props.street_name !== "" ? props.street_name : false,
+    props.barangay !== "" ? props.barangay : false,
+    props.city !== "" ? props.city : false,
+    props.province !== "" ? props.province : false,
+    props.region !== "" ? props.region : false,
+    props.postal_code?.toString().length != 0 ? props.postal_code : false,
   ]
     .filter(Boolean)
     .join(", ");

@@ -25,7 +25,7 @@ const firebaseConfig = {
 };
 
 export const app = initializeApp(firebaseConfig);
-initializeFirestore(app, {
+export const db = initializeFirestore(app, {
   localCache: persistentLocalCache({
     tabManager: persistentMultipleTabManager(),
     cacheSizeBytes: CACHE_SIZE_UNLIMITED,

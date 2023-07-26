@@ -49,6 +49,7 @@ export interface DeliveryAddressType extends AddressType {
 
 export type UserType = {
   id: string;
+  addresses: DeliveryAddressType[];
   default_address: string;
   nickname: string;
   gender: string;

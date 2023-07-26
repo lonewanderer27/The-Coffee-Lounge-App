@@ -44,8 +44,8 @@ import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
 import Login from "./pages/Login";
-import MyAddresses from "./pages/Account/MyAddresses";
 import MyFavorites from "./pages/MyFavorites";
+import Onboarding from "./pages/Onboarding";
 import Order from "./pages/Order/Order";
 import Orders from "./pages/Orders";
 import PaymentMethods from "./pages/Checkout/PaymentMethods";
@@ -114,9 +114,6 @@ function App() {
                   <Route exact path="/account/accountandsecurity">
                     <ProfileAndSecurity />
                   </Route>
-                  <Route exact path="/account/myaddresses">
-                    <MyAddresses />
-                  </Route>
                   <Route exact path="/account/bankaccountscards">
                     <Suspense>
                       <MyCards />
@@ -134,10 +131,10 @@ function App() {
                   <Route exact path="/checkout/choose-payoption">
                     <PaymentMethods />
                   </Route>
-                  <Route exact path="/delivery-addresses">
+                  <Route exact path="/account/delivery-addresses">
                     <DeliveryAddress />
                   </Route>
-                  <Route exact path="/delivery-addresses/choose">
+                  <Route exact path="/account/delivery-addresses/choose">
                     <DeliveryAddress choose={true} />
                   </Route>
                   <Route exact path="/orders">
@@ -156,6 +153,9 @@ function App() {
                   </Route>
                   <Route exact path="/orders/:order_id/receipt">
                     <Receipt />
+                  </Route>
+                  <Route exact path="/onboarding">
+                    <Onboarding />
                   </Route>
                 </AuthWrapper>
                 <Route exact path="/home">

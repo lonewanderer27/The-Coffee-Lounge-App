@@ -11,6 +11,7 @@ import {
   useIonRouter,
   useIonViewWillEnter,
 } from "@ionic/react";
+import { doc, serverTimestamp, setDoc } from "firebase/firestore";
 import { emailForSignin, loginProviderAtom } from "../atoms/signin";
 import {
   getAuth,
@@ -18,15 +19,14 @@ import {
   sendSignInLinkToEmail,
   signInWithEmailLink,
 } from "firebase/auth";
-import { logoGoogle, mail } from "ionicons/icons";
+import { logoGoogle, mail, server } from "ionicons/icons";
 import { memo, useEffect } from "react";
 
-import { Action } from "../components/Action";
 import { FirebaseError } from "firebase/app";
 import { LoginProvider } from "../types";
 import Logo2 from "../assets/The Coffee Lounge - Logo 2.svg";
+import { db } from "../main";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { useLocation } from "react-router";
 import { useRecoilState } from "recoil";
 
 const SignIn = () => {
@@ -38,11 +38,9 @@ const SignIn = () => {
   const [loading, dismiss] = useIonLoading();
   const [presentAlert] = useIonAlert();
 
-  console.log("email: ", email);
-
   useEffect(() => {
     if (user !== null) {
-      router.push(`/account`);
+      router.push(`/home`);
     }
   }, [user]);
 
@@ -97,7 +95,9 @@ const SignIn = () => {
           dismiss();
           setLoginProvider(null);
 
-          router.push(`${window.location.origin}/account`);
+          await setDoc(doc(db, "users", res.user.uid), {
+            created_at: serverTimestamp(),
+          });
         } else {
           dismiss();
           presentAlert({
@@ -124,6 +124,7 @@ const SignIn = () => {
     if (
       window.location.href.includes(`${window.location.origin}/signin/complete`)
     ) {
+      setLoginProvider(LoginProvider.EmailOTP);
       confirmEmailSignin();
     }
   }, [window.location.origin]);
@@ -197,6 +198,7 @@ const EmailOTP = memo((props: { handleEmailOTP: () => void }) => {
     <div className="w-full">
       <form>
         <IonInput
+          value={email}
           fill="outline"
           type="email"
           label="Email"

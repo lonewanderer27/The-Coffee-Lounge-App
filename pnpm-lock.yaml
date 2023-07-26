@@ -38,6 +38,12 @@ dependencies:
   '@lottiefiles/react-lottie-player':
     specifier: ^3.5.3
     version: 3.5.3(react@18.2.0)
+  '@maskito/core':
+    specifier: ^1.3.0
+    version: 1.3.0
+  '@maskito/react':
+    specifier: ^1.3.0
+    version: 1.3.0(@maskito/core@1.3.0)(react-dom@18.2.0)(react@18.2.0)
   '@rive-app/react-canvas':
     specifier: ^3.0.56
     version: 3.0.56(react@18.2.0)
@@ -2752,6 +2758,22 @@ packages:
     dependencies:
       lottie-web: 5.12.2
       react: 18.2.0
+    dev: false
+
+  /@maskito/core@1.3.0:
+    resolution: {integrity: sha512-JFSUHJw+dB7yFzaX45S+t4ivPznOlsAqRorgGr4Gx3CR0DU8CZhZsSVCIeSNABsrIgtHPtlhiAv3Jw6EaqShTg==}
+    dev: false
+
+  /@maskito/react@1.3.0(@maskito/core@1.3.0)(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-cCaZIRU2OuP36tdqrdKl11LEY0vuQQwBIlYKwran8ddaXyZ8JTYtxZqCe9+LQ3J8lGKCPIA5n9QzNpFQ/78cEg==}
+    peerDependencies:
+      '@maskito/core': ^1.3.0
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@maskito/core': 1.3.0
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /@nicolo-ribaudo/semver-v6@6.3.3:
