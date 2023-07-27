@@ -40,6 +40,7 @@ import {
   IonToggle,
   IonToolbar,
   useIonAlert,
+  useIonRouter,
 } from "@ionic/react";
 import { RefObject, memo, useRef, useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -51,17 +52,16 @@ import {
   person,
   trash,
 } from "ionicons/icons";
-import {
-  useCollectionData,
-  useCollectionDataOnce,
-} from "react-firebase-hooks/firestore";
 
 import { DeliveryAddressConvert } from "../converters/user";
 import { DeliveryAddressType } from "../types";
 import { FirebaseError } from "firebase/app";
 import { LocationDescription } from "../utils";
+import { deliverAddressAtom } from "../atoms/checkout";
 import { getAuth } from "firebase/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useMaskito } from "@maskito/react";
+import { useSetRecoilState } from "recoil";
 
 function DeliveryAddresses(props: { choose?: boolean }) {
   const db = getFirestore();
@@ -73,6 +73,18 @@ function DeliveryAddresses(props: { choose?: boolean }) {
   const [addresses] = useCollectionData(addressesRef);
   const addModalRef = useRef<HTMLIonModalElement>(null);
   console.log("Addresses: ", addresses);
+
+  const setDeliverAddress = useSetRecoilState(deliverAddressAtom);
+  const router = useIonRouter();
+
+  const setCheckoutAddress = (id: string) => {
+    if (props.choose) {
+      const selectedAddress = addresses?.find((add) => add.id === id)!;
+      console.log("Selected Address: ", selectedAddress);
+      setDeliverAddress(selectedAddress);
+      router.push("/checkout")
+    }
+  };
 
   return (
     <IonPage>
@@ -103,6 +115,8 @@ function DeliveryAddresses(props: { choose?: boolean }) {
                 {...address}
                 addressesRef={addressesRef}
                 userRef={userRef}
+                choose={props.choose!}
+                setCheckoutAddress={setCheckoutAddress}
               />
             ))}
           </IonItemGroup>
@@ -142,14 +156,25 @@ interface IAddress extends DeliveryAddressType {
   userRef: DocumentReference<DocumentData>;
 }
 
-const AddressItem = memo((props: IAddress) => {
+interface AddressItemProps extends IAddress {
+  choose: boolean;
+  setCheckoutAddress: (id: string) => void;
+}
+
+const AddressItem = memo((props: AddressItemProps) => {
   const deleteAdd = async () => {
     await deleteDoc(doc(props.addressesRef, props.id));
     await setDoc(props.userRef, { default_address: null }, { merge: true });
   };
 
   return (
-    <IonItemSliding>
+    <IonItemSliding
+      onClick={() => {
+        if (props.choose) {
+          props.setCheckoutAddress(props.id!);
+        }
+      }}
+    >
       <IonItemOptions side="end">
         <IonItemOption
           routerLink={`/account/delivery-addresses/edit/${props.id}`}

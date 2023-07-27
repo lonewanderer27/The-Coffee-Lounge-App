@@ -21,6 +21,7 @@ import {
 } from "@ionic/react";
 import {
   branchAtom,
+  deliverAddressAtom,
   deliverOptionAtom,
   payOptionAtom,
   readyToPayAtom,
@@ -29,17 +30,21 @@ import { useRecoilState, useRecoilValue } from "recoil";
 
 import { Branches } from "../constants";
 import { DeliveryOptionType } from "../types";
+import { LocationDescription } from "../utils";
+import { memo } from "react";
 import { phpString } from "../phpString";
 import { useCart } from "../hooks/cart";
 import { useCheckout } from "../hooks/checkout";
 
-export default function Checkout() {
+function Checkout() {
   const { totalPrice, count } = useCart();
   const { handlePay } = useCheckout(totalPrice);
   const router = useIonRouter();
 
   const payOption = useRecoilValue(payOptionAtom);
   const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);
+  const [deliveryAddress, setDeliveryAddress] =
+    useRecoilState(deliverAddressAtom);
   const [branch, setBranch] = useRecoilState(branchAtom);
   const readyToPay = useRecoilValue(readyToPayAtom);
 
@@ -61,7 +66,10 @@ export default function Checkout() {
               <h6 className="my-2">* We are open from 8:00AM - 10:00PM</h6>
             </IonText>
           </IonItem>
-          <IonRadioGroup onIonChange={(e) => setDeliverOption(e.detail.value)}>
+          <IonRadioGroup
+            value={deliverOption}
+            onIonChange={(e) => setDeliverOption(e.detail.value)}
+          >
             {Object.values(DeliveryOptionType).map((deliveryOption) => (
               <IonItem key={`IonItem${deliveryOption}`}>
                 <IonRadio
@@ -76,7 +84,11 @@ export default function Checkout() {
           {deliverOption === DeliveryOptionType.Delivery && (
             <IonItem routerLink="/account/delivery-addresses/choose">
               <IonLabel>Choose Address</IonLabel>
-              <IonLabel className="ion-text-end">1</IonLabel>
+              <IonLabel className="ion-text-end">
+                {deliveryAddress
+                  ? LocationDescription(deliveryAddress)
+                  : "No Address Selected"}
+              </IonLabel>
             </IonItem>
           )}
           {deliverOption === DeliveryOptionType.Pickup && (
@@ -126,3 +138,5 @@ export default function Checkout() {
     </IonPage>
   );
 }
+
+export default memo(Checkout);
