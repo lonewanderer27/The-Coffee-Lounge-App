@@ -23,7 +23,6 @@ import { getAuth, updateProfile } from "firebase/auth";
 import { memo, useState } from "react";
 
 import { FirebaseError } from "firebase/app";
-import success from "../assets/success.png";
 
 interface IFormInput {
   nickname: string;
@@ -87,7 +86,10 @@ function Onboarding() {
             className="ion-padding flex flex-col justify-center items-center"
             onSubmit={handleSubmit(onSubmit)}
           >
-            <IonImg src={success} className="w-2/3 ion-margin-bottom" />
+            <IonImg
+              src="/assets/Success.png"
+              className="w-2/3 ion-margin-bottom"
+            />
             <IonText className="ion-margin-vertical text-center">
               <span className="font-bold">
                 To personalize your orders, we'd just like to ask you two
