@@ -79,13 +79,13 @@ export const useCheckout = (totalPrice: number) => {
           setOrderAtom(newOrder);
 
           // dismiss loading
-          dismiss();
+          await dismiss();
 
           // redirect to processing payment page
           router.push(`/orders/${order.id}/process-payment/`);
         } catch {
           // dismiss loading
-          dismiss();
+          await dismiss();
 
           showAlert({
             header: "Error",
