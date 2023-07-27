@@ -31,9 +31,6 @@ import { useSetRecoilState } from "recoil";
 
 function OrderItem(props: OrderType) {
   const setOrder = useSetRecoilState(orderAtom);
-  const [hasProductsSnapshot, setHasProductsSnapshot] = useState(false);
-  const [products, setProducts] = useState<ProductType[]>([]);
-
   const totalCount = () => {
     let count = 0;
     props.products.forEach((p) => {
@@ -43,37 +40,7 @@ function OrderItem(props: OrderType) {
     console.log("Total Count: ", count);
     return count;
   };
-
-  useEffect(() => {
-    // check if we have the product snapshot
-    // if not, fetch it from the database
-    console.log(typeof props.products[0].product_snapshot);
-
-    if (typeof props.products[0].product_snapshot === "object") {
-      console.log("Product Snapshot already exists");
-      setHasProductsSnapshot(true);
-      return;
-    } else {
-      setHasProductsSnapshot(false);
-      const db = getFirestore();
-      getDocs(
-        query(
-          collection(db, "products"),
-          where(
-            "id",
-            "in",
-            props.products.map((p) => p.product_id)
-          )
-        ).withConverter(ProductConvert)
-      ).then((querySnapshot) => {
-        setProducts(querySnapshot.docs.map((doc) => doc.data()));
-      });
-    }
-
-    // set the product snapshot
-  }, []);
-
-  console.log("products Snapshots: ", products);
+  console.log("Order Detail: ", props);
 
   const viewOrderDetail = () => {
     setOrder(props);
@@ -100,45 +67,32 @@ function OrderItem(props: OrderType) {
         </IonCol>
       </IonRow>
       <IonRow className="my-0 mx-2">
-        {hasProductsSnapshot &&
-          props.products
-            .filter((product) => product.product_snapshot)
-            .map((product) => (
-              <>
-                <IonCol size="2">
-                  <IonImg
-                    alt={product.product_snapshot.name}
-                    src={product.product_snapshot?.image}
-                    className="h-7 w-full"
-                  />
-                </IonCol>
-                <IonCol size="9" className="flex items-center">
-                  {`${product.product_snapshot.name}`}
-                </IonCol>
-                <IonCol size="1" className="flex items-center">
-                  x{`${product.quantity}`}
-                </IonCol>
-              </>
-            ))}
-        {products.length != 0 &&
-          products.map((p) => (
-            <>
-              <IonCol size="2">
-                <IonAvatar className="w-8 h-8">
-                  <IonImg src={p.image} />
-                </IonAvatar>
-              </IonCol>
-              <IonCol size="9" className="flex items-center">
-                {`${p.name}`}
-              </IonCol>
-              <IonCol size="1" className="flex items-center">
-                x
-                {`${
-                  props.products.find((pr) => pr.product_id == p.id)?.quantity
-                }`}
-              </IonCol>
-            </>
-          ))}
+        {props.products.map((product) => (
+          <>
+            <IonCol key={`ioncol1:${product.product_id}`} size="2">
+              <IonImg
+                key={`ionimg:${product.product_id}`}
+                alt={product.product_snapshot.name}
+                src={product.product_snapshot?.image}
+                className="h-7 w-full"
+              />
+            </IonCol>
+            <IonCol
+              key={`ioncol2:${product.product_id}`}
+              size="9"
+              className="flex items-center"
+            >
+              {`${product.product_snapshot.name}`}
+            </IonCol>
+            <IonCol
+              key={`ioncol3:${product.product_id}`}
+              size="1"
+              className="flex items-center"
+            >
+              x{`${product.quantity}`}
+            </IonCol>
+          </>
+        ))}
       </IonRow>
       <IonRow className="my-0 mx-2">
         <IonCol size="10" className="flex">

@@ -1,27 +1,23 @@
-import { IonContent, IonGrid, IonItem, IonList, IonRow } from "@ionic/react";
+import { IonContent, IonItem, IonList } from "@ionic/react";
 import {
   and,
   collection,
-  doc,
   getFirestore,
   orderBy,
   query,
   where,
 } from "firebase/firestore";
-import {
-  useCollection,
-  useCollectionData,
-  useDocument,
-} from "react-firebase-hooks/firestore";
 
 import { DeliveryStatusType } from "../../types";
 import { OrderConvert } from "../../converters/orders";
 import OrderItem from "./OrderItem";
-import { memo } from "react";
+import { getAuth } from "firebase/auth";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function OngoingOrders() {
   const db = getFirestore();
-  const [orders, setOrders] = useCollectionData(
+  const { currentUser } = getAuth();
+  const [orders] = useCollectionData(
     query(
       collection(db, "orders").withConverter(OrderConvert),
       and(
@@ -29,7 +25,8 @@ function OngoingOrders() {
           DeliveryStatusType.Pending,
           DeliveryStatusType.OnTheWay,
           DeliveryStatusType.Preparing,
-        ])
+        ]),
+        where("user_uid", "==", currentUser?.uid)
       ),
       orderBy("created_at", "desc")
     )
@@ -40,16 +37,14 @@ function OngoingOrders() {
   return (
     <IonContent className="ion-padding">
       <IonList className="ion-no-padding">
-        {orders
-          ?.filter((o) => o.products[0].product_snapshot)
-          .map((order) => (
-            <IonItem>
-              <OrderItem key={`orderItem:${order.id}`} {...order} />
-            </IonItem>
-          ))}
+        {orders?.map((order) => (
+          <IonItem key={`ionitem:${order.id}`}>
+            <OrderItem key={`orderItem:${order.id}`} {...order} />
+          </IonItem>
+        ))}
       </IonList>
     </IonContent>
   );
 }
 
-export default memo(OngoingOrders);
+export default OngoingOrders;

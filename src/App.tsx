@@ -167,7 +167,9 @@ function App() {
                     </Suspense>
                   </Route>
                   <Route exact path="/account/delivery-addresses/choose">
-                    <DeliveryAddresses choose={true} />
+                    <Suspense>
+                      <DeliveryAddresses choose={true} />
+                    </Suspense>
                   </Route>
                   <Route exact path="/orders">
                     <Orders />

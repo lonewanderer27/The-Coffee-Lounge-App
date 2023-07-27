@@ -17,6 +17,7 @@ import {
   IonToolbar,
 } from "@ionic/react";
 import { doc, getFirestore } from "firebase/firestore";
+import { useEffect, useState } from "react";
 
 import { OrderConvert } from "../../converters/orders";
 import OrderDescription from "../../utils";
@@ -29,6 +30,7 @@ import { useRecoilValue } from "recoil";
 
 const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
   const db = getFirestore();
+  const [totalCount, setTotalCount] = useState(0);
   const [order, loading] = useDocumentData(
     doc(db, "orders", props.order_id ?? props.orderDetails?.id).withConverter(
       OrderConvert
@@ -38,15 +40,16 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
     }
   );
 
-  const totalCount = () => {
-    let count = 0;
-    order!.products.forEach((p) => {
-      count += p.quantity;
-    });
+  useEffect(() => {
+    if (order) {
+      let count = 0;
+      order!.products.forEach((p) => {
+        count += p.quantity;
+      });
 
-    console.log("Total Count: ", count);
-    return count;
-  };
+      setTotalCount(count);
+    }
+  }, [order]);
 
   if (loading) {
     return <IonLoading isOpen={loading} />;
@@ -101,7 +104,7 @@ const Data = (props: { order_id: string; orderDetails: OrderType | null }) => {
           <IonText className="text-right w-full">Items</IonText>
         </IonCol>
         <IonCol size="4" className="text-center">
-          {totalCount()}
+          {totalCount}
         </IonCol>
       </IonRow>
       <IonRow className="m-0 w-full">
