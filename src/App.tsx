@@ -21,6 +21,7 @@ import {
   IonTabBar,
   IonTabButton,
   IonTabs,
+  useIonAlert,
   useIonRouter,
 } from "@ionic/react";
 import { Redirect, Route } from "react-router-dom";
@@ -58,6 +59,7 @@ import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
 import VirtualVisit from "./pages/VirtualVisit";
 import { getAuth } from "firebase/auth"; // Firebase v9+
+import { registerSW } from "virtual:pwa-register";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -83,6 +85,20 @@ function App() {
   }, []);
 
   console.log("introSeen: ", introSeen);
+
+  const [showUpdate] = useIonAlert();
+  const updateSW = registerSW({
+    onNeedRefresh() {
+      showUpdate("New version available", [
+        {
+          text: "Please update the app to continue",
+          handler: () => {
+            updateSW();
+          },
+        },
+      ]);
+    },
+  });
 
   if (!introSeen || introSeen === null) {
     return (
