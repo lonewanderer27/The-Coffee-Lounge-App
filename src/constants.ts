@@ -102,6 +102,7 @@ export const Addresses: DeliveryAddressType[] = [
     postal_code: 1503,
     phone_number: "+639123456789",
     type: "work",
+    default: false,
   },
   {
     name: "Juan Dela Cruz",
@@ -113,6 +114,7 @@ export const Addresses: DeliveryAddressType[] = [
     postal_code: 2900,
     phone_number: "+639098765432",
     type: "home",
+    default: false,
   },
   {
     name: "Maria Garcia",
@@ -124,6 +126,7 @@ export const Addresses: DeliveryAddressType[] = [
     postal_code: 2700,
     phone_number: "+639876543210",
     type: "work",
+    default: false,
   },
   {
     name: "Pedro Santos",
@@ -135,6 +138,7 @@ export const Addresses: DeliveryAddressType[] = [
     postal_code: 2916,
     phone_number: "+639456789012",
     type: "home",
+    default: false,
   },
 ];
 
