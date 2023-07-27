@@ -30,7 +30,10 @@ import ProductCard from "../components/ProductCard";
 import { ProductLoading } from "../constants";
 import { categoryAtom } from "../atoms/products";
 import { chevronForwardOutline } from "ionicons/icons";
+import { get } from "react-hook-form";
+import { getAuth } from "firebase/auth";
 import { memo } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
 import { useCollectionDataOnce } from "react-firebase-hooks/firestore";
 import useFavorite from "../hooks/favorite";
 import { useRefresh } from "../hooks/page";
@@ -40,6 +43,8 @@ const Home: React.FC = () => {
   const setCategory = useSetRecoilState(categoryAtom);
 
   const db = getFirestore();
+  const auth = getAuth();
+  const [currentUser] = useAuthState(auth);
   const [data, loading, error, snapshot, refresh] = useCollectionDataOnce(
     collection(db, "categories").withConverter(CategoryConvert)
   );
@@ -73,6 +78,10 @@ const Home: React.FC = () => {
   };
 
   const handleRefresh = useRefresh([refresh, productsRefresh]);
+
+  if (auth.currentUser != null && auth.currentUser?.displayName == null) {
+    router.push("/onboarding");
+  }
 
   if (loading || productsLoading) {
     return <></>;

@@ -53,7 +53,7 @@ export type UserType = {
   addresses: DeliveryAddressType[];
   default_address: string;
   nickname: string;
-  gender: string;
+  gender?: string;
   favorites?: string[];
 };
 

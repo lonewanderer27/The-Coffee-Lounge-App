@@ -38,12 +38,6 @@ const SignIn = () => {
   const [loading, dismiss] = useIonLoading();
   const [presentAlert] = useIonAlert();
 
-  useEffect(() => {
-    if (user !== null) {
-      router.push(`/home`);
-    }
-  }, [user]);
-
   const handleEmailOTP = () => {
     (async () => {
       try {
@@ -98,6 +92,12 @@ const SignIn = () => {
           await setDoc(doc(db, "users", res.user.uid), {
             created_at: serverTimestamp(),
           });
+
+          if (res.user.displayName === null || res.user.displayName === "") {
+            router.push("/onboarding");
+          } else {
+            router.push("/home");
+          }
         } else {
           dismiss();
           presentAlert({

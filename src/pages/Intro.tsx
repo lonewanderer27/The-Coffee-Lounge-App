@@ -71,8 +71,15 @@ export default function Intro(props: {
   );
 
   const handleNext = () => {
-    setIndex((prev) => prev + 1);
+    if (index !== 2) {
+      setIndex((prev) => prev + 1);
+    }
     controlledSwiper?.slideNext();
+  };
+
+  const handleSkip = () => {
+    controlledSwiper?.slideTo(4);
+    setIndex(2);
   };
 
   console.log("index: ", index);
@@ -143,7 +150,7 @@ export default function Intro(props: {
                       </p>
                     </IonText>
                     <IonButton onClick={doneIntro}>
-                      <IonText>Get Started</IonText>
+                      <IonText>{user ? "Done" : "Continue"}</IonText>
                     </IonButton>
                   </div>
                 </SwiperSlide>
@@ -153,14 +160,18 @@ export default function Intro(props: {
         </IonContent>
         <IonFooter>
           <IonToolbar className="ion-padding-horizontal">
-            <IonButton slot="start" fill="clear">
-              Skip
-            </IonButton>
-            {index <= 3 && (
-              <IonButton slot="end" onClick={handleNext}>
-                Next
-              </IonButton>
-            )}
+            {controlledSwiper != undefined &&
+              controlledSwiper?.activeIndex <= 3 && (
+                <IonButton slot="start" fill="clear" onClick={handleSkip}>
+                  Skip
+                </IonButton>
+              )}
+            {controlledSwiper != undefined &&
+              controlledSwiper?.activeIndex <= 3 && (
+                <IonButton slot="end" onClick={handleNext}>
+                  Next
+                </IonButton>
+              )}
           </IonToolbar>
         </IonFooter>
       </IonPage>

@@ -73,6 +73,7 @@ setupIonicReact();
 export const INTRO_KEY = "seen-intro";
 
 function App() {
+  const { currentUser } = getAuth();
   const [introSeen, setIntroSeen] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -259,10 +260,12 @@ export const AuthWrapper = ({
   }
 
   if (!loading && user === null) {
-    if (router.routeInfo.pathname !== "/login") {
-      router.push("/login?redirect=" + router.routeInfo.pathname.split("/")[1]);
+    if (router.routeInfo.pathname !== "/signin") {
+      router.push(
+        "/signin?redirect=" + router.routeInfo.pathname.split("/")[1]
+      );
     }
-    return (<Login />) as unknown as JSX.Element;
+    return (<SignIn />) as unknown as JSX.Element;
   }
 
   return <></>;

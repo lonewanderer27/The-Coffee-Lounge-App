@@ -1,6 +1,13 @@
 import "./Account.css";
 
 import {
+  FieldValue,
+  doc,
+  getFirestore,
+  serverTimestamp,
+  setDoc,
+} from "firebase/firestore";
+import {
   IonBackButton,
   IonButton,
   IonButtons,
@@ -29,7 +36,6 @@ import {
   getAuth,
   updateProfile,
 } from "firebase/auth";
-import { doc, getFirestore, serverTimestamp, setDoc } from "firebase/firestore";
 
 import { Action } from "../components/Action";
 import { useColorScheme } from "../hooks/page";
@@ -44,11 +50,10 @@ enum GenderEnum {
 interface IFormInput {
   email: string;
   password: string;
-  gender: GenderEnum;
-  firstName: string;
-  lastName: string;
-  pronouns: string;
+  gender?: GenderEnum;
+  pronouns?: string;
   nickname: string;
+  updatedAt?: FieldValue;
 }
 
 const Register: React.FC = () => {
@@ -88,14 +93,21 @@ const Register: React.FC = () => {
           });
         })();
 
+        // construct the user data
+        const userData: {
+          nickname: string;
+          updatedAt: FieldValue;
+          pronouns?: string;
+        } = {
+          nickname: data.nickname,
+          updatedAt: serverTimestamp(),
+          ...(data.pronouns && { pronouns: data.pronouns }),
+        };
+
         // create a user in users documents
         (async () => {
-          await setDoc(doc(db, "users", user.uid), {
-            nickname: data.nickname,
-            pronouns: data.pronouns,
-            created_at: serverTimestamp(),
-          });
-          history.push("/account");
+          await setDoc(doc(db, "users", user.uid), userData);
+          history.push("/home");
         })();
       })
       .catch((error) => {
@@ -151,22 +163,22 @@ const Register: React.FC = () => {
             />
 
             <IonRow className="mt-2">
-              <IonCol className="pl-0">
-                <IonInput
-                  fill="outline"
-                  labelPlacement="floating"
-                  label="Pronouns"
-                  type="text"
-                  {...register("pronouns", { required: true })}
-                ></IonInput>
-              </IonCol>
-              <IonCol className="pr-0">
+              <IonCol className=" pl-0">
                 <IonInput
                   fill="outline"
                   label="Nickname"
                   labelPlacement="floating"
                   type="text"
                   {...register("nickname", { required: true })}
+                ></IonInput>
+              </IonCol>
+              <IonCol className="pr-0">
+                <IonInput
+                  fill="outline"
+                  labelPlacement="floating"
+                  label="Pronouns (Optional)"
+                  type="text"
+                  {...register("pronouns", { required: false })}
                 ></IonInput>
               </IonCol>
             </IonRow>

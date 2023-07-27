@@ -145,14 +145,18 @@ export default function ProfileAndSecurity() {
               <IonLabel>Nickname</IonLabel>
               <IonLabel>{userData!.get("nickname")}</IonLabel>
             </IonItem>
-            <IonItem>
-              <IonLabel>Pronouns</IonLabel>
-              <IonLabel>{userData!.get("pronouns")}</IonLabel>
-            </IonItem>
-            <IonItem>
-              <IonLabel>Gender</IonLabel>
-              <IonLabel>{userData!.get("gender")}</IonLabel>
-            </IonItem>
+            {userData?.get("pronouns") && (
+              <IonItem>
+                <IonLabel>Pronouns</IonLabel>
+                <IonLabel>{userData!.get("pronouns")}</IonLabel>
+              </IonItem>
+            )}
+            {userData?.get("gender") && (
+              <IonItem>
+                <IonLabel>Gender</IonLabel>
+                <IonLabel>{userData!.get("gender")}</IonLabel>
+              </IonItem>
+            )}
           </IonList>
           <IonList>
             <IonListHeader>
