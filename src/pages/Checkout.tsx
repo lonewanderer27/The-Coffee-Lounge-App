@@ -39,7 +39,6 @@ import { useCheckout } from "../hooks/checkout";
 function Checkout() {
   const { totalPrice, count } = useCart();
   const { handlePay } = useCheckout(totalPrice);
-  const router = useIonRouter();
 
   const payOption = useRecoilValue(payOptionAtom);
   const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);

@@ -14,6 +14,7 @@ import {
 } from "firebase/firestore";
 import {
   branchAtom,
+  deliverAddressAtom,
   deliverOptionAtom,
   payOptionAtom,
 } from "../atoms/checkout";
@@ -29,6 +30,8 @@ export const useCheckout = (totalPrice: number) => {
   const [cart, setCart] = useRecoilState(cartAtom);
   const [payOption, setPayOption] = useRecoilState(payOptionAtom);
   const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);
+  const [deliverAddress, setDeliverAddress] =
+    useRecoilState(deliverAddressAtom);
   const [branchOption, setbranchOption] = useRecoilState(branchAtom);
   const setOrderAtom = useSetRecoilState(orderAtom);
   const router = useIonRouter();
@@ -48,7 +51,7 @@ export const useCheckout = (totalPrice: number) => {
       // create the order document for the user
       presentLoading("Adding order...");
 
-      const newOrder: OrderType = {
+      let newOrder: OrderType = {
         user_uid: currentUser?.uid,
         products: cart,
         total_price: totalPrice,
@@ -60,6 +63,13 @@ export const useCheckout = (totalPrice: number) => {
         delivery_status: DeliveryStatusType.Pending,
         branch: branchOption!,
       };
+
+      if (deliverOption === DeliveryOptionType.Delivery) {
+        newOrder = {
+          ...newOrder,
+          delivery_address_id: deliverAddress?.id!,
+        };
+      }
 
       (async () => {
         try {
@@ -73,6 +83,7 @@ export const useCheckout = (totalPrice: number) => {
           setCart([]);
           setPayOption(null);
           setDeliverOption(null);
+          setDeliverAddress(null);
           setbranchOption(null);
 
           // set the current order in the atom
