@@ -2,12 +2,9 @@ import "./Account.css";
 
 import {
   IonAlert,
-  IonAvatar,
   IonButton,
-  IonButtons,
   IonCol,
   IonContent,
-  IonFooter,
   IonGrid,
   IonHeader,
   IonIcon,
@@ -17,20 +14,18 @@ import {
   IonLabel,
   IonList,
   IonListHeader,
-  IonLoading,
   IonPage,
   IonRow,
   IonText,
   IonTitle,
   IonToolbar,
-  isPlatform,
   useIonRouter,
 } from "@ionic/react";
-import { Suspense, lazy, memo, useEffect } from "react";
-import { chevronForwardOutline, pencilSharp } from "ionicons/icons";
+import { Suspense, lazy } from "react";
 import { doc, getFirestore } from "firebase/firestore";
 
 import { UserConvert } from "../converters/user";
+import { chevronForwardOutline } from "ionicons/icons";
 import { getAuth } from "firebase/auth";
 import { useDocument } from "react-firebase-hooks/firestore";
 
@@ -100,10 +95,10 @@ const Account = (props: {
             <IonListHeader>
               <IonLabel>Settings</IonLabel>
             </IonListHeader>
-            <IonItem>
+            {/* <IonItem>
               <IonLabel>Chat Settings</IonLabel>
               <IonIcon src={chevronForwardOutline}></IonIcon>
-            </IonItem>
+            </IonItem> */}
             <IonItem>
               <IonLabel>Notification Settings</IonLabel>
               <IonIcon src={chevronForwardOutline}></IonIcon>

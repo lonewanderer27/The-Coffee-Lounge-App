@@ -12,8 +12,6 @@ import {
   IonToolbar,
 } from "@ionic/react";
 
-import MyCards from "../MyCards";
-
 export default function Card() {
   return (
     <IonPage>

@@ -40,8 +40,6 @@ import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
 import ChangePassword from "./pages/Account/ProfileAndSecurity/ChangePassword";
 import Checkout from "./pages/Checkout";
-import DeliveryAddresses from "./pages/DeliveryAddresses";
-import EditDeliveryAddress from "./pages/EditDeliveryAddress";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -54,7 +52,6 @@ import PaymentMethods from "./pages/Checkout/PaymentMethods";
 import { Preferences } from "@capacitor/preferences";
 import ProductPage from "./pages/Product";
 import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
-import Receipt from "./pages/Order/Receipt";
 import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
 import VirtualVisit from "./pages/VirtualVisit";
@@ -63,6 +60,13 @@ import { registerSW } from "virtual:pwa-register";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+// import DeliveryAddresses from "./pages/DeliveryAddresses";
+// import EditDeliveryAddress from "./pages/EditDeliveryAddress";
+
+// import Receipt from "./pages/Order/Receipt";
+const EditDeliveryAddress = lazy(() => import("./pages/EditDeliveryAddress"));
+const DeliveryAddresses = lazy(() => import("./pages/DeliveryAddresses"));
+const Receipt = lazy(() => import("./pages/Order/Receipt"));
 const MyCards = lazy(() => import("./pages/Account/MyCards"));
 const Intro = lazy(() => import("./pages/Intro"));
 const About = lazy(() => import("./pages/About"));
@@ -150,13 +154,17 @@ function App() {
                     <PaymentMethods />
                   </Route>
                   <Route exact path="/account/delivery-addresses">
-                    <DeliveryAddresses />
+                    <Suspense>
+                      <DeliveryAddresses />
+                    </Suspense>
                   </Route>
                   <Route
                     exact
                     path="/account/delivery-addresses/edit/:address_id"
                   >
-                    <EditDeliveryAddress />
+                    <Suspense>
+                      <EditDeliveryAddress />
+                    </Suspense>
                   </Route>
                   <Route exact path="/account/delivery-addresses/choose">
                     <DeliveryAddresses choose={true} />
@@ -176,7 +184,9 @@ function App() {
                     </Suspense>
                   </Route>
                   <Route exact path="/orders/:order_id/receipt">
-                    <Receipt />
+                    <Suspense>
+                      <Receipt />
+                    </Suspense>
                   </Route>
                   <Route exact path="/onboarding">
                     <Onboarding />
