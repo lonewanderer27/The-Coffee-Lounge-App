@@ -22,7 +22,12 @@ function CartItem(props: CartItemType) {
   const { removeFromCart, addQty: addItem, removeQty: removeItem } = useCart();
 
   const determineIfModified = () => {
-    if (props.size !== Size.None && props.size !== Size.Tall) return true;
+    if (props.size !== Size.None) {
+      if (props.size !== Size.Tall) {
+        return true;
+      }
+      return true;
+    }
     if (props.milk !== Milk.None) return true;
     if (props.syrup !== Syrup.None) return true;
     if (props.additives.length !== 0) return true;
