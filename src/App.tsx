@@ -39,7 +39,8 @@ import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
 import ChangePassword from "./pages/Account/ProfileAndSecurity/ChangePassword";
 import Checkout from "./pages/Checkout";
-import DeliveryAddress from "./pages/DeliveryAddresses";
+import DeliveryAddresses from "./pages/DeliveryAddresses";
+import EditDeliveryAddress from "./pages/EditDeliveryAddress";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -132,10 +133,16 @@ function App() {
                     <PaymentMethods />
                   </Route>
                   <Route exact path="/account/delivery-addresses">
-                    <DeliveryAddress />
+                    <DeliveryAddresses />
+                  </Route>
+                  <Route
+                    exact
+                    path="/account/delivery-addresses/edit/:address_id"
+                  >
+                    <EditDeliveryAddress />
                   </Route>
                   <Route exact path="/account/delivery-addresses/choose">
-                    <DeliveryAddress choose={true} />
+                    <DeliveryAddresses choose={true} />
                   </Route>
                   <Route exact path="/orders">
                     <Orders />

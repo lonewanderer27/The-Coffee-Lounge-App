@@ -1,36 +1,41 @@
 import {
   CollectionReference,
   DocumentData,
+  DocumentReference,
   addDoc,
   collection,
   deleteDoc,
   doc,
   getFirestore,
+  setDoc,
 } from "firebase/firestore";
 import {
+  IonAlert,
   IonBackButton,
   IonButton,
   IonButtons,
   IonCard,
-  IonCardContent,
-  IonCardHeader,
+  IonCol,
   IonContent,
+  IonGrid,
   IonHeader,
   IonIcon,
   IonInput,
   IonItem,
   IonItemDivider,
   IonItemGroup,
+  IonItemOption,
+  IonItemOptions,
+  IonItemSliding,
   IonLabel,
   IonList,
   IonModal,
   IonPage,
-  IonPopover,
+  IonRow,
   IonSelect,
   IonSelectOption,
   IonSpinner,
   IonText,
-  IonThumbnail,
   IonTitle,
   IonToggle,
   IonToolbar,
@@ -41,12 +46,10 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import {
   addOutline,
   call,
-  callOutline,
-  ellipsisHorizontal,
   location,
-  locationOutline,
+  pencilOutline,
   person,
-  personOutline,
+  trash,
 } from "ionicons/icons";
 import {
   useCollectionData,
@@ -60,7 +63,7 @@ import { LocationDescription } from "../utils";
 import { getAuth } from "firebase/auth";
 import { useMaskito } from "@maskito/react";
 
-export default function DeliveryAddress(props: { choose?: boolean }) {
+function DeliveryAddresses(props: { choose?: boolean }) {
   const db = getFirestore();
   const { currentUser } = getAuth();
   const userRef = doc(db, "users", currentUser?.uid ?? "Loading");
@@ -84,15 +87,27 @@ export default function DeliveryAddress(props: { choose?: boolean }) {
             </IonButtons>
             <IonButtons slot="end">
               <IonButton id="add-address">
-                <IonIcon src={addOutline} />
+                <IonIcon src={pencilOutline} />
               </IonButton>
             </IonButtons>
           </IonToolbar>
         </IonHeader>
+        <IonList>
+          <IonItemGroup>
+            <IonItemDivider>
+              <IonLabel>Addresses</IonLabel>
+            </IonItemDivider>
+            {addresses?.map((address, index) => (
+              <AddressItem
+                key={`address-${index}`}
+                {...address}
+                addressesRef={addressesRef}
+                userRef={userRef}
+              />
+            ))}
+          </IonItemGroup>
+        </IonList>
         <div>
-          {addresses?.map((address, index) => (
-            <AddressCard key={index} {...address} />
-          ))}
           <IonCard
             className="cursor-pointer"
             onClick={() => addModalRef.current?.present()}
@@ -113,91 +128,91 @@ export default function DeliveryAddress(props: { choose?: boolean }) {
           addModalRef={addModalRef}
           addresses={addresses}
           addressesRef={addressesRef}
+          userRef={userRef}
         />
       </IonContent>
     </IonPage>
   );
 }
 
-const AddressCard = memo((props: DeliveryAddressType) => {
-  const db = getFirestore();
-  const { currentUser } = getAuth();
-  const userRef = doc(db, "users", currentUser?.uid ?? "Loading");
-  const addressesRef = collection(db, userRef.path, "addresses").withConverter(
-    DeliveryAddressConvert
-  );
+export default memo(DeliveryAddresses);
+
+interface IAddress extends DeliveryAddressType {
+  addressesRef: CollectionReference<DeliveryAddressType, DocumentData>;
+  userRef: DocumentReference<DocumentData>;
+}
+
+const AddressItem = memo((props: IAddress) => {
+  const deleteAdd = async () => {
+    await deleteDoc(doc(props.addressesRef, props.id));
+    await setDoc(props.userRef, { default_address: null }, { merge: true });
+  };
 
   return (
-    <IonCard>
-      <div className="flex ion-padding py-0 justify-between">
-        <IonText>
-          <h3 className="font-semibold py-0">{props.type}</h3>
-        </IonText>
-        <IonButton id="trigger-address-options" fill="clear" color="medium">
-          <IonIcon src={ellipsisHorizontal} />
-        </IonButton>
-        <IonPopover trigger="trigger-address-options" triggerAction="click">
-          <IonList>
-            <IonItem
-              button
-              onClick={() => console.log("Edit Address: ", props)}
-            >
-              <IonLabel>Edit</IonLabel>
-            </IonItem>
-            <IonItem
-              button
-              onClick={() => console.log("Delete Address: ", props)}
-              color="danger"
-            >
-              <IonLabel>Delete</IonLabel>
-            </IonItem>
-          </IonList>
-        </IonPopover>
-      </div>
-      <IonCardContent className="p-0">
-        <IonList lines="none">
-          <IonItem>
-            <IonThumbnail
-              slot="start"
-              className="flex flex-col justify-center mr-0  my-0"
-            >
-              <IonIcon src={location} size="large"></IonIcon>
-            </IonThumbnail>
-            <IonLabel className=" whitespace-nowrap truncate overflow-hidden  my-0">
-              {LocationDescription(props)}
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonThumbnail
-              slot="start"
-              className="flex  flex-col justify-center mr-0  my-0"
-            >
-              <IonIcon src={person} size="large"></IonIcon>
-            </IonThumbnail>
-            <IonLabel className=" whitespace-nowrap truncate overflow-hidden my-0">
-              {props.name}
-            </IonLabel>
-          </IonItem>
-          <IonItem>
-            <IonThumbnail
-              slot="start"
-              className="flex flex-col justify-center mr-0  my-0"
-            >
-              <IonIcon src={call} size="large"></IonIcon>
-            </IonThumbnail>
-            <IonLabel className=" whitespace-nowrap truncate overflow-hidden  my-0">
-              {props.phone_number}
-            </IonLabel>
-          </IonItem>
-        </IonList>
-      </IonCardContent>
-    </IonCard>
+    <IonItemSliding>
+      <IonItemOptions side="end">
+        <IonItemOption
+          routerLink={`/account/delivery-addresses/edit/${props.id}`}
+          color="primary"
+        >
+          Edit
+          <IonIcon slot="start" src={pencilOutline}></IonIcon>
+        </IonItemOption>
+        <IonItemOption color="danger" id={`trigger-delete-address-${props.id}`}>
+          Delete
+          <IonIcon slot="start" src={trash}></IonIcon>
+        </IonItemOption>
+      </IonItemOptions>
+      <IonAlert
+        header="Warning"
+        trigger={`trigger-delete-address-${props.id}`}
+        message="Are you sure you want to delete this address?"
+        buttons={[
+          {
+            text: "Cancel",
+          },
+          {
+            text: "Confirm",
+            handler: deleteAdd,
+          },
+        ]}
+      ></IonAlert>
+      <IonItem>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="1">
+              <IonIcon src={location}></IonIcon>
+            </IonCol>
+            <IonCol size="11">
+              <IonText>{LocationDescription(props)}</IonText>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="1">
+              <IonIcon src={person}></IonIcon>
+            </IonCol>
+            <IonCol size="11">
+              <IonLabel>{props.name}</IonLabel>
+            </IonCol>
+          </IonRow>
+          <IonRow>
+            <IonCol size="1">
+              <IonIcon src={call}></IonIcon>
+            </IonCol>
+            <IonCol size="11">
+              <IonLabel>{props.phone_number}</IonLabel>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonItem>
+    </IonItemSliding>
   );
 });
 
 function NewAddressModal(props: {
   addModalRef: RefObject<HTMLIonModalElement>;
   addressesRef: CollectionReference<DeliveryAddressType, DocumentData>;
+  userRef: DocumentReference<DocumentData>;
   addresses: DeliveryAddressType[] | undefined;
 }) {
   const {
@@ -232,8 +247,16 @@ function NewAddressModal(props: {
 
   const onSubmit: SubmitHandler<DeliveryAddressType> = async (data) => {
     try {
+      console.log("New Address: ", data);
       setLoading(true);
-      await addDoc(props.addressesRef, data);
+      const newAddressRef = await addDoc(props.addressesRef, data);
+      if (data.default) {
+        await setDoc(
+          props.userRef,
+          { default_address: newAddressRef.id },
+          { merge: true }
+        );
+      }
       props.addModalRef.current?.dismiss();
       setLoading(false);
     } catch (err: unknown) {
@@ -371,7 +394,7 @@ function NewAddressModal(props: {
                 </IonSelect>
               </IonItem>
               <IonItem>
-                <IonToggle>
+                <IonToggle {...register("default")}>
                   <IonLabel>Set as default address</IonLabel>
                 </IonToggle>
               </IonItem>
