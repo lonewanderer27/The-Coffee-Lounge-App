@@ -31,11 +31,14 @@ import {
   useDocumentDataOnce,
 } from "react-firebase-hooks/firestore";
 
+import DeliveryAddressMap from "../components/DeliveryAddressMap";
 import { DeliveryAddressType } from "../types";
 import { FirebaseError } from "firebase/app";
+import { LocationDescription } from "../utils";
 import { deliveryAddressAtom } from "../atoms/deliveryAddress";
 import { getAuth } from "firebase/auth";
 import { trash } from "ionicons/icons";
+import { useDebounce } from "usehooks-ts"
 import { useParams } from "react-router";
 import { useRecoilValue } from "recoil";
 
@@ -60,6 +63,7 @@ const EditDeliveryAddress = () => {
     handleSubmit,
     setValue,
     getValues,
+    watch,
     formState: { isValid, isValidating },
   } = useForm<DeliveryAddressType>({
     defaultValues: async () => {
@@ -103,6 +107,11 @@ const EditDeliveryAddress = () => {
     }
     setLoading(false);
   };
+
+  const debouncedLocationDescription = useDebounce(
+    LocationDescription(watch()),
+    750
+  );
 
   return (
     <IonPage>
@@ -208,6 +217,9 @@ const EditDeliveryAddress = () => {
                   {...register("postal_code", { required: true })}
                 ></IonInput>
               </IonItem>
+              <DeliveryAddressMap 
+                addressString={debouncedLocationDescription}
+              />
             </IonItemGroup>
 
             <IonItemGroup>
