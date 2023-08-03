@@ -25,8 +25,6 @@ import { getAuth } from "firebase/auth";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { useState } from "react";
 
-// import { IPlayerProps, Player } from "@lottiefiles/react-lottie-player";
-
 const sliderData = [
   {
     title: "Create Perfect Beverage",
