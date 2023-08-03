@@ -104,9 +104,9 @@ dependencies:
   react-barcode:
     specifier: ^1.4.6
     version: 1.4.6(react@18.2.0)
-  react-credit-cards:
-    specifier: ^0.8.3
-    version: 0.8.3(prop-types@15.8.1)(react@18.2.0)
+  react-credit-cards-2:
+    specifier: ^1.0.1
+    version: 1.0.1(react@18.2.0)
   react-dom:
     specifier: ^18.2.0
     version: 18.2.0(react@18.2.0)
@@ -4936,6 +4936,10 @@ packages:
     resolution: {integrity: sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==}
     dev: true
 
+  /credit-card-type@9.1.0:
+    resolution: {integrity: sha512-CpNFuLxiPFxuZqhSKml3M+t0K/484pMAnfYWH14JoD7OZMnmC0Lmo+P7JX9SobqFpRoo7ifA18kOHdxJywYPEA==}
+    dev: false
+
   /cross-fetch@3.1.8:
     resolution: {integrity: sha512-cvA+JwZoU0Xq+h6WkMvAUqPEYy92Obet6UdKLfW60qn99ftItKjB5T+BkyWOFWe2pUyfQ+IJHmpOTznqk1M6Kg==}
     dependencies:
@@ -7770,6 +7774,11 @@ packages:
       yallist: 4.0.0
     dev: true
 
+  /luhn@2.4.1:
+    resolution: {integrity: sha512-p1eEWSb2RJAfv+BzrPEUqbUXV1H3ylHEAOk9yDM1L12ojD6OQQGrE29DqKLa0XYluJTIwXIOFmyzVOme3QSyww==}
+    engines: {node: '>=10'}
+    dev: false
+
   /lz-string@1.5.0:
     resolution: {integrity: sha512-h5bgJWpxJNswbU7qCrV0tIKQCaS3blPDrqKWx+QxzuzL1zGUzij9XCWLrSLsJPu5t+eWA/ycetzYAO5IOMcWAQ==}
     hasBin: true
@@ -9331,14 +9340,14 @@ packages:
       react: 18.2.0
     dev: false
 
-  /react-credit-cards@0.8.3(prop-types@15.8.1)(react@18.2.0):
-    resolution: {integrity: sha512-88XJErkkdDjeFevOxfWYV2dUs4ddNNXJMIgutqTlUH2pYfcaDeFv9MXNGCcJKvBv4+6GEnxbCToymNRNbEt/uw==}
+  /react-credit-cards-2@1.0.1(react@18.2.0):
+    resolution: {integrity: sha512-H/zkja3X9a8fDMCiFLi0hszJvGCi2O4cCbTqGJUYYjC7sumb1XA+hAnJ3A4Ej5i+T8JF0zoGIqVJXfwMxoMwuw==}
     peerDependencies:
-      prop-types: ^15.7.2
-      react: ^15.0.0 || ^16.0.0
+      react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
+      credit-card-type: 9.1.0
+      luhn: 2.4.1
       payment: 2.4.6
-      prop-types: 15.8.1
       react: 18.2.0
     dev: false
 

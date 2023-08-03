@@ -45,7 +45,7 @@
     "react-avatar": "^5.0.3",
     "react-azure-maps": "1.0.0-beta.2",
     "react-barcode": "^1.4.6",
-    "react-credit-cards": "^0.8.3",
+    "react-credit-cards-2": "^1.0.1",
     "react-dom": "^18.2.0",
     "react-firebase-hooks": "^5.1.1",
     "react-heart": "^1.0.6",
