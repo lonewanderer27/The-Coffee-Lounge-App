@@ -5,7 +5,6 @@ import {
   persistentMultipleTabManager,
 } from "firebase/firestore";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReCaptchaV3Provider, initializeAppCheck } from "firebase/app-check";
 
 import App from "./App";
 import { RecoilRoot } from "recoil";
@@ -30,11 +29,6 @@ export const db = initializeFirestore(app, {
     tabManager: persistentMultipleTabManager(),
     cacheSizeBytes: CACHE_SIZE_UNLIMITED,
   }),
-});
-
-export const appCheck = initializeAppCheck(app, {
-  provider: new ReCaptchaV3Provider("6LfXQEonAAAAAAjWlyLuYkL040qQff7DhZVxVCip"),
-  isTokenAutoRefreshEnabled: true,
 });
 
 const container = document.getElementById("root");
