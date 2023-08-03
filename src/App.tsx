@@ -100,7 +100,7 @@ function App() {
           {
             text: "Update",
             handler: () => {
-              updateSW();
+              updateSW(true);
             }
           }
         ]
