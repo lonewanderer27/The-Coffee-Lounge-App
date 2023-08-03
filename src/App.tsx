@@ -161,7 +161,9 @@ function App() {
                     <PaymentMethods />
                   </Route>
                   <Route exact path="/account/delivery-addresses">
-                    <DeliveryAddresses />
+                    <Suspense>
+                      <DeliveryAddresses />
+                    </Suspense>
                   </Route>
                   <Route
                     exact
