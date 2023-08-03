@@ -96,14 +96,18 @@ function App() {
   const [showUpdate] = useIonAlert();
   const updateSW = registerSW({
     onNeedRefresh() {
-      showUpdate("New version available", [
-        {
-          text: "Please update the app to continue",
-          handler: () => {
-            updateSW();
-          },
-        },
-      ]);
+      showUpdate({
+        header: "New version available",
+        message: "Please update the app to continue",
+        buttons: [
+          {
+            text: "Update",
+            handler: () => {
+              updateSW();
+            }
+          }
+        ]
+      })
     },
   });
 
