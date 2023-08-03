@@ -37,7 +37,6 @@ import Account from "./pages/Account";
 import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
 import Checkout from "./pages/Checkout";
-import DeliveryAddresses from "./pages/DeliveryAddresses";
 import EditDeliveryAddress from "./pages/EditDeliveryAddress";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
@@ -58,6 +57,7 @@ import { registerSW } from "virtual:pwa-register";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
+const DeliveryAddresses = lazy(() => import("./pages/DeliveryAddresses"));
 const Card = lazy(() => import("./pages/Account/Cards/Card"));
 const VirtualVisit = lazy(() => import("./pages/VirtualVisit"));
 const ProfileAndSecurity = lazy(
@@ -66,9 +66,6 @@ const ProfileAndSecurity = lazy(
 const ChangePassword = lazy(
   () => import("./pages/Account/ProfileAndSecurity/ChangePassword")
 );
-
-// const EditDeliveryAddress = lazy(() => import("./pages/EditDeliveryAddress"));
-// const DeliveryAddresses = lazy(() => import("./pages/DeliveryAddresses"));
 const Receipt = lazy(() => import("./pages/Order/Receipt"));
 const MyCards = lazy(() => import("./pages/Account/MyCards"));
 const Intro = lazy(() => import("./pages/Intro"));
