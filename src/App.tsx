@@ -12,7 +12,6 @@ import "./theme/variables.css";
 import "./theme/index.css";
 import "./global.styles.css";
 
-import { AnimatePresence, motion } from "framer-motion";
 import {
   IonApp,
   IonIcon,
@@ -35,11 +34,11 @@ import {
 } from "ionicons/icons";
 
 import Account from "./pages/Account";
-import Card from "./pages/Account/Cards/Card";
 import Cart from "./pages/Cart";
 import CategoryPage from "./pages/Category";
-import ChangePassword from "./pages/Account/ProfileAndSecurity/ChangePassword";
 import Checkout from "./pages/Checkout";
+import DeliveryAddresses from "./pages/DeliveryAddresses";
+import EditDeliveryAddress from "./pages/EditDeliveryAddress";
 import Explore from "./pages/Explore";
 import Home from "./pages/Home";
 import { IonReactRouter } from "@ionic/react-router";
@@ -51,21 +50,25 @@ import Orders from "./pages/Orders";
 import PaymentMethods from "./pages/Checkout/PaymentMethods";
 import { Preferences } from "@capacitor/preferences";
 import ProductPage from "./pages/Product";
-import ProfileAndSecurity from "./pages/Account/ProfileAndSecurity";
 import Register from "./pages/Register";
 import SignIn from "./pages/SignIn";
-import VirtualVisit from "./pages/VirtualVisit";
-import { getAuth } from "firebase/auth"; // Firebase v9+
+import { getAuth } from "firebase/auth";
+import { motion } from "framer-motion";
 import { registerSW } from "virtual:pwa-register";
 import { setupIonicReact } from "@ionic/react";
 import { useAuthState } from "react-firebase-hooks/auth";
 
-// import DeliveryAddresses from "./pages/DeliveryAddresses";
-// import EditDeliveryAddress from "./pages/EditDeliveryAddress";
+const Card = lazy(() => import("./pages/Account/Cards/Card"));
+const VirtualVisit = lazy(() => import("./pages/VirtualVisit"));
+const ProfileAndSecurity = lazy(
+  () => import("./pages/Account/ProfileAndSecurity")
+);
+const ChangePassword = lazy(
+  () => import("./pages/Account/ProfileAndSecurity/ChangePassword")
+);
 
-// import Receipt from "./pages/Order/Receipt";
-const EditDeliveryAddress = lazy(() => import("./pages/EditDeliveryAddress"));
-const DeliveryAddresses = lazy(() => import("./pages/DeliveryAddresses"));
+// const EditDeliveryAddress = lazy(() => import("./pages/EditDeliveryAddress"));
+// const DeliveryAddresses = lazy(() => import("./pages/DeliveryAddresses"));
 const Receipt = lazy(() => import("./pages/Order/Receipt"));
 const MyCards = lazy(() => import("./pages/Account/MyCards"));
 const Intro = lazy(() => import("./pages/Intro"));
@@ -77,7 +80,6 @@ setupIonicReact();
 export const INTRO_KEY = "seen-intro";
 
 function App() {
-  const { currentUser } = getAuth();
   const [introSeen, setIntroSeen] = useState<boolean | null>(null);
 
   useEffect(() => {
@@ -134,7 +136,9 @@ function App() {
                     <Account setIntro={setIntroSeen} />
                   </Route>
                   <Route exact path="/account/accountandsecurity">
-                    <ProfileAndSecurity />
+                    <Suspense>
+                      <ProfileAndSecurity />
+                    </Suspense>
                   </Route>
                   <Route exact path="/account/bankaccountscards">
                     <Suspense>
@@ -142,7 +146,9 @@ function App() {
                     </Suspense>
                   </Route>
                   <Route exact path="/account/cards/:card_id">
-                    <Card />
+                    <Suspense>
+                      <Card />
+                    </Suspense>
                   </Route>
                   <Route exact path="/account/changepass">
                     <ChangePassword />
@@ -154,17 +160,13 @@ function App() {
                     <PaymentMethods />
                   </Route>
                   <Route exact path="/account/delivery-addresses">
-                    <Suspense>
-                      <DeliveryAddresses />
-                    </Suspense>
+                    <DeliveryAddresses />
                   </Route>
                   <Route
                     exact
                     path="/account/delivery-addresses/edit/:address_id"
                   >
-                    <Suspense>
-                      <EditDeliveryAddress />
-                    </Suspense>
+                    <EditDeliveryAddress />
                   </Route>
                   <Route exact path="/account/delivery-addresses/choose">
                     <Suspense>
@@ -198,7 +200,9 @@ function App() {
                   <Home />
                 </Route>
                 <Route exact path="/virtualVisit">
-                  <VirtualVisit />
+                  <Suspense>
+                    <VirtualVisit />
+                  </Suspense>
                 </Route>
                 <Route exact path="/explore">
                   <Explore />

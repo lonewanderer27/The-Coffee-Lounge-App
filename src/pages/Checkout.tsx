@@ -21,7 +21,7 @@ import {
 } from "@ionic/react";
 import {
   branchAtom,
-  deliverAddressAtom,
+  deliverAddressChoiceAtom,
   deliverOptionAtom,
   payOptionAtom,
   readyToPayAtom,
@@ -42,8 +42,9 @@ function Checkout() {
 
   const payOption = useRecoilValue(payOptionAtom);
   const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);
-  const [deliveryAddress, setDeliveryAddress] =
-    useRecoilState(deliverAddressAtom);
+  const [deliveryAddress, setDeliveryAddress] = useRecoilState(
+    deliverAddressChoiceAtom
+  );
   const [branch, setBranch] = useRecoilState(branchAtom);
   const readyToPay = useRecoilValue(readyToPayAtom);
 

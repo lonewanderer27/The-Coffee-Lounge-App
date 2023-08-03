@@ -33,9 +33,11 @@ import {
 
 import { DeliveryAddressType } from "../types";
 import { FirebaseError } from "firebase/app";
+import { deliveryAddressAtom } from "../atoms/deliveryAddress";
 import { getAuth } from "firebase/auth";
 import { trash } from "ionicons/icons";
 import { useParams } from "react-router";
+import { useRecoilValue } from "recoil";
 
 const EditDeliveryAddress = () => {
   const { address_id } = useParams<{ address_id: string }>();
@@ -48,6 +50,7 @@ const EditDeliveryAddress = () => {
   const addressRef = doc(userRef, "addresses", address_id).withConverter(
     DeliveryAddressConvert
   );
+  const deliveryAddressCache = useRecoilValue(deliveryAddressAtom);
   const [address, setAddress] = useState<DeliveryAddressType>();
   const [user, userLoading, userError] = useDocumentDataOnce(userRef);
   const [presentLoading, dismissLoading] = useIonLoading();
@@ -60,6 +63,14 @@ const EditDeliveryAddress = () => {
     formState: { isValid, isValidating },
   } = useForm<DeliveryAddressType>({
     defaultValues: async () => {
+      // // if the value of the atom matches our address_id
+      // // then simply return this address
+      // if (deliveryAddressCache?.id === address_id) {
+      //   console.log("Cache: ", deliveryAddressCache);
+      //   return deliveryAddressCache;
+      // }
+
+      // otherwise we fetch the latest address from the database
       presentLoading({ message: "Loading Address..." });
       const data = await getDoc(addressRef);
       setAddress(data.data()!);

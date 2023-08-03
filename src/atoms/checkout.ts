@@ -18,7 +18,7 @@ export const payOptionAtom = atom<PaymentOptionType | null>({
   ],
 });
 
-export const deliverAddressAtom = atom<DeliveryAddressType | null>({
+export const deliverAddressChoiceAtom = atom<DeliveryAddressType | null>({
   key: "deliverAddressOption",
   default: null,
   effects_UNSTABLE: [
@@ -51,7 +51,7 @@ export const branchAtom = atom<BranchType | null>({
 export const readyToPayAtom = selector<boolean>({
   key: "readyToPay",
   get: ({ get }) => {
-    const deliverAddress = get(deliverAddressAtom);
+    const deliverAddress = get(deliverAddressChoiceAtom);
     const deliverOption = get(deliverOptionAtom);
     const branchOption = get(branchAtom);
 

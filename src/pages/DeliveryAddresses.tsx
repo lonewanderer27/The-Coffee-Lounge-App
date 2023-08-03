@@ -54,12 +54,15 @@ import {
 } from "ionicons/icons";
 
 import { DeliveryAddressConvert } from "../converters/user";
+import DeliveryAddressMap from "../components/DeliveryAddressMap";
 import { DeliveryAddressType } from "../types";
 import { FirebaseError } from "firebase/app";
 import { LocationDescription } from "../utils";
-import { deliverAddressAtom } from "../atoms/checkout";
+import { deliverAddressChoiceAtom } from "../atoms/checkout";
+import { deliveryAddressAtom } from "../atoms/deliveryAddress";
 import { getAuth } from "firebase/auth";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { useDebounce } from "usehooks-ts";
 import { useMaskito } from "@maskito/react";
 import { useSetRecoilState } from "recoil";
 
@@ -74,7 +77,7 @@ function DeliveryAddresses(props: { choose?: boolean }) {
   const addModalRef = useRef<HTMLIonModalElement>(null);
   console.log("Addresses: ", addresses);
 
-  const setDeliverAddress = useSetRecoilState(deliverAddressAtom);
+  const setDeliverAddress = useSetRecoilState(deliverAddressChoiceAtom);
   const router = useIonRouter();
 
   const setCheckoutAddress = (id: string) => {
@@ -82,7 +85,7 @@ function DeliveryAddresses(props: { choose?: boolean }) {
       const selectedAddress = addresses?.find((add) => add.id === id)!;
       console.log("Selected Address: ", selectedAddress);
       setDeliverAddress(selectedAddress);
-      router.push("/checkout")
+      router.push("/checkout");
     }
   };
 
@@ -162,10 +165,18 @@ interface AddressItemProps extends IAddress {
 }
 
 const AddressItem = memo((props: AddressItemProps) => {
-  const deleteAdd = async () => {
+  const setDeliveryAddress = useSetRecoilState(deliveryAddressAtom);
+  const router = useIonRouter();
+
+  const handleDelete = async () => {
     await deleteDoc(doc(props.addressesRef, props.id));
     await setDoc(props.userRef, { default_address: null }, { merge: true });
   };
+
+  // const handleEdit = () => {
+  //   setDeliveryAddress(props);
+  //   router.push(`/account/delivery-addresses/edit/${props.id}`);
+  // };
 
   return (
     <IonItemSliding
@@ -175,6 +186,12 @@ const AddressItem = memo((props: AddressItemProps) => {
         }
       }}
     >
+      <IonItemOptions side="start">
+        <IonItemOption color="danger" id={`trigger-delete-address-${props.id}`}>
+          Delete
+          <IonIcon slot="start" src={trash}></IonIcon>
+        </IonItemOption>
+      </IonItemOptions>
       <IonItemOptions side="end">
         <IonItemOption
           routerLink={`/account/delivery-addresses/edit/${props.id}`}
@@ -182,10 +199,6 @@ const AddressItem = memo((props: AddressItemProps) => {
         >
           Edit
           <IonIcon slot="start" src={pencilOutline}></IonIcon>
-        </IonItemOption>
-        <IonItemOption color="danger" id={`trigger-delete-address-${props.id}`}>
-          Delete
-          <IonIcon slot="start" src={trash}></IonIcon>
         </IonItemOption>
       </IonItemOptions>
       <IonAlert
@@ -198,7 +211,7 @@ const AddressItem = memo((props: AddressItemProps) => {
           },
           {
             text: "Confirm",
-            handler: deleteAdd,
+            handler: handleDelete,
           },
         ]}
       ></IonAlert>
@@ -244,8 +257,11 @@ function NewAddressModal(props: {
     register,
     handleSubmit,
     setValue,
+    watch,
     formState: { isValid, isValidating },
-  } = useForm<DeliveryAddressType>();
+  } = useForm<DeliveryAddressType>({
+    mode: "all",
+  });
 
   const phoneMask = useMaskito({
     options: {
@@ -292,6 +308,11 @@ function NewAddressModal(props: {
     }
     setLoading(false);
   };
+
+  const debouncedLocationDescription = useDebounce(
+    LocationDescription(watch()),
+    750
+  );
 
   return (
     <IonModal trigger="add-address" ref={props.addModalRef}>
@@ -399,9 +420,12 @@ function NewAddressModal(props: {
                   labelPlacement="fixed"
                   placeholder="Zip Code"
                   type="number"
-                  {...register("postal_code", { required: true })}
+                  {...register("postal_code", { required: false })}
                 ></IonInput>
               </IonItem>
+              <DeliveryAddressMap
+                addressString={debouncedLocationDescription}
+              />
             </IonItemGroup>
 
             <IonItemGroup>

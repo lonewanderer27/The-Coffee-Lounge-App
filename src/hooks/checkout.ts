@@ -14,7 +14,7 @@ import {
 } from "firebase/firestore";
 import {
   branchAtom,
-  deliverAddressAtom,
+  deliverAddressChoiceAtom,
   deliverOptionAtom,
   payOptionAtom,
 } from "../atoms/checkout";
@@ -30,8 +30,9 @@ export const useCheckout = (totalPrice: number) => {
   const [cart, setCart] = useRecoilState(cartAtom);
   const [payOption, setPayOption] = useRecoilState(payOptionAtom);
   const [deliverOption, setDeliverOption] = useRecoilState(deliverOptionAtom);
-  const [deliverAddress, setDeliverAddress] =
-    useRecoilState(deliverAddressAtom);
+  const [deliverAddress, setDeliverAddress] = useRecoilState(
+    deliverAddressChoiceAtom
+  );
   const [branchOption, setbranchOption] = useRecoilState(branchAtom);
   const setOrderAtom = useSetRecoilState(orderAtom);
   const router = useIonRouter();

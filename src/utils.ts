@@ -1,4 +1,5 @@
 import {
+  AddressType,
   CartItemType,
   DeliveryAddressType,
   Ice,
@@ -30,7 +31,7 @@ export default function OrderDescription(props: CartItemType) {
     .join(", ");
 }
 
-export function LocationDescription(props: DeliveryAddressType) {
+export function LocationDescription(props: DeliveryAddressType | AddressType) {
   return [
     props.unit_number !== "" ? props.unit_number : false,
     props.street_name !== "" ? props.street_name : false,
