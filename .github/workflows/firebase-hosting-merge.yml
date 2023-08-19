@@ -19,7 +19,7 @@ jobs:
           NODE_OPTIONS: --max_old_space_size=4096
       - uses: FirebaseExtended/action-hosting-deploy@v0
         env:
-          VITE_AZURE_MAPS_KEY: ${{ secrets.VITE_AZURE_MAPS_KEY }}
+          VITE_AZURE_MAPS_KEY: '${{ secrets.VITE_AZURE_MAPS_KEY }}'
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'
           firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_THE_COFFEE_LOUNGE }}'
